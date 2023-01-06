@@ -1,5 +1,9 @@
 import { ThemeProvider } from "@emotion/react";
-import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
 import { useColorScheme } from "react-native";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
