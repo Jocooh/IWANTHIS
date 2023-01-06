@@ -3,7 +3,6 @@ import Home from "../screen/Home";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const NativeStack = createNativeStackNavigator();
-
 const Header = () => {
   return (
     <SafeAreaView>

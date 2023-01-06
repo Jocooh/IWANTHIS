@@ -5,8 +5,8 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { useColorScheme } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import Stacks from "./src/navigation/Stacks";
 import store from "./src/redux/config/configStore";
