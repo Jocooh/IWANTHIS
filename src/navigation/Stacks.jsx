@@ -3,10 +3,8 @@ import Home from "../screen/Home";
 import Lists from "../screen/Lists";
 import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
-import stylesList from "../styles/styled";
 import { headerBackVisible } from "react-native-screens";
 import Header from "../components/Header";
-import { imagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 
 const NativeStack = createNativeStackNavigator();
@@ -22,7 +20,7 @@ const Stacks = () => {
             <TouchableOpacity>
               <View style={{ marginVertical: -5 }}>
                 <Image
-                  source={require("../../assets/defaultimage.png")}
+                  source={require("../assets/defaultimage.png")}
                   style={{ height: 40, width: 40 }}
                 />
                 {/* <View style={{ height: 10 }}></View> */}
@@ -38,8 +36,8 @@ const Stacks = () => {
         component={Lists}
         options={headerBackVisible}
       />
-      {/* <NativeStack.Screen name="Detail" component={Detail} />
-        <NativeStack.Screen name="WriteList" component={WriteList} />  */}
+      <NativeStack.Screen name="Detail" component={Detail} />
+      <NativeStack.Screen name="WriteList" component={WriteList} /> 
       {/* <NativeStack.Screen name="Mypage" /> */}
       {/* <NativeStack.Screen name="Login" /> */}
       {/* <NativeStack.Screen name="Register" />*/}
