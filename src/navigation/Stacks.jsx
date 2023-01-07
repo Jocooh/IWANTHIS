@@ -6,7 +6,7 @@ import WriteList from "../screen/WriteList";
 import { headerBackVisible } from "react-native-screens";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MyPage from "../screen/Mypage";
+import MyPage from "../screen/MyPage";
 
 const NativeStack = createNativeStackNavigator();
 
