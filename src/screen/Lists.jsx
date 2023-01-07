@@ -5,10 +5,16 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Detail from "./Detail";
 
-const Lists = ({ navigation: { navigate } }) => (
+const Lists = ({
+  navigation: { navigate },
+  route: {
+    params: { datas, color },
+  },
+}) => (
   // 전체 리스트
   //배경색깔은 props으로 받아서 사용하면 될듯ㅇㅇ
-  <SafeAreaView style={{ backgroundColor: "#92B1E8" }}>
+
+  <SafeAreaView style={{ backgroundColor: color }}>
     <ScrollView>
       {/* 글쓰기 버튼 */}
       <TouchableOpacity
