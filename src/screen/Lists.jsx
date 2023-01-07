@@ -17,12 +17,10 @@ const Lists = ({ navigation: { navigate } }) => {
   //     const{data}=await axios.get("주소category?_sort=date&_order=desc ")
   //     setLists(data)
   //   }
-
   // 인기순으로 가져올 함수
   // const fetchLikeList = async()=>{
   //   const{data}=await axios.get("주소category?_sort=like&_order=desc ")
   // }
-
   // useFocusEffect(() => {
   //   fetchList();
   // }, []);

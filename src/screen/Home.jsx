@@ -1,12 +1,12 @@
-import { View, Text } from "react-native";
+import { ScrollView } from "react-native";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import Category from "../components/Category";
 
-const Home = () => {
+const Home = ({ navigation: { navigate } }) => {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <ScrollView>
+      <Category navigation={navigate} />
+    </ScrollView>
   );
 };
 
