@@ -5,29 +5,11 @@ import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
 import stylesList from "../styles/styled";
 import { headerBackVisible } from "react-native-screens";
+import Header from "../components/Header";
+import { imagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 
-import mainIcon from "../assets/main3.png";
-
 const NativeStack = createNativeStackNavigator();
-
-const Header = () => {
-  return (
-    // <SafeAreaView>
-    //   <View style={{ backgroundColor: "black", height: 60 }}>
-    //     <Text>헤더</Text>
-    //   </View>
-    // </SafeAreaView>
-    <>
-      <Text>IWANTHIS</Text>
-      <Image
-        style={{ width: 40, height: 40 }}
-        source={mainIcon}
-        resizeMode="contain"
-      />
-    </>
-  );
-};
 
 const Stacks = () => {
   return (
