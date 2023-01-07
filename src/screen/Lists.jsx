@@ -1,104 +1,121 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
-import React from "react";
-import stylesList from "../styles/styled";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+// import { auth } from "../common/firebase"; //auth 들고옴
+import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import WriteList from "./WriteList";
+import { ListBackground, ListImage, ListStyle } from "../styles/styled";
 import Detail from "./Detail";
+import { useFocusEffect } from "@react-navigation/native";
 
-const Lists = ({ navigation: { navigate } }) => (
+const Lists = ({ navigation: { navigate } }) => {
+  const [lists, setLists] = useState([]);
+
+  //이거 혹시 몰라서..
+  // 최신순으로 가져올 함수
+  //   const fetchCurrentList= async()=>{
+  //     const{data}=await axios.get("주소category?_sort=date&_order=desc ")
+  //     setLists(data)
+  //   }
+
+  // 인기순으로 가져올 함수
+  // const fetchLikeList = async()=>{
+  //   const{data}=await axios.get("주소category?_sort=like&_order=desc ")
+  // }
+
+  // useFocusEffect(() => {
+  //   fetchList();
+  // }, []);
+
   // 전체 리스트
-  //배경색깔은 props으로 받아서 사용하면 될듯ㅇㅇ
-  <SafeAreaView style={{ backgroundColor: "#92B1E8" }}>
-    <ScrollView>
-      {/* 글쓰기 버튼 */}
-      <TouchableOpacity
-        style={{
-          flexDirection: "row-reverse",
-          paddingBottom: 10,
-          paddingHorizontal: 30,
-        }}
-        onPress={() => {
-          navigate("Detail", { name: Detail });
-        }}
-      >
-        <FontAwesome5 name="pencil-alt" size={23} color="black" />
-      </TouchableOpacity>
-
-      {/* 흰색 배경 */}
-      <View style={stylesList.ListBackground}>
-        <View
+  return (
+    <SafeAreaView style={{ backgroundColor: "#92B1E8" }}>
+      <ScrollView>
+        {/* 글쓰기 버튼 */}
+        <TouchableOpacity
           style={{
-            justifyContent: "flex-end",
-            flexDirection: "row",
-            padding: 10,
+            flexDirection: "row-reverse",
+            paddingBottom: 10,
+            paddingHorizontal: 30,
+          }}
+          onPress={() => {
+            navigate("WriteList", { name: WriteList });
           }}
         >
-          {/* 최신글 인기순  */}
-          <TouchableOpacity style={{ marginRight: 10 }}>
-            <View>
-              <Text>최신순</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ marginRight: 10 }}>
-            <View>
-              <Text>인기순</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        {/* 여기는 리스트 들어가는 구간 */}
-        <ScrollView>
-          <TouchableOpacity>
-            <View style={stylesList.ListStyle}>
+          <FontAwesome5 name="pencil-alt" size={23} color="black" />
+        </TouchableOpacity>
+
+        {/* 흰색 배경 */}
+        <ListBackground>
+          <View
+            style={{
+              justifyContent: "flex-end",
+              flexDirection: "row",
+              padding: 10,
+            }}
+          >
+            {/* 최신글 인기순  */}
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={() => {}}>
               <View>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>TITLE</Text>
-                <Text style={{ paddingVertical: 5 }}>2023.1.6</Text>
+                <Text>최신순</Text>
               </View>
-              {/* 이미지 들어가는 부분 */}
-              <View style={{ marginVertical: -5 }}>
-                <Image
-                  source={require("../../assets/defaultimage.png")}
-                  style={stylesList.ListImageSize}
-                />
-                {/* <View style={{ height: 10 }}></View> */}
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={stylesList.ListStyle}>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginRight: 10 }}>
               <View>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>TITLE</Text>
-                <Text style={{ paddingVertical: 5 }}>2023.1.6</Text>
+                <Text>인기순</Text>
               </View>
-              {/* 이미지 들어가는 부분 */}
-              <View style={{ marginVertical: -5 }}>
-                <Image
-                  source={require("../../assets/defaultimage.png")}
-                  style={stylesList.ListImageSize}
-                />
-                {/* <View style={{ height: 10 }}></View> */}
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={stylesList.ListStyle}>
-              <View>
-                <Text style={{ fontSize: 25, fontWeight: "bold" }}>TITLE</Text>
-                <Text style={{ paddingVertical: 5 }}>2023.1.6</Text>
-              </View>
-              {/* 이미지 들어가는 부분 */}
-              <View style={{ marginVertical: -5 }}>
-                <Image
-                  source={require("../../assets/defaultimage.png")}
-                  style={stylesList.ListImageSize}
-                />
-                {/* <View style={{ height: 10 }}></View> */}
-              </View>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    </ScrollView>
-  </SafeAreaView>
-);
+            </TouchableOpacity>
+          </View>
+          {/* 여기는 리스트 들어가는 구간 props받고 바로 map */}
+          <ScrollView>
+            {/* {props.map((list) => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigate("Detail", { name: Detail });
+                }}
+               >
+                <View style={stylesList.ListStyle} key={list.id}>
+                  <View>
+                    <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                      {list.title}
+                    </Text>
+                    <Text style={{ paddingVertical: 5 }}>{list.date}</Text>
+                  </View> */}
+            {/* 이미지 들어가는 부분  - auth 이용 */}
+            {/* <View style={{ marginVertical: -5 }}>
+                    <Image
+                      source={require("../assets/defaultimage.png")}
+                      style={stylesList.ListImageSize}
+                    />
+                  
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))} */}
+            <TouchableOpacity
+              onPress={() => {
+                navigate("Detail", { name: Detail });
+              }}
+            >
+              <ListStyle>
+                <View>
+                  <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                    TITLE
+                  </Text>
+                  <Text style={{ paddingVertical: 5 }}>2023-01-07</Text>
+                </View>
+                {/* 이미지 들어가는 부분 */}
+                <View style={{ marginVertical: -5 }}>
+                  <ListImage source={require("../assets/defaultimage.png")} />
+                  {/* <View style={{ height: 10 }}></View> */}
+                </View>
+              </ListStyle>
+            </TouchableOpacity>
+          </ScrollView>
+        </ListBackground>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
 export default Lists;
