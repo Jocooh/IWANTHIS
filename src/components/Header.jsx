@@ -1,5 +1,6 @@
 import { imagePath } from "../assets/imgPath";
-import { Text, Image, TouchableOpacity, View } from "react-native";
+import { Text, Image } from "react-native";
+
 const Header = () => {
   return (
     <>

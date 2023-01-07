@@ -1,79 +1,82 @@
 {
-  "categories": {
-    "furniture": {
-      "datas": [
-        {
-          "id": 1,
-          "title": "책상",
-          "content": " 누워서 자도 될 만큼",
-          "image": "미정",
-          "date": "20220511",
-          "like": 0,
-          "price": 29000,
-          "comment": []
-        },
-        {
-          "id": 2,
-          "title": "의자",
-          "content": " 시몬스 침대 같은 이것",
-          "image": "미정",
-          "date": "20220512",
-          "like": 0,
-          "price": 32000,
-          "comment": []
-        }
-      ],
+  "categories": [
+    {
+      "category": "furniture",
       "color": "#92b1e8"
     },
-    "electric": {
-      "datas": [
-        {
-          "id": 1,
-          "title": "냉장고",
-          "content": "러시아급",
-          "image": "미정",
-          "date": "20220511",
-          "like": 0,
-          "price": 294000,
-          "comment": []
-        },
-        {
-          "id": 2,
-          "title": "아이맥",
-          "content": "로고값만 90만원짜리",
-          "image": "미정",
-          "date": "20220516",
-          "like": 0,
-          "price": 1000000,
-          "comment": []
-        }
-      ],
+    {
+      "category": "electric",
       "color": "#e9aedf"
     },
-    "fasion": {
-      "datas": [
-        {
-          "id": 1,
-          "title": "잠옷",
-          "content": "누이트족이 인정한 초이고 잠옷",
-          "image": "미정",
-          "date": "20220516",
-          "like": 0,
-          "price": 14000,
-          "comment": []
-        },
-        {
-          "id": 2,
-          "title": "나이키신발",
-          "content": "아킬레스건 절대 보호해",
-          "image": "미정",
-          "date": "20220516",
-          "like": 0,
-          "price": 100000,
-          "comment": []
-        }
-      ],
+    {
+      "category": "fashion",
       "color": "#f8c3c6"
     }
-  }
+  ],
+  "furniture": [
+    {
+      "id": 1,
+      "title": "책상",
+      "content": " 누워서 자도 될 만큼",
+      "image": "미정",
+      "date": "20220511",
+      "like": 0,
+      "price": 29000,
+      "comment": []
+    },
+    {
+      "id": 2,
+      "title": "의자",
+      "content": " 시몬스 침대 같은 이것",
+      "image": "미정",
+      "date": "20220512",
+      "like": 0,
+      "price": 32000,
+      "comment": []
+    }
+  ],
+  "electric": [
+    {
+      "id": 1,
+      "title": "냉장고",
+      "content": "러시아급",
+      "image": "미정",
+      "date": "20220511",
+      "like": 0,
+      "price": 294000,
+      "comment": []
+    },
+    {
+      "id": 2,
+      "title": "아이맥",
+      "content": "로고값만 90만원짜리",
+      "image": "미정",
+      "date": "20220516",
+      "like": 0,
+      "price": 1000000,
+      "comment": []
+    }
+  ],
+  "fasion": [
+    {
+      "id": 1,
+      "title": "잠옷",
+      "content": "누이트족이 인정한 초이고 잠옷",
+      "image": "미정",
+      "date": "20220516",
+      "like": 0,
+      "price": 14000,
+      "comment": []
+    },
+    {
+      "id": 2,
+      "title": "나이키신발",
+      "content": "아킬레스건 절대 보호해",
+      "image": "미정",
+      "date": "20220516",
+      "like": 0,
+      "price": 100000,
+      "comment": []
+    }
+  ]
 }

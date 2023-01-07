@@ -92,7 +92,7 @@ const Lists = ({ navigation: { navigate } }) => {
             ))} */}
             <TouchableOpacity
               onPress={() => {
-                navigate("Detail", { name: Detail });
+                navigate("Detail", { category: "furniture", id: 1 });
               }}
             >
               <ListStyle>
