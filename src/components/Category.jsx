@@ -1,100 +1,121 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { useState, useEffect } from "react";
+import React from "react";
 import { imagePath } from "../assets/imgPath";
-import stylesList from "../styles/styled";
-import { getCategories } from "../common/api";
+import { ListStyle } from "../styles/styled";
+import Swiper from "react-native-swiper";
+import { useFocusEffect } from "@react-navigation/native";
+import { height } from "../common/util";
 
 const Category = ({ navigation }) => {
-  const [categories, setCategories] = useState();
+  const [press, setPress] = useState([false, false, false]);
+  const [opacity, setOpacity] = useState([1.0, 1.0, 1.0]);
 
-  const getDatas = async () => {
-    const data = await getCategories();
-    setCategories(data);
+  const categories = ["furniture", "electric", "fashion"];
+  const colors = {
+    furniture: {
+      backColor: "#F3E0E0",
+      fontColor: "#597B67",
+    },
+    electric: {
+      backColor: "#E8C47E",
+      fontColor: "#ffffff",
+    },
+    fashion: {
+      backColor: "#BAD1E6",
+      fontColor: "#FBB9AB",
+    },
   };
 
-  useEffect(() => {
-    getDatas();
-  }, []);
+  const swap = (index) => {
+    const pArr = [...press];
+    const oArr = [...opacity];
+    // 합치기
+    const swapArr = pArr.reduce((newArray, bool, idx) => {
+      if (idx === index) {
+        newArray.push(!bool);
+      } else {
+        newArray.push(bool);
+      }
+      return newArray;
+    }, []);
+    const opacityArr = oArr.reduce((newArray, value, idx) => {
+      if (idx !== index) {
+        newArray.push(0.5);
+      } else {
+        newArray.push(1.0);
+      }
+      return newArray;
+    }, []);
 
-  // 우상님 원래 코드
+    setOpacity(opacityArr);
+    setPress(swapArr);
+  };
 
-  // if (categories) {
-  //   return Object.keys(categories).map((categoryName, index) => (
-  //     <View key={index}>
-  //       <TouchableOpacity
-  //         onPress={() =>
-  //           navigation("Lists", {
-  //             datas: categories[categoryName].datas,
-  //             color: categories[categoryName].color,
-  //           })
-  //         }
-  //       >
-  //         <View
-  //           style={[
-  //             stylesList.ListStyle,
-  //             {
-  //               height: 200,
-  //               backgroundColor: categories[categoryName].color,
-  //               flexDirection: "column",
-  //             },
-  //           ]}
-  //         >
-  //           <Image
-  //             source={imagePath[categoryName]}
-  //             //source={require(categoriess[categoryName].image)} 이거 안댐
-  //             style={{ width: "100%", height: 100 }}
-  //           />
-  //           <Text
-  //             style={{
-  //               fontSize: 20,
-  //               color: "white",
-  //               textAlign: "right",
-  //             }}
-  //           >
-  //             {categoryName}
-  //           </Text>
-  //           {/* 이미지 들어가는 부분 */}
-  //         </View>
-  //       </TouchableOpacity>
-  //     </View>
-  //   ));
-  // }
+  const goToList = (name, color, index) => {
+    setTimeout(() => {
+      navigation("Lists", { category: name, color: color });
+      setTimeout(() => {
+        setPress([false, false, false]);
+        setOpacity([1.0, 1.0, 1.0]);
+      }, 500);
+    }, 4000);
+  };
 
   if (categories) {
-    return categories.map((category) => (
-      <View key={category.category}>
+    return categories.map((category, index) => (
+      <View key={category} style={{ backgroundColor: "white" }}>
         <TouchableOpacity
-          onPress={() =>
-            navigation("Lists", {
-              color: category.color,
-            })
-          }
+          onPress={() => swap(index)}
+          style={{ opacity: opacity[index] }}
         >
           <View
-            style={[
-              stylesList.ListStyle,
-              {
-                height: 200,
-                backgroundColor: category.color,
-                flexDirection: "column",
-              },
-            ]}
+            style={{
+              height: 200,
+              backgroundColor: colors[category].backColor,
+              flexDirection: "column",
+              alignItems: "center",
+              opacity: opacity[index],
+            }}
           >
-            <Image
-              source={imagePath[category.category]}
-              //source={require(categoriess[categoryName].image)} 이거 안댐
-              style={{ width: "100%", height: 100 }}
-            />
-            <Text
-              style={{
-                fontSize: 20,
-                color: "white",
-                textAlign: "right",
-              }}
-            >
-              {category.category}
-            </Text>
-            {/* 이미지 들어가는 부분 */}
+            {!press[index] ? (
+              <>
+                <View style={{ height: "50%", margin: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: 60,
+                      color: colors[category].fontColor,
+                    }}
+                  >
+                    {category.toUpperCase()}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  {imagePath[category].map((image) => (
+                    <Image source={image} style={{ width: 60, height: 60 }} />
+                  ))}
+                </View>
+              </>
+            ) : (
+              <Swiper
+                autoplay
+                showsPagination={false}
+                loop
+                autoplayTimeout={0.3}
+                onPress={goToList(category, colors[category].backColor, index)}
+                containerStyle={{
+                  width: "100%",
+
+                  margin: 60,
+                  marginLeft: "90%",
+                  marginRight: 20,
+                }}
+              >
+                {imagePath[category].map((image) => (
+                  <Image source={image} style={{ width: 60, height: 60 }} />
+                ))}
+              </Swiper>
+            )}
           </View>
         </TouchableOpacity>
       </View>

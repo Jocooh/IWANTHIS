@@ -8,7 +8,12 @@ import { ListBackground, ListImage, ListStyle } from "../styles/styled";
 import Detail from "./Detail";
 import { useFocusEffect } from "@react-navigation/native";
 
-const Lists = ({ navigation: { navigate } }) => {
+const Lists = ({
+  navigation: { navigate },
+  route: {
+    params: { category, color },
+  },
+}) => {
   const [lists, setLists] = useState([]);
 
   //이거 혹시 몰라서..
@@ -27,7 +32,7 @@ const Lists = ({ navigation: { navigate } }) => {
 
   // 전체 리스트
   return (
-    <SafeAreaView style={{ backgroundColor: "#92B1E8" }}>
+    <SafeAreaView style={{ backgroundColor: color.backColor }}>
       <ScrollView>
         {/* 글쓰기 버튼 */}
         <TouchableOpacity
