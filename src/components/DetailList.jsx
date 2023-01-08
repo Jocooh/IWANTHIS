@@ -7,7 +7,7 @@ import {
 import { useQuery } from "react-query";
 import { DetailText, Loader } from "../styles/styled";
 import { AntDesign } from "@expo/vector-icons";
-import { getList } from "../common/api";
+import { getDetailList } from "../common/api";
 import styled from "@emotion/native";
 import { useEffect, useState } from "react";
 import CommentForm from './CommentForm';
@@ -27,7 +27,7 @@ const DetailList = ({ category, listId }) => {
   // GET List
   const { isLoading, isError, data, error } = useQuery(
     [category, listId],
-    getList
+    getDetailList
   );
 
   if (isLoading) {
