@@ -1,100 +1,56 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
 import { imagePath } from "../assets/imgPath";
-import stylesList from "../styles/styled";
-import { getCategories } from "../common/api";
 
 const Category = ({ navigation }) => {
-  const [categories, setCategories] = useState();
-
-  const getDatas = async () => {
-    const data = await getCategories();
-    setCategories(data);
+  const categories = ["furniture", "electric", "fashion"];
+  const colors = {
+    furniture: {
+      backColor: "#F3E0E0",
+      fontColor: "#597B67",
+    },
+    electric: {
+      backColor: "#E8C47E",
+      fontColor: "#B6C3A2",
+    },
+    fashion: {
+      backColor: "#BAD1E6",
+      fontColor: "#FBB9AB",
+    },
   };
-
-  useEffect(() => {
-    getDatas();
-  }, []);
-
-  // 우상님 원래 코드
-
-  // if (categories) {
-  //   return Object.keys(categories).map((categoryName, index) => (
-  //     <View key={index}>
-  //       <TouchableOpacity
-  //         onPress={() =>
-  //           navigation("Lists", {
-  //             datas: categories[categoryName].datas,
-  //             color: categories[categoryName].color,
-  //           })
-  //         }
-  //       >
-  //         <View
-  //           style={[
-  //             stylesList.ListStyle,
-  //             {
-  //               height: 200,
-  //               backgroundColor: categories[categoryName].color,
-  //               flexDirection: "column",
-  //             },
-  //           ]}
-  //         >
-  //           <Image
-  //             source={imagePath[categoryName]}
-  //             //source={require(categoriess[categoryName].image)} 이거 안댐
-  //             style={{ width: "100%", height: 100 }}
-  //           />
-  //           <Text
-  //             style={{
-  //               fontSize: 20,
-  //               color: "white",
-  //               textAlign: "right",
-  //             }}
-  //           >
-  //             {categoryName}
-  //           </Text>
-  //           {/* 이미지 들어가는 부분 */}
-  //         </View>
-  //       </TouchableOpacity>
-  //     </View>
-  //   ));
-  // }
 
   if (categories) {
     return categories.map((category) => (
-      <View key={category.category}>
+      <View key={category}>
         <TouchableOpacity
           onPress={() =>
             navigation("Lists", {
-              color: category.color,
+              category: category,
+              color: colors[category].backColor,
             })
           }
         >
           <View
-            style={[
-              stylesList.ListStyle,
-              {
-                height: 200,
-                backgroundColor: category.color,
-                flexDirection: "column",
-              },
-            ]}
+            style={{
+              height: 200,
+              backgroundColor: colors[category].backColor,
+              flexDirection: "column",
+            }}
           >
-            <Image
-              source={imagePath[category.category]}
+            {/* <Image
+              source={imagePath[categoryName]}
               //source={require(categoriess[categoryName].image)} 이거 안댐
               style={{ width: "100%", height: 100 }}
-            />
+            /> */}
             <Text
               style={{
-                fontSize: 20,
-                color: "white",
-                textAlign: "right",
+                fontSize: 60,
+                color: colors[category].fontColor,
+                textAlign: "center",
               }}
             >
-              {category.category}
+              {category.toUpperCase()}
             </Text>
-            {/* 이미지 들어가는 부분 */}
           </View>
         </TouchableOpacity>
       </View>

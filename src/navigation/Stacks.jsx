@@ -3,7 +3,6 @@ import Home from "../screen/Home";
 import Lists from "../screen/Lists";
 import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
-import { headerBackVisible } from "react-native-screens";
 import Header from "../components/Header";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 
@@ -31,13 +30,9 @@ const Stacks = () => {
       }}
     >
       <NativeStack.Screen name="Home" component={Home} />
-      <NativeStack.Screen
-        name="Lists"
-        component={Lists}
-        options={headerBackVisible}
-      />
+      <NativeStack.Screen name="Lists" component={Lists} />
       <NativeStack.Screen name="Detail" component={Detail} />
-      <NativeStack.Screen name="WriteList" component={WriteList} /> 
+      <NativeStack.Screen name="WriteList" component={WriteList} />
       {/* <NativeStack.Screen name="Mypage" /> */}
       {/* <NativeStack.Screen name="Login" /> */}
       {/* <NativeStack.Screen name="Register" />*/}

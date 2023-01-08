@@ -16,3 +16,9 @@ export const getList = async ({ queryKey }) => {
   const { data } = await axios.get(`${SERVER_ADDRESS}/${category}/${id}`);
   return data;
 };
+
+export const getLists = async ({ queryKey }) => {
+  const [category] = queryKey;
+  const { data } = await axios.get(`${SERVER_ADDRESS}/${category}`);
+  return data;
+};
