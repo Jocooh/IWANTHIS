@@ -2,6 +2,12 @@ import axios from "axios";
 
 export const SERVER_ADDRESS = "https://regal-roomy-skunk.glitch.me"; // 나중에 바꾸기
 
+export const getLists = async ({ queryKey }) => {
+  const [category] = queryKey;
+  const { data } = await axios.get(`${SERVER_ADDRESS}/${category}`);
+  return data;
+};
+
 export const getDetailList = async ({ queryKey }) => {
   const [category, id] = queryKey;
   const { data } = await axios.get(`${SERVER_ADDRESS}/${category}/${id}`);
