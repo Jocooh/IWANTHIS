@@ -42,7 +42,7 @@ const Stacks = () => {
       <NativeStack.Screen name="WriteList" component={WriteList} />
       <NativeStack.Screen name="MyPage" component={MyPage} />
       <NativeStack.Screen name="Login" component={WriteList} />
-      {/* <NativeStack.Screen name="Register" />*/}
+      <NativeStack.Screen name="Register" />
     </NativeStack.Navigator>
   );
 };
