@@ -10,7 +10,6 @@ import {
 import { getLists } from "../common/api";
 import React, { useState, useEffect, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import WriteList from "./WriteList";
 import {
   ListBackground,
@@ -21,7 +20,7 @@ import {
 } from "../styles/styled";
 import Detail from "./Detail";
 import { useQuery } from "react-query";
-import { isFulfilled } from "@reduxjs/toolkit";
+import { listImagePath } from "../assets/imgPath";
 
 const Lists = ({
   navigation: { navigate },
@@ -31,6 +30,7 @@ const Lists = ({
 }) => {
   const [lists, setLists] = useState([]);
   const scrollA = useRef(new Animated.Value(0)).current;
+  const [order, setOrder] = useState(0);
 
   useEffect(() => {
     // console.log("home에서 내려온 params", category);
@@ -38,7 +38,7 @@ const Lists = ({
   }, []);
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
-  // console.log(data);
+
   if (isLoading) {
     return (
       <Loader>
@@ -48,11 +48,21 @@ const Lists = ({
   }
   if (isError) return console.log("에러", error);
 
-  const currentList = async () => {
-    const { data } = await axios.get(
-      "https://glitch.com/edit/#!/regal-roomy-skunk?path=db.json"
-    );
-    console.log(data.data);
+  //최신순 불러오는 함수
+  const currentList = () => {
+    const desc = data.sort(function (a, b) {
+      return b.date - a.date;
+    });
+    setLists(desc);
+  };
+
+  //좋아용 불러오는 함수
+
+  const likeList = () => {
+    const iLike = data.sort(function (a, b) {
+      return b.like - a.like;
+    });
+    setLists(iLike);
   };
 
   // 전체 리스트
@@ -89,11 +99,9 @@ const Lists = ({
         <ListTitle>{category}</ListTitle>
 
         <View style={{ paddingHorizontal: "10%" }}>
-          <Animated.Image
-            style={styles.bg(scrollA)}
-            // 물어보기
-            source={require("../assets/nike.png")}
-          />
+          {listImagePath[category].map((image) => (
+            <Animated.Image style={styles.bg(scrollA)} source={image} />
+          ))}
         </View>
         {/* 흰색 배경 */}
         <ListBackground>
@@ -110,7 +118,7 @@ const Lists = ({
                 <Text>최신순</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginRight: 10 }}>
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={likeList}>
               <View>
                 <Text>인기순</Text>
               </View>
