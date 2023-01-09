@@ -30,6 +30,7 @@ const Lists = ({
 }) => {
   const [lists, setLists] = useState([]);
   const scrollA = useRef(new Animated.Value(0)).current;
+  const [order, setOrder] = useState(0);
 
   useEffect(() => {
     // console.log("home에서 내려온 params", category);
@@ -37,9 +38,8 @@ const Lists = ({
   }, []);
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
-  console.log(data);
+
   if (isLoading) {
-    console.log(data);
     return (
       <Loader>
         <ActivityIndicator size={"small"} />
@@ -47,6 +47,23 @@ const Lists = ({
     );
   }
   if (isError) return console.log("에러", error);
+
+  //최신순 불러오는 함수
+  const currentList = () => {
+    const desc = data.sort(function (a, b) {
+      return b.date - a.date;
+    });
+    setLists(desc);
+  };
+
+  //좋아용 불러오는 함수
+
+  const likeList = () => {
+    const iLike = data.sort(function (a, b) {
+      return b.like - a.like;
+    });
+    setLists(iLike);
+  };
 
   // 전체 리스트
   return (
@@ -83,12 +100,7 @@ const Lists = ({
 
         <View style={{ paddingHorizontal: "10%" }}>
           {listImagePath[category].map((image) => (
-            <Animated.Image
-              style={styles.bg(scrollA)}
-              // 여기서 imgepath만들어서 map 돌리자. 114번줄 참고하자
-
-              source={image}
-            />
+            <Animated.Image style={styles.bg(scrollA)} source={image} />
           ))}
         </View>
         {/* 흰색 배경 */}
@@ -101,12 +113,12 @@ const Lists = ({
             }}
           >
             {/* 최신글 인기순  */}
-            <TouchableOpacity style={{ marginRight: 10 }}>
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={currentList}>
               <View>
                 <Text>최신순</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginRight: 10 }}>
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={likeList}>
               <View>
                 <Text>인기순</Text>
               </View>
