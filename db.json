@@ -57,7 +57,7 @@
       "comment": []
     }
   ],
-  "fasion": [
+  "fashion": [
     {
       "id": 1,
       "title": "잠옷",
@@ -77,6 +77,15 @@
       "like": 0,
       "price": 100000,
       "comment": []
+    }
+  ],
+  "furniture1": [
+    {
+      "id": 1,
+      "uid": "",
+      "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+      "nickName": "쿨병말기환자",
+      "comment": "이걸사는 개호구가 있네"
     }
   ]
 }
