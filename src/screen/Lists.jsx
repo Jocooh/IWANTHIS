@@ -75,7 +75,7 @@ const Lists = ({
           paddingHorizontal: 15,
         }}
         onPress={() => {
-          navigate("WriteList", { name: WriteList });
+          navigate("WriteList", { category: category, id: data[data.length-1].id + 1 });
         }}
       >
         <Feather
@@ -129,7 +129,7 @@ const Lists = ({
             {data.map((list) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigate("Detail", { name: Detail });
+                  navigate("Detail", { category:category, id: list.id });
                 }}
                 key={list.id}
               >

@@ -1,6 +1,5 @@
 // 한 군데 이상 쓰는 스타일드 컴포넌트는 여기에 넣어주세요
 import styled from "@emotion/native";
-import { StyleSheet } from "react-native";
 import { height, width } from "../common/util";
 
 //리스트 페이지 기본 디자인
@@ -17,7 +16,7 @@ export const ListBackground = styled.View`
   flex: 1;
   background-color: white;
   /* border-radius: 30% 20% 30% 30%; */
-  border-radius: 60% 5%;
+  /* border-radius: 60% 5%; */
   box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.7);
 `;
 

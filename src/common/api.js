@@ -14,15 +14,23 @@ export const getDetailList = async ({ queryKey }) => {
   return data;
 };
 
-export const getComment = async ({ pageParam = 1, queryKey }) => {
-  const [comment] = queryKey;
-  const { data } = await axios.get(
-    `${SERVER_ADDRESS}/${comment}?_page=${pageParam}`
-  );
+export const getUsers = async () => {
+  const { data } = await axios.get(`${SERVER_ADDRESS}/users`);
   return data;
 };
 
-export const postComment = async (a) => {
-  const [category, id, comment] = a;
-  return await axios.post(`${SERVER_ADDRESS}/${category}${id}`, comment);
+export const postList = ([category, list]) => {
+  return axios.post(`${SERVER_ADDRESS}/${category}`, list);
+};
+
+export const postMy = (list) => {
+  return axios.post(`${SERVER_ADDRESS}/users`, list);
+};
+
+export const changeComment = ([category, id, edit]) => {
+  return axios.patch(`${SERVER_ADDRESS}/${category}/${id}`, edit);
+};
+
+export const changeMyPost = ([id, edit]) => {
+  return axios.patch(`${SERVER_ADDRESS}/users/${id}`, edit);
 };
