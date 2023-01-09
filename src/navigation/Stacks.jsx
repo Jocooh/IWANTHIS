@@ -7,10 +7,14 @@ import Header from "../components/Header";
 import { imagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import MyPage from "../screen/MyPage";
+import { useNavigation } from "@react-navigation/native";
 
 const NativeStack = createNativeStackNavigator();
 
 const Stacks = () => {
+  const { navigate } = useNavigation();
+
   return (
     <NativeStack.Navigator
       screenOptions={{
@@ -19,7 +23,7 @@ const Stacks = () => {
         headerLeft: () => <Text></Text>, // 물어보깅
         headerRight: () => {
           return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigate("MyPage")}>
               <View style={{ marginVertical: -5 }}>
                 <Image
                   source={imagePath["defaultimage"]}
@@ -36,7 +40,7 @@ const Stacks = () => {
       <NativeStack.Screen name="Lists" component={Lists} />
       <NativeStack.Screen name="Detail" component={Detail} />
       <NativeStack.Screen name="WriteList" component={WriteList} />
-      {/* <NativeStack.Screen name="Mypage" /> */}
+      <NativeStack.Screen name="MyPage" component={MyPage} />
       <NativeStack.Screen name="Login" component={WriteList} />
       {/* <NativeStack.Screen name="Register" />*/}
     </NativeStack.Navigator>
