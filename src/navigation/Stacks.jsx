@@ -6,7 +6,6 @@ import WriteList from "../screen/WriteList";
 import Header from "../components/Header";
 import { imagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 
@@ -42,7 +41,7 @@ const Stacks = () => {
       <NativeStack.Screen name="WriteList" component={WriteList} />
       <NativeStack.Screen name="MyPage" component={MyPage} />
       <NativeStack.Screen name="Login" component={WriteList} />
-      <NativeStack.Screen name="Register" />
+      {/* <NativeStack.Screen name="Register" /> */}
     </NativeStack.Navigator>
   );
 };

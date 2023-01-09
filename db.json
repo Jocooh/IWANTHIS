@@ -1,91 +1,162 @@
 {
-  "categories": [
-    {
-      "category": "furniture",
-      "color": "#92b1e8"
-    },
-    {
-      "category": "electric",
-      "color": "#e9aedf"
-    },
-    {
-      "category": "fashion",
-      "color": "#f8c3c6"
-    }
-  ],
   "furniture": [
     {
       "id": 1,
+      "uid": "",
+      "url": "",
       "title": "책상",
       "content": " 누워서 자도 될 만큼",
       "image": "미정",
       "date": "20220511",
       "like": 0,
       "price": 29000,
-      "comment": []
+      "comments": [
+        {
+          "id": 1,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        },
+        {
+          "id": 2,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        },
+        {
+          "id": 3,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        },
+        {
+          "id": 4,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        },
+        {
+          "id": 5,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        },
+        {
+          "id": 6,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        },
+        {
+          "id": 7,
+          "uid": "",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
+          "nickName": "쿨병말기환자",
+          "comment": "이걸사는 개호구가 있네"
+        }
+      ]
     },
     {
       "id": 2,
+      "uid": "",
+      "url": "",
       "title": "의자",
       "content": " 시몬스 침대 같은 이것",
       "image": "미정",
       "date": "20220512",
       "like": 0,
       "price": 32000,
-      "comment": []
+      "comments": []
     }
   ],
   "electric": [
     {
       "id": 1,
+      "uid": "",
+      "url": "",
       "title": "냉장고",
       "content": "러시아급",
       "image": "미정",
       "date": "20220511",
       "like": 0,
       "price": 294000,
-      "comment": []
+      "comments": []
     },
     {
       "id": 2,
+      "uid": "",
+      "url": "",
       "title": "아이맥",
       "content": "로고값만 90만원짜리",
       "image": "미정",
       "date": "20220516",
       "like": 0,
       "price": 1000000,
-      "comment": []
+      "comments": []
     }
   ],
   "fashion": [
     {
       "id": 1,
+      "uid": "",
+      "url": "",
       "title": "잠옷",
       "content": "누이트족이 인정한 초이고 잠옷",
       "image": "미정",
       "date": "20220516",
       "like": 0,
       "price": 14000,
-      "comment": []
+      "comments": []
     },
     {
       "id": 2,
+      "uid": "",
+      "url": "",
       "title": "나이키신발",
       "content": "아킬레스건 절대 보호해",
       "image": "미정",
       "date": "20220516",
       "like": 0,
       "price": 100000,
-      "comment": []
+      "comments": []
     }
   ],
-  "furniture1": [
+  "users": [
     {
       "id": 1,
-      "uid": "",
-      "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-      "nickName": "쿨병말기환자",
-      "comment": "이걸사는 개호구가 있네"
+      "uid": "123",
+      "lists": [
+        {
+          "id": 1,
+          "uid": "",
+          "url": "",
+          "title": "의자",
+          "content": " 시몬스 침대 같은 이것",
+          "image": "미정",
+          "date": "20220512",
+          "like": 0,
+          "price": 32000,
+          "comments": []
+        },
+        {
+          "id": 2,
+          "uid": "",
+          "url": "",
+          "title": "나이키신발",
+          "content": "아킬레스건 절대 보호해",
+          "image": "미정",
+          "date": "20220516",
+          "like": 0,
+          "price": 100000,
+          "comments": []
+        }
+      ]
     }
   ]
 }
