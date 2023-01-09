@@ -10,7 +10,6 @@ import {
 import { getLists } from "../common/api";
 import React, { useState, useEffect, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import WriteList from "./WriteList";
 import {
   ListBackground,
@@ -21,7 +20,7 @@ import {
 } from "../styles/styled";
 import Detail from "./Detail";
 import { useQuery } from "react-query";
-import { isFulfilled } from "@reduxjs/toolkit";
+import { listImagePath } from "../assets/imgPath";
 
 const Lists = ({
   navigation: { navigate },
@@ -38,8 +37,9 @@ const Lists = ({
   }, []);
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
-  // console.log(data);
+  console.log(data);
   if (isLoading) {
+    console.log(data);
     return (
       <Loader>
         <ActivityIndicator size={"small"} />
@@ -47,13 +47,6 @@ const Lists = ({
     );
   }
   if (isError) return console.log("에러", error);
-
-  const currentList = async () => {
-    const { data } = await axios.get(
-      "https://glitch.com/edit/#!/regal-roomy-skunk?path=db.json"
-    );
-    console.log(data.data);
-  };
 
   // 전체 리스트
   return (
@@ -89,11 +82,14 @@ const Lists = ({
         <ListTitle>{category}</ListTitle>
 
         <View style={{ paddingHorizontal: "10%" }}>
-          <Animated.Image
-            style={styles.bg(scrollA)}
-            // 물어보기
-            source={require("../assets/nike.png")}
-          />
+          {listImagePath[category].map((image) => (
+            <Animated.Image
+              style={styles.bg(scrollA)}
+              // 여기서 imgepath만들어서 map 돌리자. 114번줄 참고하자
+
+              source={image}
+            />
+          ))}
         </View>
         {/* 흰색 배경 */}
         <ListBackground>
@@ -105,7 +101,7 @@ const Lists = ({
             }}
           >
             {/* 최신글 인기순  */}
-            <TouchableOpacity style={{ marginRight: 10 }} onPress={currentList}>
+            <TouchableOpacity style={{ marginRight: 10 }}>
               <View>
                 <Text>최신순</Text>
               </View>
