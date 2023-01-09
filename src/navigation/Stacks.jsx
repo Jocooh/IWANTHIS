@@ -36,12 +36,12 @@ const Stacks = () => {
         },
       }}
     >
-      <NativeStack.Screen name="Home" component={Home} />
-      <NativeStack.Screen name="Lists" component={Lists} />
-      <NativeStack.Screen name="Detail" component={Detail} />
-      <NativeStack.Screen name="WriteList" component={WriteList} />
+      {/* <NativeStack.Screen name="Home" component={Home} /> */}
+      {/* <NativeStack.Screen name="Lists" component={Lists} /> */}
+      {/* <NativeStack.Screen name="Detail" component={Detail} /> */}
+      {/* <NativeStack.Screen name="WriteList" component={WriteList} /> */}
       <NativeStack.Screen name="MyPage" component={MyPage} />
-      <NativeStack.Screen name="Login" component={WriteList} />
+      {/* <NativeStack.Screen name="Login" component={WriteList} /> */}
       {/* <NativeStack.Screen name="Register" />*/}
     </NativeStack.Navigator>
   );
