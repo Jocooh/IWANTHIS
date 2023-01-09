@@ -26,6 +26,7 @@ const Category = ({ navigation }) => {
           onPress={() =>
             navigation("Lists", {
               category: category,
+              categories: categories,
               color: colors[category].backColor,
             })
           }
