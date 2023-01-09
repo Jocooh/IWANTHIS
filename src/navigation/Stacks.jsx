@@ -4,7 +4,9 @@ import Lists from "../screen/Lists";
 import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
 import Header from "../components/Header";
+import { imagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 
 const NativeStack = createNativeStackNavigator();
 
@@ -12,6 +14,7 @@ const Stacks = () => {
   return (
     <NativeStack.Navigator
       screenOptions={{
+        headerTitleAlign: "center", // 안드로이드
         headerTitle: (props) => <Header {...props} />,
         headerLeft: () => <Text></Text>, // 물어보깅
         headerRight: () => {
@@ -19,7 +22,7 @@ const Stacks = () => {
             <TouchableOpacity>
               <View style={{ marginVertical: -5 }}>
                 <Image
-                  source={require("../assets/defaultimage.png")}
+                  source={imagePath["defaultimage"]}
                   style={{ height: 40, width: 40 }}
                 />
                 {/* <View style={{ height: 10 }}></View> */}
@@ -34,7 +37,7 @@ const Stacks = () => {
       <NativeStack.Screen name="Detail" component={Detail} />
       <NativeStack.Screen name="WriteList" component={WriteList} />
       {/* <NativeStack.Screen name="Mypage" /> */}
-      {/* <NativeStack.Screen name="Login" /> */}
+      <NativeStack.Screen name="Login" component={WriteList} />
       {/* <NativeStack.Screen name="Register" />*/}
     </NativeStack.Navigator>
   );

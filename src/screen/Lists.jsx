@@ -95,7 +95,6 @@ const Lists = ({
             source={require("../assets/nike.png")}
           />
         </View>
-
         {/* 흰색 배경 */}
         <ListBackground>
           <View
