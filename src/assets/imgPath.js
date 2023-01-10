@@ -103,3 +103,6 @@ export const listImagePath = {
   defaultimage: require("./defaultimage.png"),
   //loading: [require("./loading1.png"), require("./loading1.png")],
 };
+export const no = {
+  no: require("./listImage/no.png"),
+};

@@ -15,8 +15,7 @@ export const ListBackground = styled.View`
   margin: 10px;
   flex: 1;
   background-color: white;
-  /* border-radius: 30% 20% 30% 30%; */
-  /* border-radius: 60% 5%; */
+  border-radius: 60px 5px;
   box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.7);
 `;
 
