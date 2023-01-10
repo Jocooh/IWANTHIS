@@ -1,12 +1,14 @@
 import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/native";
-// import { auth } from "../common/firebase";
+import { auth } from "../common/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth/react-native";
-import { emailRegex, pwRegex, width } from "../common/utils";
+import { emailRegex, pwRegex, width } from "../common/util";
+
+console.log(auth);
 
 export default function Login({ navigation: { goBack, setOptions } }) {
   const emailRef = useRef(null);
