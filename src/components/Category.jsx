@@ -1,35 +1,71 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { useState, useEffect } from "react";
 import React from "react";
-import { imagePath } from "../assets/imgPath";
-import { ListStyle } from "../styles/styled";
+import { listImagePath } from "../assets/imgPath";
+import { width } from "../common/util";
 import Swiper from "react-native-swiper";
-import { useFocusEffect } from "@react-navigation/native";
-import { height } from "../common/util";
+import { Loader } from "../styles/styled";
+
+export const colors = {
+  beauty: {
+    backColor: "#BCE29E",
+    fontColor: "#fa5a5a",
+  },
+  interior: {
+    fontColor: "#e5e513",
+    backColor: "#2B3467",
+  },
+  books: {
+    backColor: "#FCFFE7",
+    fontColor: "#EB455F",
+  },
+  necessity: {
+    fontColor: "#0cdbd4",
+    backColor: "#540375",
+  },
+  furniture: {
+    backColor: "#F3E0E0",
+    fontColor: "#16422b",
+  },
+  electric: {
+    backColor: "#8A8989",
+    fontColor: "#dee053",
+  },
+
+  fashion: {
+    fontColor: "#0d2a60",
+    backColor: "#FBB9AB",
+  },
+
+  accessory: {
+    backColor: "#939B62",
+    fontColor: "#FFD56F",
+  },
+  foods: {
+    backColor: "#FF7B54",
+    fontColor: "#ffca99",
+  },
+};
 
 const Category = ({ navigation }) => {
-  const [press, setPress] = useState([false, false, false]);
-  const [opacity, setOpacity] = useState([1.0, 1.0, 1.0]);
+  const categories = Object.keys(colors);
 
-  const categories = ["furniture", "electric", "fashion"];
-  const colors = {
-    furniture: {
-      backColor: "#F3E0E0",
-      fontColor: "#597B67",
-    },
-    electric: {
-      backColor: "#E8C47E",
-      fontColor: "#ffffff",
-    },
-    fashion: {
-      backColor: "#BAD1E6",
-      fontColor: "#FBB9AB",
-    },
-  };
+  const [press, setPress] = useState(
+    Array.from({ length: categories.length }, () => false)
+  );
+  const [effect, setEffect] = useState(
+    Array.from({ length: categories.length }, () => 1.0)
+  );
 
   const swap = (index) => {
     const pArr = [...press];
-    const oArr = [...opacity];
+    const oArr = [...effect];
     // 합치기
     const swapArr = pArr.reduce((newArray, bool, idx) => {
       if (idx === index) {
@@ -39,7 +75,7 @@ const Category = ({ navigation }) => {
       }
       return newArray;
     }, []);
-    const opacityArr = oArr.reduce((newArray, value, idx) => {
+    const effectArr = oArr.reduce((newArray, value, idx) => {
       if (idx !== index) {
         newArray.push(0.5);
       } else {
@@ -48,7 +84,7 @@ const Category = ({ navigation }) => {
       return newArray;
     }, []);
 
-    setOpacity(opacityArr);
+    setEffect(effectArr);
     setPress(swapArr);
   };
 
@@ -56,66 +92,84 @@ const Category = ({ navigation }) => {
     setTimeout(() => {
       navigation("Lists", { category: name, color: color });
       setTimeout(() => {
-        setPress([false, false, false]);
-        setOpacity([1.0, 1.0, 1.0]);
+        setPress(Array.from({ length: categories.length }, () => false));
+        setEffect(Array.from({ length: categories.length }, () => 1.0));
       }, 500);
-    }, 4000);
+    }, 2000);
   };
+
+  useEffect(() => {
+    setTimeout(() => {}, 4000);
+  }, []);
 
   if (categories) {
     return categories.map((category, index) => (
-      <View key={category} style={{ backgroundColor: "white" }}>
+      <View key={index}>
         <TouchableOpacity
           onPress={() => swap(index)}
-          style={{ opacity: opacity[index] }}
+          style={{ opacity: effect[index] }}
         >
           <View
             style={{
-              height: 200,
+              height: 400,
               backgroundColor: colors[category].backColor,
               flexDirection: "column",
-              alignItems: "center",
-              opacity: opacity[index],
+
+              effect: effect[index],
             }}
           >
-            {!press[index] ? (
-              <>
-                <View style={{ height: "50%", margin: 10 }}>
+            <View
+              style={{
+                height: "100%",
+                position: "relative",
+                width: width,
+              }}
+            >
+              {!press[index] ? (
+                <>
                   <Text
                     style={{
+                      fontWeight: "bold",
                       fontSize: 60,
                       color: colors[category].fontColor,
+                      position: "absolute",
+                      zIndex: 1,
                     }}
                   >
                     {category.toUpperCase()}
                   </Text>
+                  <Image
+                    key={index}
+                    source={listImagePath[category]}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      resizeMode: "cover",
+                    }}
+                  />
+                </>
+              ) : (
+                <View
+                  onPress={goToList(category, colors[category], index)}
+                  style={{ marginTop: "35%", flexDirection: "column" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 60,
+                      color: colors[category].fontColor,
+                      textAlign: "center",
+                    }}
+                  >
+                    {category.toUpperCase()}
+                  </Text>
+                  <ActivityIndicator
+                    size={"large"}
+                    color={colors[category].fontColor}
+                  />
                 </View>
-                <View style={{ flexDirection: "row" }}>
-                  {imagePath[category].map((image) => (
-                    <Image source={image} style={{ width: 60, height: 60 }} />
-                  ))}
-                </View>
-              </>
-            ) : (
-              <Swiper
-                autoplay
-                showsPagination={false}
-                loop
-                autoplayTimeout={0.3}
-                onPress={goToList(category, colors[category].backColor, index)}
-                containerStyle={{
-                  width: "100%",
-
-                  margin: 60,
-                  marginLeft: "90%",
-                  marginRight: 20,
-                }}
-              >
-                {imagePath[category].map((image) => (
-                  <Image source={image} style={{ width: 60, height: 60 }} />
-                ))}
-              </Swiper>
-            )}
+              )}
+            </View>
           </View>
         </TouchableOpacity>
       </View>

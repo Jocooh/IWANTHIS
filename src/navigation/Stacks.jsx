@@ -5,12 +5,14 @@ import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
 import Header from "../components/Header";
 import Login from "../screen/Login";
-import { imagePath } from "../assets/imgPath";
+import { listImagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 
 const NativeStack = createNativeStackNavigator();
+
+const checkLog = () => {};
 
 const Stacks = () => {
   const { navigate } = useNavigation();
@@ -26,7 +28,7 @@ const Stacks = () => {
             <TouchableOpacity onPress={() => navigate("MyPage")}>
               <View style={{ marginVertical: -5 }}>
                 <Image
-                  source={imagePath["defaultimage"]}
+                  source={listImagePath["defaultimage"]}
                   style={{ height: 40, width: 40 }}
                 />
                 {/* <View style={{ height: 10 }}></View> */}
