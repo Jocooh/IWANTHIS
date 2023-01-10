@@ -27,7 +27,7 @@ export const postMy = (list) => {
   return axios.post(`${SERVER_ADDRESS}/users`, list);
 };
 
-export const changeComment = ([category, id, edit]) => {
+export const changeDetail = ([category, id, edit]) => {
   return axios.patch(`${SERVER_ADDRESS}/${category}/${id}`, edit);
 };
 

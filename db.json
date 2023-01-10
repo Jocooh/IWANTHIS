@@ -13,58 +13,23 @@
       "comments": [
         {
           "id": 1,
-          "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
+          "uid": "kVLkbnguGUM88aeQUqTbtLlpKZZ2",
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/defaultimage.png?alt=media&token=61bf18ff-c593-4aa2-9580-21e4e04e0e4d",
+          "nickName": "익명",
+          "comment": "댓글댓글"
         },
         {
           "id": 2,
           "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
-        },
-        {
-          "id": 3,
-          "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
-        },
-        {
-          "id": 4,
-          "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
-        },
-        {
-          "id": 5,
-          "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
-        },
-        {
-          "id": 6,
-          "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
-        },
-        {
-          "id": 7,
-          "uid": "",
-          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d",
-          "nickName": "쿨병말기환자",
-          "comment": "이걸사는 개호구가 있네"
+          "profileImg": "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/defaultimage.png?alt=media&token=61bf18ff-c593-4aa2-9580-21e4e04e0e4d",
+          "nickName": "익명",
+          "comment": "댓글댓글라라라라라라"
         }
       ]
     },
     {
       "id": 2,
-      "uid": "",
+      "uid": "kVLkbnguGUM88aeQUqTbtLlpKZZ2",
       "url": "",
       "title": "의자",
       "content": " 시몬스 침대 같은 이것",
@@ -116,7 +81,7 @@
     },
     {
       "id": 2,
-      "uid": "",
+      "uid": "kVLkbnguGUM88aeQUqTbtLlpKZZ2",
       "url": "",
       "title": "나이키신발",
       "content": "아킬레스건 절대 보호해",
@@ -125,12 +90,25 @@
       "like": 0,
       "price": 100000,
       "comments": []
+    },
+    {
+      "uid": "123",
+      "url": "",
+      "category": "fashion",
+      "title": "test",
+      "content": "testest",
+      "image": "",
+      "date": "2023-01-10 10:38",
+      "like": 0,
+      "price": 150000000,
+      "comments": [],
+      "id": 4
     }
   ],
   "users": [
     {
       "id": 1,
-      "uid": "123",
+      "uid": "kVLkbnguGUM88aeQUqTbtLlpKZZ2",
       "lists": [
         {
           "id": 1,
@@ -146,7 +124,7 @@
         },
         {
           "id": 2,
-          "uid": "",
+          "uid": "kVLkbnguGUM88aeQUqTbtLlpKZZ2",
           "url": "",
           "title": "나이키신발",
           "content": "아킬레스건 절대 보호해",

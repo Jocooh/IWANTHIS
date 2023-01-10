@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "@emotion/native";
 import { auth } from "../common/firebase";
 import { useMutation, useQueryClient } from "react-query";
-import { changeComment } from "../common/api";
+import { changeDetail } from "../common/api";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
@@ -14,7 +14,7 @@ const CommentForm = ({ category, listId, comments }) => {
   const defaultImage =
     "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/defaultimage.png?alt=media&token=61bf18ff-c593-4aa2-9580-21e4e04e0e4d";
 
-  const commentMutation = useMutation(changeComment, {
+  const commentMutation = useMutation(changeDetail, {
     onSuccess: () => {
       queryClient.invalidateQueries([category, listId]);
     },
@@ -22,7 +22,7 @@ const CommentForm = ({ category, listId, comments }) => {
 
   const newComment = {
     id: Number(`${lists.length !== 0 ? lists[lists.length - 1].id + 1 : 1}`),
-    uid: "",
+    uid: `${user ? user.uid : ""}`,
     profileImg: `${user ? user.photoURL : defaultImage}`,
     nickName: `${user ? user.displayName : "익명"}`,
     comment,
@@ -42,7 +42,7 @@ const CommentForm = ({ category, listId, comments }) => {
   };
 
   return (
-    <CommentInputBox style={{ display: `${!user ? "flex" : "none"}` }}>
+    <CommentInputBox style={{ display: `${user ? "flex" : "none"}` }}>
       <CommentInput
         multiline={true}
         placeholder="댓글을 입력해주세요"
