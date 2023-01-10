@@ -6,11 +6,12 @@ import {
   ActivityIndicator,
   Animated,
 } from "react-native";
-// import { auth } from "../common/firebase"; //auth 들고옴
+import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useEffect, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
 import WriteList from "./WriteList";
+import Detail from "./Detail";
 import {
   ListBackground,
   ListImage,
@@ -18,14 +19,13 @@ import {
   Loader,
   ListTitle,
 } from "../styles/styled";
-import Detail from "./Detail";
 import { useQuery } from "react-query";
 import { listImagePath } from "../assets/imgPath";
 
 const Lists = ({
   navigation: { navigate },
   route: {
-    params: { category, color, categories },
+    params: { category, color },
   },
 }) => {
   const [lists, setLists] = useState([]);
@@ -33,7 +33,6 @@ const Lists = ({
   const [order, setOrder] = useState(0);
 
   useEffect(() => {
-    // console.log("home에서 내려온 params", category);
     setLists(category);
   }, []);
 
@@ -48,16 +47,25 @@ const Lists = ({
   }
   if (isError) return console.log("에러", error);
 
+  //글쓰기버튼 터치 시 로그인- 글쓰러가기, 비로그인 - 로그인창으로가기
+  const handleAdding = async () => {
+    const isLogin = !!auth.currentUser;
+    if (!isLogin) {
+      navigate("Login");
+      return;
+    }
+    navigate("WriteList");
+  };
+
   //최신순 불러오는 함수
   const currentList = () => {
     const desc = data.sort(function (a, b) {
-      return b.date - a.date;
+      return b.id - a.id;
     });
     setLists(desc);
   };
 
   //좋아용 불러오는 함수
-
   const likeList = () => {
     const iLike = data.sort(function (a, b) {
       return b.like - a.like;
@@ -74,9 +82,7 @@ const Lists = ({
           flexDirection: "row-reverse",
           paddingHorizontal: 15,
         }}
-        onPress={() => {
-          navigate("WriteList", { name: WriteList });
-        }}
+        onPress={handleAdding}
       >
         <Feather
           name="pen-tool"
