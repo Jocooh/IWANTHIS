@@ -5,6 +5,7 @@ import { auth } from "../common/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth/react-native";
 import { emailRegex, pwRegex, width } from "../common/util";
 
@@ -87,6 +88,12 @@ export default function Login({ navigation: { goBack, setOptions } }) {
       });
   };
 
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      goBack();
+    });
+  };
+
   useEffect(() => {
     setOptions({ headerRight: () => null });
   }, []);
@@ -122,6 +129,10 @@ export default function Login({ navigation: { goBack, setOptions } }) {
       <JoinButton onPress={handleRegister}>
         <JoinButtonText>Join</JoinButtonText>
       </JoinButton>
+
+      <LoginButton onPress={handleLogout}>
+        <LoginButtonText>Logout</LoginButtonText>
+      </LoginButton>
     </Around>
   );
 }

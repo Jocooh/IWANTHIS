@@ -1,22 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  comments: [],
+  id: 0,
+  isEdit: false,
 };
 
-const example = createSlice({
+const comment = createSlice({
   name: "comment",
   initialState,
   reducers: {
-    getComments: (state, action) => {
-      state.comments = action.payload;
+    onEdit: (state, action) => {
+      state.id = action.payload;
+      state.isEdit = true;
     },
-    addComments: (state, action) => {
-      console.log(action.payload);
-      state.comments.push(action.payload);
+    offEdit: (state) => {
+      state.id = 0;
+      state.isEdit = false;
     },
   },
 });
 
-export const { getComments, addComments } = example.actions;
-export default example.reducer;
+export const { onEdit, offEdit } = comment.actions;
+export default comment.reducer;

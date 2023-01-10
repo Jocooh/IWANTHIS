@@ -1,38 +1,35 @@
-import { ActivityIndicator, Alert, Linking, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import styled from "@emotion/native";
 import { height, width } from "../common/util";
 import { useRoute } from "@react-navigation/native";
-import { getDetailList } from "../common/api";
-import { useQuery } from "react-query";
+import { changeDetail, getDetailList } from "../common/api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { DetailText, Loader } from "../styles/styled";
 import Comments from "../components/Comments";
-import { useEffect, useState } from 'react';
 import { AntDesign } from "@expo/vector-icons";
-import CommentForm from '../components/CommentForm';
+import CommentForm from "../components/CommentForm";
+import { auth } from "../common/firebase";
 
 const Detail = () => {
   const { params } = useRoute();
+  const queryClient = useQueryClient();
+  const user = auth.currentUser;
+  const uid = user ? user.uid : "";
   const category = params.category;
   const listId = params.id;
-  const [url, setUrl] = useState("");
 
-  // Linking
-  const openLink = (url) => {
-    Alert.alert("이동", `${url}\n이 링크로 이동하시겠습니까?`, [
-      {
-        text: "취소",
-      },
-      {
-        text: "이동하기",
-        onPress: async () => {
-          await Linking.openURL(url);
-        },
-      },
-    ]);
-  };
-  useEffect(() => {
-    setUrl("https://velog.io/@hss3522");
-  }, []);
+  const likeMutation = useMutation(changeDetail, {
+    onSuccess: async () => {
+      queryClient.invalidateQueries([category, listId]);
+    },
+  });
 
   const { isLoading, isError, data, error } = useQuery(
     [category, listId],
@@ -48,6 +45,14 @@ const Detail = () => {
   }
   if (isError) return <Text>에러: {error}</Text>;
 
+  const likeHandler = () => {
+    let newLike = data.like;
+    newLike.push(uid);
+    likeMutation.mutate([category, listId, { like: newLike }]);
+  };
+
+  const checkLike = user ? data.like.includes(uid) : false;
+
   // 가격계산 코드 맨앞이 0일때 제거해야함 귀찮아서 나중에
   let price = data.price.toString();
   if (price >= 100000000) {
@@ -55,6 +60,22 @@ const Detail = () => {
   } else if (price >= 10000) {
     price = `${price.slice(0, -4)}만${price.slice(-4)}`;
   }
+
+  // Linking
+  const url = data.url;
+  const openLink = (url) => {
+    Alert.alert("이동", `${url}\n이 링크로 이동하시겠습니까?`, [
+      {
+        text: "취소",
+      },
+      {
+        text: "이동하기",
+        onPress: async () => {
+          await Linking.openURL(url);
+        },
+      },
+    ]);
+  };
 
   return (
     <DetailFlat
@@ -65,7 +86,9 @@ const Detail = () => {
               {data.title}
             </Text>
           </DetailTitle>
-          <DetailBtnBox>
+          <DetailBtnBox
+            style={{ display: uid === data.uid ? "flex" : "none" }}
+          >
             <TouchableOpacity style={{ marginRight: 10 }}>
               <AntDesign name="edit" size={30} color="black" />
             </TouchableOpacity>
@@ -94,15 +117,38 @@ const Detail = () => {
           <ProductInfoBox>
             <DetailText>{data.content}</DetailText>
           </ProductInfoBox>
-          <LikeBtn>
+          <LikeBtn
+            onPress={() => likeHandler()}
+            style={{ display: user && !checkLike ? "flex" : "none" }}
+          >
             <AntDesign name="hearto" size={24} color="red" />
-            <Text>{data.like}</Text>
+            <Text>{data.like.length}</Text>
           </LikeBtn>
-          <CommentForm category={category} listId={listId} comments={data.comments} />
+          <LikeSee style={{ display: !user || checkLike ? "flex" : "none" }}>
+            <AntDesign
+              style={{ marginRight: 5 }}
+              name="hearto"
+              size={24}
+              color="red"
+            />
+            <Text>{data.like.length}</Text>
+          </LikeSee>
+          <CommentForm
+            category={category}
+            listId={listId}
+            comments={data.comments}
+          />
         </>
       }
       data={data.comments}
-      renderItem={({ item }) => <Comments category={category} comment={item} />}
+      renderItem={({ item }) => (
+        <Comments
+          category={category}
+          listId={listId}
+          comments={data.comments}
+          comment={item}
+        />
+      )}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={<View style={{ height: 10 }} />}
     />
@@ -167,4 +213,11 @@ const LikeBtn = styled.TouchableOpacity`
   margin: 20px auto;
   border-radius: 50px;
   border: 1px solid black;
+`;
+
+const LikeSee = styled.View`
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 95%;
+  margin: 20px auto;
 `;
