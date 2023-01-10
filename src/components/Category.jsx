@@ -111,7 +111,7 @@ const Category = ({ navigation }) => {
         >
           <View
             style={{
-              height: 400,
+              height: 350,
               backgroundColor: colors[category].backColor,
               flexDirection: "column",
 
@@ -141,11 +141,7 @@ const Category = ({ navigation }) => {
                   <Image
                     key={index}
                     source={listImagePath[category]}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      resizeMode: "cover",
-                    }}
+                    style={[styles.bg(), { width: "100%", height: "119%" }]}
                   />
                 </>
               ) : (
@@ -175,5 +171,18 @@ const Category = ({ navigation }) => {
       </View>
     ));
   }
+};
+
+const styles = {
+  bg: () => ({
+    width: "90%",
+    height: "100%",
+    resizeMode: "contain",
+    // transform: [
+    //   {
+    //     translateY: scrollA,
+    //   },
+    // ],
+  }),
 };
 export default Category;
