@@ -104,12 +104,10 @@ const Lists = ({
         </ListTitle>
 
         <View style={{ paddingHorizontal: "10%" }}>
-          {/* //{listImagePath[category].map((image) => ( */}
           <Animated.Image
             style={styles.bg(scrollA)}
             source={listImagePath[category]}
           />
-          {/* //))} */}
         </View>
         {/* 흰색 배경 */}
         <ListBackground>
