@@ -24,6 +24,8 @@ const Detail = () => {
   const uid = user ? user.uid : "";
   const category = params.category;
   const listId = params.id;
+  const defaultImage =
+    "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d";
 
   const likeMutation = useMutation(changeDetail, {
     onSuccess: async () => {
@@ -86,9 +88,7 @@ const Detail = () => {
               {data.title}
             </Text>
           </DetailTitle>
-          <DetailBtnBox
-            style={{ display: uid === data.uid ? "flex" : "none" }}
-          >
+          <DetailBtnBox style={{ display: uid === data.uid ? "flex" : "none" }}>
             <TouchableOpacity style={{ marginRight: 10 }}>
               <AntDesign name="edit" size={30} color="black" />
             </TouchableOpacity>
@@ -106,7 +106,7 @@ const Detail = () => {
             disabled={url === "" ? true : false}
           >
             <ProductImage
-              source={require("../assets/다운로드2.png")}
+              source={{ uri: data.image !== "" ? data.image : defaultImage }}
               resizeMode="contain"
             />
           </TouchableOpacity>

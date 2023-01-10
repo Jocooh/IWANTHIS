@@ -3,7 +3,6 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  TextInput,
   Alert,
 } from "react-native";
 import { DetailText } from "../styles/styled";
