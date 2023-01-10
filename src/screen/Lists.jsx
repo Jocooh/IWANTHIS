@@ -11,6 +11,8 @@ import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
+import WriteList from "./WriteList";
+import Detail from "./Detail";
 import {
   ListBackground,
   ListImage,
@@ -41,6 +43,16 @@ const Lists = ({
     );
   }
   if (isError) return alert("잠시 후 다시 실행해주세요", error);
+
+  //글쓰기버튼 터치 시 로그인- 글쓰러가기, 비로그인 - 로그인창으로가기
+  const handleAdding = async () => {
+    const isLogin = !!auth.currentUser;
+    if (!isLogin) {
+      navigate("Login");
+      return;
+    }
+    navigate("WriteList");
+  };
 
   //최신순 불러오는 함수
   const currentList = () => {
