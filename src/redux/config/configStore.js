@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import example from "../modules/exampleSlice";
+import comment from "../modules/commentSlice";
 
 const rootReducer = combineReducers({
-  example,
+  comment,
 });
 
 const store = configureStore({ reducer: rootReducer });
