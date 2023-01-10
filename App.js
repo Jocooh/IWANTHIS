@@ -12,6 +12,8 @@ import Stacks from "./src/navigation/Stacks";
 import store from "./src/redux/config/configStore";
 import { darkTheme, lightTheme } from "./src/styles/theme";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import "react-native-get-random-values";
+
 const queryClient = new QueryClient();
 
 const App = () => {
