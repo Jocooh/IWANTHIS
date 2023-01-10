@@ -25,9 +25,3 @@ export const imagePath = {
   defaultimage: require("./defaultimage.png"),
   main: require("./main3.png"),
 };
-
-export const listImagePath = {
-  furniture: [require("./listImage/sofa.png")],
-  electric: [require("./listImage/monitor.png")],
-  fashion: [require("./listImage/nike.png")],
-};

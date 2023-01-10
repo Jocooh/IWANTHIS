@@ -5,7 +5,7 @@ import { imagePath } from "../assets/imgPath";
 import { ListStyle } from "../styles/styled";
 import Swiper from "react-native-swiper";
 import { useFocusEffect } from "@react-navigation/native";
-import { height } from "../common/util";
+import { height } from "../common/utils";
 
 const Category = ({ navigation }) => {
   const [press, setPress] = useState([false, false, false]);
