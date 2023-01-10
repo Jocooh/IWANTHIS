@@ -8,8 +8,6 @@ import {
 } from "firebase/auth/react-native";
 import { emailRegex, pwRegex, width } from "../common/util";
 
-console.log(auth);
-
 export default function Login({ navigation: { goBack, setOptions } }) {
   const emailRef = useRef(null);
   const pwRef = useRef(null);
