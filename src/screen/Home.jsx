@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { ScrollView } from "react-native";
+import React from "react";
+import Category from "../components/Category";
 
-const Home = () => {
+const Home = ({ navigation: { navigate } }) => {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  )
-}
+    <ScrollView>
+      <Category navigation={navigate} />
+    </ScrollView>
+  );
+};
 
-export default Home
+export default Home;
