@@ -1,13 +1,13 @@
-import { imagePath } from "../assets/imgPath";
+import { listImagePath } from "../assets/imgPath";
 import { Text, Image } from "react-native";
 
-const Header = () => {
+const Header = (props) => {
   return (
     <>
       <Text>IWANTHIS</Text>
       <Image
         style={{ width: 40, height: 40 }}
-        source={imagePath["main"]}
+        source={listImagePath["main"]}
         resizeMode="contain"
       />
     </>

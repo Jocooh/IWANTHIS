@@ -67,7 +67,7 @@ const Lists = ({
 
   // 전체 리스트
   return (
-    <View style={{ backgroundColor: color }} scrollA={scrollA}>
+    <View style={{ backgroundColor: color["backColor"] }} scrollA={scrollA}>
       {/* 글쓰기 버튼 */}
       <TouchableOpacity
         style={{
@@ -75,7 +75,10 @@ const Lists = ({
           paddingHorizontal: 15,
         }}
         onPress={() => {
-          navigate("WriteList", { category: category, id: data[data.length-1].id + 1 });
+          navigate("WriteList", {
+            category: category,
+            id: data[data.length - 1].id + 1,
+          });
         }}
       >
         <Feather
@@ -96,12 +99,15 @@ const Lists = ({
         )}
         scrollEventThrottle={16}
       >
-        <ListTitle>{category}</ListTitle>
+        <ListTitle style={{ color: color["fontColor"] }}>
+          {category.toUpperCase()}
+        </ListTitle>
 
         <View style={{ paddingHorizontal: "10%" }}>
-          {listImagePath[category].map((image) => (
-            <Animated.Image style={styles.bg(scrollA)} source={image} />
-          ))}
+          <Animated.Image
+            style={styles.bg(scrollA)}
+            source={listImagePath[category]}
+          />
         </View>
         {/* 흰색 배경 */}
         <ListBackground>
@@ -129,7 +135,7 @@ const Lists = ({
             {data.map((list) => (
               <TouchableOpacity
                 onPress={() => {
-                  navigate("Detail", { category:category, id: list.id });
+                  navigate("Detail", { category: category, id: list.id });
                 }}
                 key={list.id}
               >
