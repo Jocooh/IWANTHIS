@@ -4,6 +4,7 @@ import Lists from "../screen/Lists";
 import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
 import Header from "../components/Header";
+import Login from "../screen/Login";
 import { imagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 import MyPage from "../screen/MyPage";
@@ -40,8 +41,7 @@ const Stacks = () => {
       <NativeStack.Screen name="Detail" component={Detail} />
       <NativeStack.Screen name="WriteList" component={WriteList} />
       <NativeStack.Screen name="MyPage" component={MyPage} />
-      <NativeStack.Screen name="Login" component={WriteList} />
-      {/* <NativeStack.Screen name="Register" /> */}
+      <NativeStack.Screen name="Login" component={Login} />
     </NativeStack.Navigator>
   );
 };

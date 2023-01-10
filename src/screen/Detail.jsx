@@ -56,7 +56,6 @@ const Detail = () => {
     price = `${price.slice(0, -4)}만${price.slice(-4)}`;
   }
 
-
   return (
     <DetailFlat
       ListHeaderComponent={
