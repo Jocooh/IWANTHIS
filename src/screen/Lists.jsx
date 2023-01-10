@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Animated,
+  useColorScheme,
 } from "react-native";
 // import { auth } from "../common/firebase"; //auth 들고옴
 import { getLists } from "../common/api";
@@ -77,6 +78,9 @@ const Lists = ({
         onPress={() => {
           navigate("WriteList", {
             category: category,
+            color: color,
+            img: listImagePath[category],
+
             id: data[data.length - 1].id + 1,
           });
         }}
