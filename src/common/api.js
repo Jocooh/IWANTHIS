@@ -37,7 +37,6 @@ export const deleteDetail = ([category, id]) => {
 };
 
 export const changeDetail = ([category, id, edit]) => {
-  console.log(category, id, edit);
   return axios.patch(`${SERVER_ADDRESS}/${category}/${id}`, edit);
 };
 
