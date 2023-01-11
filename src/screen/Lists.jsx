@@ -67,7 +67,7 @@ const Lists = ({
       category: category,
       color: color,
       img: listImagePath[category],
-      id: data[data.length - 1].id + 1,
+      id: data.length > 0 ? data[data.length - 1].id + 1 : 1,
     });
   };
 
@@ -143,6 +143,7 @@ const Lists = ({
                   id={list.id}
                   color={color}
                   navigation={navigate}
+                  key={list.id}
                 ></CpList>
               ))}
             </ScrollView>
