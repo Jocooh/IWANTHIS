@@ -7,7 +7,7 @@ const Header = (props) => {
       <Text>IWANTHIS</Text>
       <Image
         style={{ width: 40, height: 40 }}
-        source={listImagePath["main"]}
+        source={listImagePath["cart"]}
         resizeMode="contain"
       />
     </>

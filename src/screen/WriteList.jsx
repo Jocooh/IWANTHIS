@@ -9,7 +9,8 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient, useQuery } from "react-query";
 import { changeMyPost, getUsers, postList, postMy } from "../common/api";
 import { width } from "../common/util";
-import { Feather, AntDesign } from "@expo/vector-icons";
+import { Feather, AntDesign, Entypo } from "@expo/vector-icons";
+import { ImageView } from "../components/ImageView";
 import * as ImagePicker from "expo-image-picker";
 import styled from "@emotion/native";
 import { auth, storage } from "../common/firebase";
@@ -174,118 +175,65 @@ const WriteList = () => {
           width: width,
         }}
       >
+        <ImageView
+          color={color}
+          img={img}
+          from={"writeList"}
+          handler={pickImage}
+        />
+      </View>
+      <InfoView>
+        <InputZone placeholder="상품명" style={{ marginTop: "2%" }}></InputZone>
+        <InputZone placeholder="가격" style={{ fontSize: 17 }}></InputZone>
+        <InputZone placeholder="판매링크" style={{ fontSize: 17 }}></InputZone>
+
+        <InputZone
+          placeholder="설명"
+          style={{
+            height: 300,
+            fontSize: 17,
+            marginBottom: 10,
+          }}
+        ></InputZone>
         <View
           style={{
-            backgroundColor: color["backColor"],
-            height: 350,
             flexDirection: "row",
-            position: "relative",
-            borderBottomLeftRadius: 40,
-            borderBottomRightRadius: 50,
+            height: 50,
+            width: "100%",
           }}
         >
-          <View
+          <TouchableOpacity
+            onPress={addList}
             style={{
-              alignContent: "center",
-              height: "95%",
-              width: "100%",
+              backgroundColor: color["backColor"],
+              width: "50%",
+              borderRadius: "40%",
+              // margin: 10,
             }}
           >
-            <Animated.Image
-              style={[styles.bg(), { marginLeft: "5%" }]}
-              source={pickedImg ? { uri: pickedImg } : img}
+            <Feather
+              name="check"
+              size={24}
+              color={color["fontColor"]}
+              style={{ paddingTop: "7%", paddingLeft: "43%" }}
             />
-          </View>
-          <View
+          </TouchableOpacity>
+          <TouchableOpacity
             style={{
-              position: "absolute",
-              zIndex: 1,
-              top: "93%",
-              right: "45%",
-              height: 50,
-              width: 50,
-              borderRadius: 100,
-              backgroundColor: color["fontColor"],
+              backgroundColor: color["backColor"],
+              width: "50%",
+              borderRadius: "40%",
             }}
           >
-            <TouchableOpacity
-              onPress={() => pickImage()}
-              style={{
-                height: 40,
-                width: 40,
-                marginTop: "23%",
-                marginLeft: "26%",
-              }}
-            >
-              <Feather name="camera" size={24} color={color["backColor"]} />
-            </TouchableOpacity>
-          </View>
+            <AntDesign
+              name="close"
+              size={24}
+              color={color["fontColor"]}
+              style={{ paddingTop: "7%", paddingLeft: "43%" }}
+            />
+          </TouchableOpacity>
         </View>
-        <InfoView>
-          <InputZone
-            placeholder="상품명"
-            style={{ marginTop: "2%" }}
-            onChangeText={setTitle}
-            value={title}
-          />
-          <InputZone
-            placeholder="가격"
-            style={{ fontSize: 17 }}
-            onChangeText={setPrice}
-            value={price}
-          />
-          <InputZone
-            placeholder="판매링크"
-            style={{ fontSize: 17 }}
-            onChangeText={setUrl}
-            value={url}
-          />
-          <InputContent
-            multiline={true}
-            style={{ textAlignVertical: "top" }}
-            placeholder="설명"
-            onChangeText={setContent}
-            value={content}
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              height: 50,
-              width: "100%",
-            }}
-          >
-            <TouchableOpacity
-              onPress={addList}
-              style={{
-                backgroundColor: color["backColor"],
-                width: "50%",
-                borderRadius: 40,
-              }}
-            >
-              <Feather
-                name="check"
-                size={24}
-                color={color["fontColor"]}
-                style={{ paddingTop: "7%", paddingLeft: "43%" }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: color["backColor"],
-                width: "50%",
-                borderRadius: 40,
-              }}
-            >
-              <AntDesign
-                name="close"
-                size={24}
-                color={color["fontColor"]}
-                style={{ paddingTop: "7%", paddingLeft: "43%" }}
-              />
-            </TouchableOpacity>
-          </View>
-        </InfoView>
-      </View>
+      </InfoView>
     </ScrollView>
   );
 };

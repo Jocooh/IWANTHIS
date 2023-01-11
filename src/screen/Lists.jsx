@@ -11,7 +11,16 @@ import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import { ListBackground, Loader, ListTitle } from "../styles/styled";
+
+import WriteList from "./WriteList";
+import Detail from "./Detail";
+import {
+  ListBackground,
+  ListImage,
+  ListStyle,
+  Loader,
+  ListTitle,
+} from "../styles/styled";
 import { useQuery } from "react-query";
 import { listImagePath } from "../assets/imgPath";
 import styled from "@emotion/native";

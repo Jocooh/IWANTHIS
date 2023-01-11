@@ -40,7 +40,9 @@ export const ListImage = styled.Image`
 `;
 
 export const DetailText = styled.Text`
-  font-size: 16px;
+  /* margin-top: 5%;
+  margin-bottom: 5%; */
+  font-size: 20px;
 `;
 
 export const Loader = styled.View`

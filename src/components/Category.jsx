@@ -18,7 +18,7 @@ export const colors = {
     fontColor: "#fa5a5a",
   },
   interior: {
-    fontColor: "#e5e513",
+    fontColor: "#08f26e",
     backColor: "#2B3467",
   },
   books: {
@@ -48,7 +48,7 @@ export const colors = {
     fontColor: "#FFD56F",
   },
   foods: {
-    backColor: "#FF7B54",
+    backColor: "#800000",
     fontColor: "#ffca99",
   },
 };
@@ -59,6 +59,11 @@ const Category = ({ navigation }) => {
   const [press, setPress] = useState(
     Array.from({ length: categories.length }, () => false)
   );
+
+  const [blocking, setBlocking] = useState(
+    Array.from({ length: categories.length }, () => false)
+  );
+
   const [effect, setEffect] = useState(
     Array.from({ length: categories.length }, () => 1.0)
   );
@@ -66,6 +71,7 @@ const Category = ({ navigation }) => {
   const swap = (index) => {
     const pArr = [...press];
     const oArr = [...effect];
+    const bArr = [...blocking];
     // 합치기
     const swapArr = pArr.reduce((newArray, bool, idx) => {
       if (idx === index) {
@@ -75,6 +81,16 @@ const Category = ({ navigation }) => {
       }
       return newArray;
     }, []);
+
+    const blockArr = bArr.reduce((newArray, bool, idx) => {
+      if (idx === index) {
+        newArray.push(!bool);
+      } else {
+        newArray.push(bool);
+      }
+      return newArray;
+    }, []);
+
     const effectArr = oArr.reduce((newArray, value, idx) => {
       if (idx !== index) {
         newArray.push(0.5);
@@ -85,6 +101,8 @@ const Category = ({ navigation }) => {
     }, []);
 
     setEffect(effectArr);
+    setBlocking(blockArr);
+
     setPress(swapArr);
   };
 
@@ -93,6 +111,7 @@ const Category = ({ navigation }) => {
       navigation("Lists", { category: name, color: color });
       setTimeout(() => {
         setPress(Array.from({ length: categories.length }, () => false));
+        setBlocking(Array.from({ length: categories.length }, () => false));
         setEffect(Array.from({ length: categories.length }, () => 1.0));
       }, 500);
     }, 2000);
@@ -106,6 +125,8 @@ const Category = ({ navigation }) => {
     return categories.map((category, index) => (
       <View key={index}>
         <TouchableOpacity
+          disabled={blocking[index]}
+          activeOpacity={true}
           onPress={() => swap(index)}
           style={{ opacity: effect[index] }}
         >
@@ -141,7 +162,7 @@ const Category = ({ navigation }) => {
                   <Image
                     key={index}
                     source={listImagePath[category]}
-                    style={[styles.bg(), { width: "100%", height: "119%" }]}
+                    style={styles.bg()}
                   />
                 </>
               ) : (
@@ -175,8 +196,8 @@ const Category = ({ navigation }) => {
 
 const styles = {
   bg: () => ({
-    width: "90%",
-    height: "100%",
+    width: "100%",
+    height: "110%",
     resizeMode: "contain",
     // transform: [
     //   {
