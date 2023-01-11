@@ -175,7 +175,12 @@ const WriteList = () => {
           width: width,
         }}
       >
-        <ImageView color={color} img={img} from={"writeList"} />
+        <ImageView
+          color={color}
+          img={img}
+          from={"writeList"}
+          handler={pickImage}
+        />
       </View>
       <InfoView>
         <InputZone placeholder="상품명" style={{ marginTop: "2%" }}></InputZone>
