@@ -1,34 +1,32 @@
-import { Text, View, ScrollView, Animated } from "react-native";
+import { View, ScrollView, Animated } from "react-native";
 import { useState } from "react";
 import styled from "@emotion/native";
 import * as ImagePicker from "expo-image-picker";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { useMutation, useQueryClient, useQuery } from "react-query";
-import { auth, storage } from "../common/firebase";
+import { useMutation, useQueryClient } from "react-query";
+import { storage } from "../common/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { changeMyPost, getUsers, postList, postMy } from "../common/api";
+import { changeDetail, changeMyPost } from "../common/api";
 import { v4 as uuidv4 } from "uuid";
 import { width } from "../common/util";
 import { ImageBox, ImageBtnBox, ImageView, styles } from "../styles/styled";
 
-const WriteList = () => {
+const EditList = () => {
   const queryClient = useQueryClient();
-  const uid = auth.currentUser ? auth.currentUser.uid : "";
 
   // 네비게이션
   const { goBack } = useNavigation();
   const { params } = useRoute();
-  const category = params.category;
-  const id = params.id;
-  const color = params.color;
-  const img = params.img;
+  const { list, color, img, myId, myPost } = params;
+  const category = list.category;
+  const id = list.id;
 
   // input
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [price, setPrice] = useState("");
-  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState(list.title);
+  const [content, setContent] = useState(list.content);
+  const [price, setPrice] = useState(list.price.toString());
+  const [url, setUrl] = useState(list.url);
 
   const reset = () => {
     setTitle("");
@@ -39,7 +37,7 @@ const WriteList = () => {
   };
 
   // 이미지 선택 & 미리보기
-  const [pickedImg, setPickedImg] = useState("");
+  const [pickedImg, setPickedImg] = useState(list.image);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const pickImage = async () => {
@@ -59,66 +57,17 @@ const WriteList = () => {
     setPickedImg(uri);
   };
 
-  // 카테고리 게시판 포스트
-  const postMutation = useMutation(postList, {
+  // 카테고리 게시판 수정
+  const editMutation = useMutation(changeDetail, {
     onSuccess: async () => {
-      queryClient.invalidateQueries(category);
+      queryClient.invalidateQueries([category, id]);
       reset();
       goBack();
     },
   });
 
-  // 마이페이지 게시판 업로드 (처음으로 글 쓸때)
-  const myPostMutation = useMutation(postMy);
-
-  // 마이페이지 게시판 업로드 (두번째 이상)
+  // 마이페이지 게시판 수정
   const changeMyPostMutation = useMutation(changeMyPost);
-
-  // GET 내가 쓴 글
-  const { isLoading, isError, data, error } = useQuery("users", getUsers);
-  if (isLoading) return <Text>로딩중...</Text>;
-  if (isError) return <Text>error: {error}</Text>;
-
-  // /users 깊은 복사를 위한 것들
-  const my = data.filter((x) => x.uid === uid);
-  const myId = my.map((x) => x.id)[0];
-  const myLists = my.map((x) => x.lists).flat();
-  const listId = myLists.length + 1;
-  const checkFirstPost = myLists.length > 0;
-
-  // 게시글 업로드 할때 쓸 것들
-  const now = new Date();
-  const year = now.getFullYear();
-  let month = now.getMonth() + 1;
-  if (month < 10) month = "0" + month;
-  let day = now.getDate();
-  if (day < 10) day = "0" + day;
-  let hour = now.getHours();
-  if (hour < 10) hour = "0" + hour;
-  let minute = now.getMinutes();
-  if (minute < 10) minute = "0" + minute;
-  let date = `${year}-${month}-${day} ${hour}:${minute}`;
-
-  const list = {
-    uid,
-    url,
-    category,
-    title,
-    content,
-    date,
-    like: [],
-    price: Number(price),
-    comments: [],
-  };
-
-  const myList = {
-    id: listId,
-    category,
-    categoryId: id,
-    title,
-    content,
-    price: Number(price),
-  };
 
   //이미지 파이어베이스 스토리지 업로드
   const uploadImage = async () => {
@@ -137,8 +86,23 @@ const WriteList = () => {
     }
   };
 
-  const addList = async (event) => {
-    event.preventDefault();
+  const editList = () => {
+    const newMyPost = myPost.map((x) => {
+      if (x.category === category && x.categoryId === id) {
+        return { ...x, title, content, price: Number(price) };
+      } else {
+        return { ...x };
+      }
+    });
+    changeMyPostMutation.mutate([myId, newMyPost]);
+    editMutation.mutate([
+      category,
+      id,
+      { ...list, title, content, url, price: Number(price) },
+    ]);
+  };
+
+  const editHandler = () => {
     if (title.trim() === "") {
       alert("상품명을 입력해주세요");
       return;
@@ -159,22 +123,24 @@ const WriteList = () => {
       alert("가격을 제대로 입력해주세요.\n가격은 0으로 시작할수 없어요");
       return;
     }
-    uploadImage()
-      .then((image) => {
-        if (!checkFirstPost) {
-          const lists = [{ ...myList, image, }];
-          myPostMutation.mutate({ uid, lists });
-        } else {
-          changeMyPostMutation.mutate([
-            myId,
-            { lists: [...myLists, { ...myList, image, }] },
-          ]);
-        }
-        postMutation.mutate([category, { ...list, image, }]);
-      })
-      .catch((error) => {
-        alert(error.message);
+    if (pickedImg !== list.image) {
+      uploadImage().then((image) => {
+        const newMyPost = myPost.map((x) => {
+          if (x.category === category && x.categoryId === id) {
+            return { ...x, title, content, price: Number(price), image };
+          } else {
+            return { ...x };
+          }
+        });
+        changeMyPostMutation.mutate([myId, newMyPost]);
+        editMutation.mutate([
+          category,
+          id,
+          { ...list, title, content, url, price: Number(price), image },
+        ]);
       });
+    }
+    editList();
   };
 
   return (
@@ -184,7 +150,7 @@ const WriteList = () => {
           <ImageView>
             <Animated.Image
               style={[styles.bg(), { marginLeft: "5%" }]}
-              source={pickedImg ? { uri: pickedImg } : img}
+              source={!!pickedImg ? { uri: pickedImg } : img}
             />
           </ImageView>
           <ImageBtnBox style={{ backgroundColor: color["fontColor"] }}>
@@ -221,7 +187,7 @@ const WriteList = () => {
           />
           <WriteBtnBox>
             <PostBtn
-              onPress={addList}
+              onPress={() => editHandler()}
               style={{ backgroundColor: color["backColor"] }}
             >
               <Feather name="check" size={24} color={color["fontColor"]} />
@@ -275,4 +241,4 @@ const PostBtn = styled.TouchableOpacity`
   border-radius: 40px;
 `;
 
-export default WriteList;
+export default EditList;

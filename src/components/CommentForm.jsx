@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styled from "@emotion/native";
-import { auth } from "../common/firebase";
-import { useMutation, useQueryClient } from "react-query";
-import { changeDetail } from "../common/api";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { useMutation, useQueryClient } from "react-query";
+import { auth } from "../common/firebase";
+import { changeDetail } from "../common/api";
 
 const CommentForm = ({ category, listId, comments }) => {
   const [comment, setComment] = useState("");
@@ -23,8 +23,8 @@ const CommentForm = ({ category, listId, comments }) => {
   const newComment = {
     id: Number(`${lists.length !== 0 ? lists[lists.length - 1].id + 1 : 1}`),
     uid: `${user ? user.uid : ""}`,
-    profileImg: `${user ? user.photoURL : defaultImage}`,
-    nickName: `${user ? user.displayName : "익명"}`,
+    profileImg: `${user.photoURL && user ? user.photoURL : defaultImage}`,
+    nickName: `${user.displayName && user ? user.displayName : "익명"}`,
     comment,
   };
 

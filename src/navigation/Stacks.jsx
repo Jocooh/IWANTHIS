@@ -10,6 +10,8 @@ import { Text, Image, TouchableOpacity, View } from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../common/firebase";
+import EditList from '../screen/EditList';
+
 const NativeStack = createNativeStackNavigator();
 
 const Stacks = () => {
@@ -44,8 +46,9 @@ const Stacks = () => {
     >
       <NativeStack.Screen name="Home" component={Home} />
       <NativeStack.Screen name="Lists" component={Lists} />
-      <NativeStack.Screen name="Detail" component={Detail} />
       <NativeStack.Screen name="WriteList" component={WriteList} />
+      <NativeStack.Screen name="Detail" component={Detail} />
+      <NativeStack.Screen name="EditList" component={EditList} />
       <NativeStack.Screen name="MyPage" component={MyPage} />
       <NativeStack.Screen name="Login" component={Login} />
     </NativeStack.Navigator>

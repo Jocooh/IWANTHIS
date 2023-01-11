@@ -14,6 +14,11 @@ export const getDetailList = async ({ queryKey }) => {
   return data;
 };
 
+export const getMyPost = async ({ queryKey }) => {
+  const { data } = await axios.get(`${SERVER_ADDRESS}/users${queryKey}`);
+  return data;
+};
+
 export const getUsers = async () => {
   const { data } = await axios.get(`${SERVER_ADDRESS}/users`);
   return data;
@@ -27,7 +32,12 @@ export const postMy = (list) => {
   return axios.post(`${SERVER_ADDRESS}/users`, list);
 };
 
+export const deleteDetail = ([category, id]) => {
+  return axios.delete(`${SERVER_ADDRESS}/${category}/${id}`);
+};
+
 export const changeDetail = ([category, id, edit]) => {
+  console.log(category, id, edit);
   return axios.patch(`${SERVER_ADDRESS}/${category}/${id}`, edit);
 };
 

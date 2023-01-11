@@ -1,16 +1,18 @@
 import { View, Text, TouchableHighlight } from "react-native";
 import { ListImage, ListStyle } from "../styles/styled";
+import { colors } from './Category';
 
 //navigate물어보자.
 
-const CpList = ({ list, category, navigation, color, id }) => {
+const CpList = ({ list, category, navigation, color, id, img }) => {
   return (
     <TouchableHighlight
       onPress={() => {
         navigation("Detail", {
-          color: color["fontColor"],
+          color: color,
           category: list.category,
-          id: id,
+          listId: id,
+          img: img
         });
       }}
     >
