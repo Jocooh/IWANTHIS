@@ -15,7 +15,10 @@ export const ListBackground = styled.View`
   margin: 10px;
   flex: 1;
   background-color: white;
-  border-radius: 60px 5px;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.7);
 `;
 
@@ -33,6 +36,7 @@ export const ListStyle = styled.View`
 export const ListImage = styled.Image`
   width: 70px;
   height: 70px;
+  border-radius: 50%;
 `;
 
 export const DetailText = styled.Text`

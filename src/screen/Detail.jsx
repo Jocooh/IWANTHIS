@@ -17,7 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import CommentForm from "../components/CommentForm";
 import { auth } from "../common/firebase";
 
-const Detail = () => {
+const Detail = ({ category2, id }) => {
   const { params } = useRoute();
   const queryClient = useQueryClient();
   const user = auth.currentUser;
