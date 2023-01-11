@@ -3,7 +3,7 @@ import Home from "../screen/Home";
 import Lists from "../screen/Lists";
 import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
-import Login from '../screen/Login';
+import Login from "../screen/Login";
 import Header from "../components/Header";
 import { listImagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
@@ -25,7 +25,7 @@ const Stacks = () => {
         headerLeft: () => <Text></Text>, // 물어보깅
         headerRight: () => {
           return (
-            <TouchableOpacity onPress={() => navigate("Login")}>
+            <TouchableOpacity onPress={() => navigate("MyPage")}>
               <View style={{ marginVertical: -5 }}>
                 <Image
                   source={listImagePath["defaultimage"]}
