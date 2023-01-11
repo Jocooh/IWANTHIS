@@ -95,12 +95,13 @@ export const listImagePath = {
   //electric: require("./monitor.png"),
   //fashion: require("./fashion.png"),
   accessory: require("./listImage/accessory.png"),
-  foods: require("./listImage/foods.png"),
+  foods: require("./listImage/Subject8.png"),
   necessity: require("./listImage/necessity.png"),
-  interior: require("./listImage/interior.png"),
+  interior: require("./listImage/Subject9.png"),
   beauty: require("./listImage/beauty.png"),
   books: require("./listImage/books.png"),
   defaultimage: require("./defaultimage.png"),
+  cart: require("./cart.png"),
   //loading: [require("./loading1.png"), require("./loading1.png")],
 };
 export const no = {

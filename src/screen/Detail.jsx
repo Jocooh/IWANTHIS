@@ -13,25 +13,34 @@ import { changeDetail, getDetailList } from "../common/api";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { DetailText, Loader } from "../styles/styled";
 import Comments from "../components/Comments";
-import { AntDesign } from "@expo/vector-icons";
+import {
+  AntDesign,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import CommentForm from "../components/CommentForm";
 import { auth } from "../common/firebase";
-
-const Detail = ({ category2, id }) => {
+import { ImageView } from "../components/ImageView";
+const Detail = () => {
   const { params } = useRoute();
   const queryClient = useQueryClient();
   const user = auth.currentUser;
   const uid = user ? user.uid : "";
   const category = params.category;
   const listId = params.id;
-  const defaultImage =
-    "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C2.png?alt=media&token=91835443-d923-4a96-9117-387ee53df48d";
 
   const likeMutation = useMutation(changeDetail, {
     onSuccess: async () => {
       queryClient.invalidateQueries([category, listId]);
     },
   });
+
+  const likeHandler = () => {
+    let newLike = data.like;
+    newLike.push(uid);
+    console.log(newLike);
+    likeMutation.mutate([category, listId, { like: newLike }]);
+  };
 
   const { isLoading, isError, data, error } = useQuery(
     [category, listId],
@@ -46,12 +55,6 @@ const Detail = ({ category2, id }) => {
     );
   }
   if (isError) return <Text>에러: {error}</Text>;
-
-  const likeHandler = () => {
-    let newLike = data.like;
-    newLike.push(uid);
-    likeMutation.mutate([category, listId, { like: newLike }]);
-  };
 
   const checkLike = user ? data.like.includes(uid) : false;
 
@@ -79,66 +82,71 @@ const Detail = ({ category2, id }) => {
     ]);
   };
 
+  console.log(data);
   return (
     <DetailFlat
       ListHeaderComponent={
-        <>
-          <DetailTitle>
-            <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-              {data.title}
-            </Text>
-          </DetailTitle>
-          <DetailBtnBox style={{ display: uid === data.uid ? "flex" : "none" }}>
-            <TouchableOpacity style={{ marginRight: 10 }}>
-              <AntDesign name="edit" size={30} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <AntDesign name="delete" size={30} color="black" />
-            </TouchableOpacity>
-          </DetailBtnBox>
-          <NotifyBox>
-            <Text style={{ color: "gray" }}>
-              ※ 이미지 클릭 시 판매사이트로 이동합니다.
-            </Text>
-          </NotifyBox>
-          <TouchableOpacity
-            onPress={() => openLink(url)}
-            disabled={url === "" ? true : false}
+        <View
+          style={{
+            width: width,
+          }}
+        >
+          <ImageView
+            color={params.color}
+            from={"detail"}
+            handler={likeHandler}
+            data={data.like.length}
+          />
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "space-between",
+              marginTop: "15%",
+              marginLeft: "5%",
+              marginRight: "5%",
+            }}
           >
-            <ProductImage
-              source={{ uri: data.image !== "" ? data.image : defaultImage }}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <PriceBox>
-            <DetailText>가격</DetailText>
-            <DetailText>{price}원</DetailText>
-          </PriceBox>
-          <ProductInfoBox>
-            <DetailText>{data.content}</DetailText>
-          </ProductInfoBox>
-          <LikeBtn
-            onPress={() => likeHandler()}
-            style={{ display: user && !checkLike ? "flex" : "none" }}
-          >
-            <AntDesign name="hearto" size={24} color="red" />
-            <Text>{data.like.length}</Text>
-          </LikeBtn>
-          <LikeSee style={{ display: !user || checkLike ? "flex" : "none" }}>
-            <AntDesign
-              style={{ marginRight: 5 }}
-              name="hearto"
-              size={24}
-              color="red"
-            />
-            <Text>{data.like.length}</Text>
-          </LikeSee>
+            <DetailTitle>
+              <Text
+                style={{ fontSize: 32, fontWeight: "bold", marginBottom: "4%" }}
+              >
+                {data.title}
+              </Text>
+              <Text style={{ color: "gray" }}>
+                ※ 이미지 클릭 시 판매사이트로 이동합니다.
+              </Text>
+              <DetailBtnBox
+                style={{ display: uid === data.uid ? "flex" : "none" }}
+              >
+                <TouchableOpacity style={{}}>
+                  <AntDesign name="edit" size={30} color="black" />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <AntDesign name="delete" size={30} color="black" />
+                </TouchableOpacity>
+              </DetailBtnBox>
+            </DetailTitle>
+
+            <NotifyBox></NotifyBox>
+            <TouchableOpacity
+              onPress={() => openLink(url)}
+              disabled={url === "" ? true : false}
+            ></TouchableOpacity>
+            <PriceBox>
+              <MaterialIcons name="attach-money" size={24} color="yellow" />
+              <DetailText>{price}원</DetailText>
+            </PriceBox>
+            <PriceBox style={{ marginBottom: "15%" }}>
+              <MaterialCommunityIcons name="typewriter" size={24} color="red" />
+              <DetailText>{data.content}</DetailText>
+            </PriceBox>
+          </View>
           <CommentForm
             category={category}
             listId={listId}
             comments={data.comments}
           />
-        </>
+        </View>
       }
       data={data.comments}
       renderItem={({ item }) => (
@@ -164,20 +172,16 @@ const DetailFlat = styled.FlatList`
 `;
 
 const DetailTitle = styled.View`
-  flex-direction: row;
+  flex-direction: "column";
   justify-content: center;
   align-items: center;
+
   width: 100%;
-  height: 60px;
 `;
 
 const DetailBtnBox = styled.TouchableOpacity`
-  position: absolute;
+  margin-top: 7%;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  width: 95%;
-  height: 60px;
 `;
 
 const NotifyBox = styled.View`
@@ -186,24 +190,21 @@ const NotifyBox = styled.View`
 `;
 
 const ProductImage = styled.Image`
-  width: 95%;
-  height: 300px;
-  margin: auto;
-  border-radius: 16px;
+  height: 100%;
+  width: 100%;
+  flex-direction: "row";
+  border-bottom-left-radius: 40%;
+  border-bottom-right-radius: 40%;
 `;
 
 const PriceBox = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  margin-top: 10%;
+
   width: 95%;
-  margin: 20px auto;
 `;
 
-const ProductInfoBox = styled.View`
-  width: 95%;
-  margin: auto;
-  padding: 0 10px 0 10px;
-`;
+const ProductInfoBox = styled.View``;
 
 const LikeBtn = styled.TouchableOpacity`
   width: 75px;
@@ -217,7 +218,9 @@ const LikeBtn = styled.TouchableOpacity`
 
 const LikeSee = styled.View`
   flex-direction: row;
-  justify-content: flex-end;
-  width: 95%;
-  margin: 20px auto;
+  //height: 100%;
+
+  //width: 95%;
+  position: "absolute";
+  z-index: 10;
 `;

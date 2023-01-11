@@ -9,13 +9,12 @@ import { listImagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View } from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
-
+import { auth } from "../common/firebase";
 const NativeStack = createNativeStackNavigator();
-
-const checkLog = () => {};
 
 const Stacks = () => {
   const { navigate } = useNavigation();
+  const check = !!auth.currentUser;
 
   return (
     <NativeStack.Navigator
@@ -25,13 +24,18 @@ const Stacks = () => {
         headerLeft: () => <Text></Text>, // 물어보깅
         headerRight: () => {
           return (
-            <TouchableOpacity onPress={() => navigate("MyPage")}>
+            <TouchableOpacity
+              onPress={() => navigate(check ? "MyPage" : "Login")}
+            >
               <View style={{ marginVertical: -5 }}>
                 <Image
-                  source={listImagePath["defaultimage"]}
+                  source={
+                    check
+                      ? auth.currentUser.photoURL
+                      : listImagePath["defaultimage"]
+                  }
                   style={{ height: 40, width: 40 }}
                 />
-                {/* <View style={{ height: 10 }}></View> */}
               </View>
             </TouchableOpacity>
           );
