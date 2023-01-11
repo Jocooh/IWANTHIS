@@ -5,24 +5,19 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Animated,
-  Image,
+  FlatList,
 } from "react-native";
 import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import WriteList from "./WriteList";
-import Detail from "./Detail";
-import {
-  ListBackground,
-  ListImage,
-  ListStyle,
-  Loader,
-  ListTitle,
-} from "../styles/styled";
+import { ListBackground, Loader, ListTitle } from "../styles/styled";
 import { useQuery } from "react-query";
 import { listImagePath } from "../assets/imgPath";
 import styled from "@emotion/native";
+import CpList from "../components/CpList";
+import CpList2 from "../components/CpList2";
+
 const Lists = ({
   navigation: { navigate },
   route: {
@@ -34,7 +29,7 @@ const Lists = ({
   const [order, setOrder] = useState(0);
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
-  console.log("확인중 :", data);
+
   if (isLoading) {
     return (
       <Loader>
@@ -43,16 +38,6 @@ const Lists = ({
     );
   }
   if (isError) return alert("잠시 후 다시 실행해주세요", error);
-
-  //글쓰기버튼 터치 시 로그인- 글쓰러가기, 비로그인 - 로그인창으로가기
-  const handleAdding = async () => {
-    const isLogin = !!auth.currentUser;
-    if (!isLogin) {
-      navigate("Login");
-      return;
-    }
-    navigate("WriteList");
-  };
 
   //최신순 불러오는 함수
   const currentList = () => {
@@ -70,20 +55,21 @@ const Lists = ({
     setLists(iLike);
   };
 
-  // //로그인 시 글작성페이지, 비로그인 시 로그인창   ---> 로그아웃기능 후에 확인 가능할듯
-  // const handleAdding = () => {
-  //   const isLogin = !!auth.currentUser;
-  //   if (!isLogin) {
-  //     navigate("Login");
-  //     return;
-  //   }
-  //   navigate("WriteList", {
-  //     category: category,
-  //     color: color,
-  //     img: listImagePath[category],
-  //     id: data[data.length - 1].id + 1,
-  //   });
-  // };
+  //로그인 시 글작성페이지, 비로그인 시 로그인창   ---> 로그아웃기능 후에 확인 가능할듯
+  const handleAdding = () => {
+    const isLogin = !!auth.currentUser;
+    console.log(isLogin);
+    if (!isLogin) {
+      navigate("Login");
+      return;
+    }
+    navigate("WriteList", {
+      category: category,
+      color: color,
+      img: listImagePath[category],
+      id: data[data.length - 1].id + 1,
+    });
+  };
 
   // 전체 리스트
   return (
@@ -94,14 +80,7 @@ const Lists = ({
           flexDirection: "row-reverse",
           paddingHorizontal: 15,
         }}
-        onPress={() => {
-          navigate("WriteList", {
-            category: category,
-            color: color,
-            img: listImagePath[category],
-            id: data.length > 0 ? data[data.length - 1].id + 1 : 1,
-          });
-        }}
+        onPress={handleAdding}
       >
         <Feather
           name="pen-tool"
@@ -153,45 +132,21 @@ const Lists = ({
             </TouchableOpacity>
           </View>
           {/* 여기는 리스트 들어가는 구간 props받고 바로 map */}
-          <ScrollView>
-            {data.length <= 1 ? (
-              <NoList>
-                <Image
-                  source={require("../assets/listImage/no.png")}
-                  style={{
-                    width: 150,
-                    height: 150,
-                    resizeMode: "contain",
-                  }}
-                />
-                <Text style={{ fontWeight: "bold" }}>
-                  등록된 리뷰가 없어요 🔥
-                </Text>
-              </NoList>
-            ) : (
-              data.map((list) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigate("Detail", { category: category, id: list.id });
-                  }}
-                  key={list.id}
-                >
-                  <ListStyle>
-                    <View>
-                      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                        {list.title}
-                      </Text>
-                      <Text style={{ paddingVertical: 10 }}>{list.date}</Text>
-                    </View>
-                    {/* 유저프로필대신 상품 이미지 */}
-                    <View style={{ marginVertical: -5 }}>
-                      <ListImage source={list.image} />
-                    </View>
-                  </ListStyle>
-                </TouchableOpacity>
-              ))
-            )}
-          </ScrollView>
+
+          {data.length <= 0 ? (
+            <CpList2></CpList2>
+          ) : (
+            <ScrollView>
+              {data.map((list) => (
+                <CpList
+                  list={list}
+                  id={list.id}
+                  color={color}
+                  navigation={navigate}
+                ></CpList>
+              ))}
+            </ScrollView>
+          )}
         </ListBackground>
       </Animated.ScrollView>
     </View>
@@ -210,10 +165,5 @@ const styles = {
     ],
   }),
 };
-
-const NoList = styled.View`
-  align-items: center;
-  margin-top: 50px;
-`;
 
 export default Lists;
