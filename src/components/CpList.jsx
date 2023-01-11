@@ -13,7 +13,6 @@ const CpList = ({ list, category, navigation, color, id }) => {
           id: id,
         });
       }}
-      key={list.id}
     >
       <ListStyle>
         <View>

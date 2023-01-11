@@ -36,7 +36,7 @@ export const ListStyle = styled.View`
 export const ListImage = styled.Image`
   width: 70px;
   height: 70px;
-  border-radius: 50%;
+  border-radius: 50px;
 `;
 
 export const DetailText = styled.Text`
