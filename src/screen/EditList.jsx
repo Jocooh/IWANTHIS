@@ -53,8 +53,10 @@ const EditList = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    const [{ uri }] = result.assets;
-    setPickedImg(uri);
+    if (!!result) {
+      const [{ uri }] = result.assets;
+      setPickedImg(uri);
+    }
   };
 
   // 카테고리 게시판 수정
@@ -86,6 +88,7 @@ const EditList = () => {
     }
   };
 
+  // 이미지 수정 없을때 수정
   const editList = () => {
     const newMyPost = myPost.map((x) => {
       if (x.category === category && x.categoryId === id) {

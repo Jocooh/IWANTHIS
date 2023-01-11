@@ -80,7 +80,7 @@ const Detail = () => {
       </Loader>
     );
   }
-  if (isError) return <Text>에러: {error}</Text>;
+  if (isError) return <Text>에러: {error.message}</Text>;
 
   const list = data[0];
   const myId = data[1].map((x) => x.id)[0];
@@ -129,7 +129,7 @@ const Detail = () => {
     ]);
   };
 
-  // 좋아요(미완성)
+  // 좋아요
   const checkLike = user ? list.like.includes(uid) : false;
 
   const likeHandler = () => {
@@ -155,7 +155,10 @@ const Detail = () => {
             <ImageBtnBox
               style={{ backgroundColor: color["fontColor"] ?? "blue" }}
             >
-              <LikeBtn onPress={() => likeHandler()} disabled={user && !checkLike ? false : true}>
+              <LikeBtn
+                onPress={() => likeHandler()}
+                disabled={user && !checkLike ? false : true}
+              >
                 <LikeBox>
                   <View style={{ position: "absolute" }}>
                     <AntDesign name={"heart"} size={15} color={"#f40584"} />
@@ -184,13 +187,7 @@ const Detail = () => {
               >
                 <TouchableOpacity
                   onPress={() =>
-                    navigate("EditList", {
-                      list,
-                      color,
-                      img,
-                      myId,
-                      myPost,
-                    })
+                    navigate("EditList", { list, color, img, myId, myPost })
                   }
                 >
                   <AntDesign name="edit" size={30} color="black" />

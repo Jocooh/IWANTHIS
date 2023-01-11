@@ -55,8 +55,10 @@ const WriteList = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    const [{ uri }] = result.assets;
-    setPickedImg(uri);
+    if (!!result) {
+      const [{ uri }] = result.assets;
+      setPickedImg(uri);
+    }
   };
 
   // 카테고리 게시판 포스트
@@ -137,6 +139,7 @@ const WriteList = () => {
     }
   };
 
+  // POST
   const addList = async (event) => {
     event.preventDefault();
     if (title.trim() === "") {
@@ -162,15 +165,15 @@ const WriteList = () => {
     uploadImage()
       .then((image) => {
         if (!checkFirstPost) {
-          const lists = [{ ...myList, image, }];
+          const lists = [{ ...myList, image }];
           myPostMutation.mutate({ uid, lists });
         } else {
           changeMyPostMutation.mutate([
             myId,
-            { lists: [...myLists, { ...myList, image, }] },
+            { lists: [...myLists, { ...myList, image }] },
           ]);
         }
-        postMutation.mutate([category, { ...list, image, }]);
+        postMutation.mutate([category, { ...list, image }]);
       })
       .catch((error) => {
         alert(error.message);

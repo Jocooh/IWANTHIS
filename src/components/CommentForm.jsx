@@ -5,14 +5,13 @@ import { TouchableOpacity } from "react-native";
 import { useMutation, useQueryClient } from "react-query";
 import { auth } from "../common/firebase";
 import { changeDetail } from "../common/api";
+import { defaultImage } from '../common/util';
 
 const CommentForm = ({ category, listId, comments }) => {
   const [comment, setComment] = useState("");
   const lists = comments;
   const queryClient = useQueryClient();
   const user = auth.currentUser;
-  const defaultImage =
-    "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/defaultimage.png?alt=media&token=61bf18ff-c593-4aa2-9580-21e4e04e0e4d";
 
   const commentMutation = useMutation(changeDetail, {
     onSuccess: () => {
