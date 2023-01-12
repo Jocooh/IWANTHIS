@@ -56,7 +56,7 @@ const Stacks = () => {
           return (
             <>
               <TouchableOpacity style={{ marginRight: 2 }}>
-                {check ? (
+                {check ? ( // 로그아웃 및 프로필 사진 아이콘
                   <View
                     style={{ flexDirection: "row", justifyContent: "center" }}
                   >
@@ -74,14 +74,18 @@ const Stacks = () => {
                     >
                       <View style={{ marginLeft: 10 }}>
                         <Image
-                          source={listImagePath.defaultimage}
-                          style={{ height: 40, width: 40 }}
+                          source={
+                            check
+                              ? { uri: auth.currentUser.photoURL }
+                              : listImagePath["defaultimage"]
+                          }
+                          style={{ height: 40, width: 40, borderRadius: 40 }}
                         />
                       </View>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  // 로그아웃 아이콘
+                  // 로그인 아이콘
                   <SimpleLineIcons
                     name="login"
                     size={24}

@@ -101,6 +101,7 @@ export const listImagePath = {
   beauty: require("./listImage/beauty.png"),
   books: require("./listImage/books.png"),
   defaultimage: require("./defaultimage.png"),
+  shopping: require("./shopping.png"),
   cart: require("./2.png"),
   //loading: [require("./loading1.png"), require("./loading1.png")],
   logo: require("./iwanthis.png"),

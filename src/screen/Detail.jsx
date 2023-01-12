@@ -166,7 +166,11 @@ const Detail = () => {
               >
                 <LikeBox>
                   <View style={{ position: "absolute" }}>
-                    <AntDesign name={"heart"} size={15} color={"#f40584"} />
+                    <AntDesign
+                      name={"heart"}
+                      size={15}
+                      color={color["backColor"]}
+                    />
                   </View>
                   <LikeCount>
                     <Text style={{ color: "white", fontSize: 25 }}>
