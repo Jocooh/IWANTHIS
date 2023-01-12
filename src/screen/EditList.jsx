@@ -1,4 +1,4 @@
-import { View, ScrollView, Animated } from "react-native";
+import { View, ScrollView, Animated, useColorScheme } from "react-native";
 import { useState } from "react";
 import styled from "@emotion/native";
 import * as ImagePicker from "expo-image-picker";
@@ -14,6 +14,9 @@ import { ImageBox, ImageBtnBox, ImageView, styles } from "../styles/styled";
 
 const EditList = () => {
   const queryClient = useQueryClient();
+  const isDark = useColorScheme() === "dark";
+  const backColor = isDark ? "#605e58" : "white";
+  const fontColor = isDark ? "#dad8d1" : "black";
 
   // 네비게이션
   const { goBack } = useNavigation();
@@ -147,7 +150,7 @@ const EditList = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: backColor }}>
       <View style={{ width: width }}>
         <ImageBox style={{ backgroundColor: color["backColor"] }}>
           <ImageView>
@@ -165,26 +168,32 @@ const EditList = () => {
         <InfoView>
           <InputZone
             placeholder="상품명"
-            style={{ fontSize: 25, marginTop: "2%" }}
+            placeholderTextColor={isDark ? "#9b988a" : "gray"}
+            style={{ fontSize: 25, marginTop: "2%", color: fontColor }}
             onChangeText={setTitle}
             value={title}
           />
           <InputZone
+            style={{ color: fontColor }}
             keyboardType="number-pad"
             placeholder="가격"
+            placeholderTextColor={isDark ? "#9b988a" : "gray"}
             onChangeText={setPrice}
             value={price}
           />
           <InputZone
+            style={{ color: fontColor }}
             keyboardType="url"
             placeholder="판매링크"
+            placeholderTextColor={isDark ? "#9b988a" : "gray"}
             onChangeText={setUrl}
             value={url}
           />
           <InputContent
             multiline={true}
-            style={{ textAlignVertical: "top" }}
+            style={{ textAlignVertical: "top", color: fontColor }}
             placeholder="설명"
+            placeholderTextColor={isDark ? "#9b988a" : "gray"}
             onChangeText={setContent}
             value={content}
           />

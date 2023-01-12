@@ -1,4 +1,10 @@
-import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  useColorScheme,
+} from "react-native";
 import { useState } from "react";
 import styled from "@emotion/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -10,6 +16,8 @@ import { changeDetail } from "../common/api";
 import { DetailText } from "../styles/styled";
 
 const Comments = ({ category, listId, comment, comments }) => {
+  const isDark = useColorScheme() === "dark";
+  const fontColor = isDark ? "#dad8d1" : "black";
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const edit = useSelector((state) => state.comment);
@@ -43,9 +51,12 @@ const Comments = ({ category, listId, comment, comments }) => {
 
   const deleteComment = () => {
     const newComments = comments.filter((x) => x.id !== comment.id);
-    Alert.alert("삭제", "삭제하시겠습니까?", [
+    Alert.alert("댓글 삭제", "정말 삭제하시겠습니까?", [
       {
         text: "취소",
+        onPress: () => {
+          setEditComment(comment.comment);
+        },
       },
       {
         text: "삭제",
@@ -57,20 +68,20 @@ const Comments = ({ category, listId, comment, comments }) => {
   };
 
   return (
-    <CommentsBox>
+    <CommentsBox style={{ borderBottomColor: fontColor }}>
       <View style={{ flex: 8, flexDirection: "row" }}>
-        <Image
-          style={{ width: 60, height: 60, borderRadius: 50, marginRight: 10 }}
+        <ProfileImage
           resizeMode="contain"
           source={{ uri: comment.profileImg }}
         />
         <View style={{ width: "75%" }}>
           <View style={{ marginBottom: 6 }}>
-            <Text>{comment.nickName}</Text>
+            <Text style={{ color: fontColor }}>{comment.nickName}</Text>
           </View>
           <View style={{ justifyContent: "center" }}>
             <DetailText
               style={{
+                color: fontColor,
                 lineHeight: 27,
                 display: checkEdit && edit.isEdit ? "none" : "flex",
               }}
@@ -79,9 +90,12 @@ const Comments = ({ category, listId, comment, comments }) => {
             </DetailText>
             <EditInput
               style={{
+                color: fontColor,
                 display: checkEdit && edit.isEdit ? "flex" : "none",
+                borderColor: fontColor,
                 borderRadius: checkEdit && edit.isEdit ? 10 : 0,
               }}
+              placeholderTextColor={isDark ? "#9b988a" : "gray"}
               multiline={true}
               onChangeText={setEditComment}
               defaultValue={comment.comment}
@@ -100,17 +114,17 @@ const Comments = ({ category, listId, comment, comments }) => {
             style={{ marginRight: 10 }}
             onPress={() => editHandler(comment.id, comment.comment)}
           >
-            <AntDesign name="edit" size={32} color="black" />
+            <AntDesign name="edit" size={32} color={fontColor} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => deleteComment()}>
-            <AntDesign name="delete" size={32} color="black" />
+            <AntDesign name="delete" size={32} color={fontColor} />
           </TouchableOpacity>
         </View>
         <EditCheck
           onPress={() => submitHandler()}
           style={{ display: checkEdit && edit.isEdit ? "flex" : "none" }}
         >
-          <AntDesign name="check" size={40} color="black" />
+          <AntDesign name="check" size={40} color={fontColor} />
         </EditCheck>
       </EditBtnBox>
     </CommentsBox>
@@ -128,13 +142,20 @@ const CommentsBox = styled.View`
   margin: auto;
   padding: 0 0 10px 0;
   border-bottom-width: 1px;
-  border-bottom-color: black;
+`;
+
+const ProfileImage = styled.Image`
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  margin-right: 10px;
 `;
 
 const EditInput = styled.TextInput`
   width: 100%;
   font-size: 16px;
-  border: 1px solid black;
+  border-style: solid;
+  border-width: 1px;
 `;
 
 const EditBtnBox = styled.View`

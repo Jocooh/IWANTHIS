@@ -5,6 +5,7 @@ import {
   Linking,
   Text,
   TouchableOpacity,
+  useColorScheme,
   View,
 } from "react-native";
 import {
@@ -36,6 +37,9 @@ import CommentForm from "../components/CommentForm";
 
 const Detail = () => {
   const queryClient = useQueryClient();
+  const isDark = useColorScheme() === "dark";
+  const backColor = isDark ? "#605e58" : "white";
+  const fontColor = isDark ? "#dad8d1" : "black";
 
   // 네비게이션
   const { navigate, goBack } = useNavigation();
@@ -112,7 +116,7 @@ const Detail = () => {
 
   // 삭제
   const deleteHandler = () => {
-    Alert.alert("삭제", `정말 삭제하시겠습니까?`, [
+    Alert.alert("게시글 삭제", `정말 삭제하시겠습니까?`, [
       {
         text: "취소",
       },
@@ -140,6 +144,7 @@ const Detail = () => {
 
   return (
     <DetailFlat
+      style={{ backgroundColor: backColor }}
       ListHeaderComponent={
         <View style={{ width: width }}>
           <ImageBox style={{ backgroundColor: color["backColor"] ?? "white" }}>
@@ -174,12 +179,15 @@ const Detail = () => {
           </ImageBox>
           <DetailContainer>
             <DetailTitle>
-              <Text
-                style={{ fontSize: 32, fontWeight: "bold", marginBottom: "4%" }}
-              >
+              <DetailHeader style={{ color: fontColor }}>
                 {list.title}
-              </Text>
-              <Text style={{ color: "gray", display: !!url ? "flex" : "none" }}>
+              </DetailHeader>
+              <Text
+                style={{
+                  color: isDark ? "#9b988a" : "gray",
+                  display: !!url ? "flex" : "none",
+                }}
+              >
                 ※ 이미지 클릭 시 판매사이트로 이동합니다.
               </Text>
               <DetailBtnBox
@@ -190,20 +198,22 @@ const Detail = () => {
                     navigate("EditList", { list, color, img, myId, myPost })
                   }
                 >
-                  <AntDesign name="edit" size={30} color="black" />
+                  <AntDesign name="edit" size={30} color={fontColor} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => deleteHandler()}>
-                  <AntDesign name="delete" size={30} color="black" />
+                  <AntDesign name="delete" size={30} color={fontColor} />
                 </TouchableOpacity>
               </DetailBtnBox>
             </DetailTitle>
             <PriceBox>
               <MaterialIcons name="attach-money" size={24} color="yellow" />
-              <DetailText>{price}원</DetailText>
+              <DetailText style={{ color: fontColor }}>{price}원</DetailText>
             </PriceBox>
             <PriceBox style={{ marginBottom: "15%" }}>
               <MaterialCommunityIcons name="typewriter" size={24} color="red" />
-              <DetailText>{list.content}</DetailText>
+              <DetailText style={{ color: fontColor }}>
+                {list.content}
+              </DetailText>
             </PriceBox>
           </DetailContainer>
           <CommentForm
@@ -278,6 +288,12 @@ const DetailTitle = styled.View`
   align-items: center;
 
   width: 100%;
+`;
+
+const DetailHeader = styled.Text`
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 4%;
 `;
 
 const DetailBtnBox = styled.TouchableOpacity`

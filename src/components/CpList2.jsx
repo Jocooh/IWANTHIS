@@ -1,8 +1,10 @@
 import React from "react";
-import { Text, Image } from "react-native";
+import { Text, Image, useColorScheme } from "react-native";
 import styled from "@emotion/native";
 
 function CpList2() {
+  const isDark = useColorScheme() === "dark";
+  const fontColor = isDark ? "#dad8d1" : "black";
   return (
     <NoList>
       <Image
@@ -13,7 +15,9 @@ function CpList2() {
           resizeMode: "contain",
         }}
       />
-      <Text style={{ fontWeight: "bold" }}>등록된 리뷰가 없어요 🔥</Text>
+      <Text style={{ color: fontColor, fontWeight: "bold" }}>
+        등록된 리뷰가 없어요 🔥
+      </Text>
     </NoList>
   );
 }
