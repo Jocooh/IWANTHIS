@@ -8,7 +8,6 @@ import { isLogin, notLogin } from '../redux/modules/loginSlice';
 const Home = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
   const checkLogin = useSelector(state => state.login.isLogin)
-  console.log(checkLogin);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {

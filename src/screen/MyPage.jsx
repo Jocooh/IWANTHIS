@@ -23,7 +23,7 @@ import { Loader } from "../styles/styled";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../components/Category";
 import { listImagePath } from "../assets/imgPath";
-import { defaultImage } from '../common/util';
+import { defaultImage } from "../common/util";
 
 // 이미지 css, 버튼 ,
 
@@ -44,7 +44,9 @@ const MyPage = () => {
     });
   };
   // 이미지 선택 & 미리보기
-  const [pickedImg, setPickedImg] = useState(user.photoURL ? user.photoURL : defaultImage);
+  const [pickedImg, setPickedImg] = useState(
+    user.photoURL ? user.photoURL : defaultImage
+  );
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const pickImage = async () => {
@@ -115,7 +117,7 @@ const MyPage = () => {
   }
   if (isError) return <Text>에러: {error.message}</Text>;
 
-  const lists = data[0].lists;
+  const lists = !!data ? data[0].lists : [];
 
   return (
     <MyPageWrapper>
