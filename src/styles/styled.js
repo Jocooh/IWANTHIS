@@ -11,7 +11,7 @@ export const ListTitle = styled.Text`
 `;
 
 export const ListBackground = styled.View`
-  height: 600px;
+  height: 700px;
   margin: 10px;
   flex: 1;
   background-color: white;

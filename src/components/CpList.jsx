@@ -1,10 +1,11 @@
 import { View, Text, TouchableHighlight } from "react-native";
 import { ListImage, ListStyle } from "../styles/styled";
-import { colors } from './Category';
 
 //navigate물어보자.
 
-const CpList = ({ list, category, navigation, color, id, img }) => {
+const CpList = ({ list, navigation, color, id, img }) => {
+  let results = list.image;
+
   return (
     <TouchableHighlight
       onPress={() => {
@@ -12,7 +13,7 @@ const CpList = ({ list, category, navigation, color, id, img }) => {
           color: color,
           category: list.category,
           listId: id,
-          img: img
+          img: img,
         });
       }}
     >
@@ -23,11 +24,7 @@ const CpList = ({ list, category, navigation, color, id, img }) => {
         </View>
         {/* 유저프로필대신 상품 이미지 */}
         <View style={{ marginVertical: -5 }}>
-          <ListImage
-            source={{
-              uri: `${list.image}`,
-            }}
-          />
+          <ListImage source={results ? { uri: `${list.image}` } : null} />
         </View>
       </ListStyle>
     </TouchableHighlight>

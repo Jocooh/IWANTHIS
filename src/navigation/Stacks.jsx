@@ -5,20 +5,21 @@ import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
 import Login from "../screen/Login";
 import Header from "../components/Header";
-import { listImagePath } from "../assets/imgPath";
+import { imagePath, listImagePath } from "../assets/imgPath";
 import { Text, Image, TouchableOpacity, View, Alert } from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../common/firebase";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth/react-native";
-import EditList from '../screen/EditList';
+import EditList from "../screen/EditList";
 
 const NativeStack = createNativeStackNavigator();
 
 const Stacks = () => {
   const { navigate } = useNavigation();
   const check = !!auth.currentUser;
+  const imagePosition = "a";
 
   //로그아웃 누르면 로그아웃되는 코드
   const logOut = () => {
@@ -54,15 +55,33 @@ const Stacks = () => {
         headerRight: () => {
           return (
             <>
-              <TouchableOpacity style={{ marginRight: 10 }}>
+              <TouchableOpacity style={{ marginRight: 2 }}>
                 {check ? (
-                  <SimpleLineIcons
-                    name="logout"
-                    size={24}
-                    color="black"
-                    onPress={logOut}
-                  />
+                  <View
+                    style={{ flexDirection: "row", justifyContent: "center" }}
+                  >
+                    <SimpleLineIcons
+                      name="logout"
+                      size={24}
+                      color="black"
+                      onPress={logOut}
+                      style={{ marginTop: 7 }}
+                    />
+
+                    <TouchableOpacity
+                      onPress={() => navigate("MyPage")}
+                      style={{ flexDirection: "row" }}
+                    >
+                      <View style={{ marginLeft: 10 }}>
+                        <Image
+                          source={listImagePath.defaultimage}
+                          style={{ height: 40, width: 40 }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  </View>
                 ) : (
+                  // 로그아웃 아이콘
                   <SimpleLineIcons
                     name="login"
                     size={24}
@@ -72,23 +91,6 @@ const Stacks = () => {
                     }}
                   />
                 )}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigate(check ? "MyPage" : "Login")}
-                style={{ flexDirection: "row" }}
-              >
-                <View style={{ marginVertical: -5 }}>
-                  {/* 얘가 로그인 true면 로그아웃임티:아니면 로그인 임티 */}
-
-                  <Image
-                    source={
-                      check
-                        ? auth.currentUser.photoURL
-                        : listImagePath["defaultimage"]
-                    }
-                    style={{ height: 40, width: 40 }}
-                  />
-                </View>
               </TouchableOpacity>
             </>
           );
