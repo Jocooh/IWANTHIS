@@ -212,7 +212,7 @@ export default function Login({ navigation: { goBack, setOptions } }) {
     if (pickedImg) {
       const response = await fetch(pickedImg);
       const blobFile = await response.blob();
-      const imageRef = ref(storage, `image/${uuidv4()}`);
+      const imageRef = ref(storage, `profile/${uuidv4()}`);
       if (blobFile) {
         const imageResponse = await uploadBytes(imageRef, blobFile);
         const downloadUrl = await getDownloadURL(imageResponse.ref);

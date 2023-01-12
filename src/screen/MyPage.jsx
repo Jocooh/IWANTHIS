@@ -9,7 +9,6 @@ import {
   Text,
 } from "react-native";
 import styled from "@emotion/native";
-import defaultimage from "../assets/defaultimage.png";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { updateProfile } from "firebase/auth/react-native";
@@ -23,7 +22,6 @@ import { Loader } from "../styles/styled";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../components/Category";
 import { listImagePath } from "../assets/imgPath";
-import { defaultImage } from "../common/util";
 
 // 이미지 css, 버튼 ,
 
@@ -32,7 +30,6 @@ const MyPage = () => {
   // 데이터 가져오기
   const user = auth.currentUser;
   const uid = user.uid;
-  console.log(user);
 
   // 닉네임 변경
   const [text, setText] = useState("");
@@ -46,7 +43,7 @@ const MyPage = () => {
   };
   // 이미지 선택 & 미리보기
   const [pickedImg, setPickedImg] = useState(
-    user.photoURL ? user.photoURL : defaultImage
+    user.photoURL ? user.photoURL : null
   );
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
@@ -132,7 +129,7 @@ const MyPage = () => {
           {/* 프로필이미지 */}
           <TouchableOpacity onPress={() => pickImage()}>
             <MyProfilePicSt
-              source={{ uri: pickedImg ? pickedImg : defaultImage }}
+              source={!!pickedImg ?{ uri: pickedImg }: listImagePath["defaultimage"]}
             />
           </TouchableOpacity>
           {/* 유저 이메일 */}
@@ -220,7 +217,7 @@ const MyPage = () => {
                     />
                     <MyItemInfoSt>
                       <MyPageTxt> {list.title} </MyPageTxt>
-                      <MyPageTxt2> 💲 {list.price}원 </MyPageTxt2>
+                      <MyPageTxt2> {list.price}원 </MyPageTxt2>
                       <MyPageTxt2>
                         📝 {list.content.slice(0, 7)}
                         {list.content.length > 7 && "..."}
