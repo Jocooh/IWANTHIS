@@ -1,25 +1,20 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import { DetailText } from "../styles/styled";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import { useState } from "react";
 import styled from "@emotion/native";
 import { AntDesign } from "@expo/vector-icons";
-import { useState } from "react";
-import { auth } from "../common/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { offEdit, onEdit } from "../redux/modules/commentSlice";
 import { useMutation, useQueryClient } from "react-query";
+import { offEdit, onEdit } from "../redux/modules/commentSlice";
+import { auth } from "../common/firebase";
 import { changeDetail } from "../common/api";
+import { DetailText } from "../styles/styled";
 
 const Comments = ({ category, listId, comment, comments }) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const edit = useSelector((state) => state.comment);
-  const checkUser = auth.currentUser ? auth.currentUser.uid === comment.uid : false
+  const user = auth.currentUser;
+  const checkUser = user ? user.uid === comment.uid : false;
   const checkEdit = edit.id === comment.id;
   const [editComment, setEditComment] = useState();
 
@@ -54,9 +49,9 @@ const Comments = ({ category, listId, comment, comments }) => {
       },
       {
         text: "삭제",
-        onPress: () =>{
-          commentMutation.mutate([category, listId, { comments: newComments }])
-        }
+        onPress: () => {
+          commentMutation.mutate([category, listId, { comments: newComments }]);
+        },
       },
     ]);
   };
@@ -94,11 +89,7 @@ const Comments = ({ category, listId, comment, comments }) => {
           </View>
         </View>
       </View>
-      <EditBtnBox
-        style={{
-          display: checkUser ? "flex" : "none",
-        }}
-      >
+      <EditBtnBox style={{ display: checkUser ? "flex" : "none" }}>
         <View
           style={{
             flexDirection: "row",
@@ -117,9 +108,7 @@ const Comments = ({ category, listId, comment, comments }) => {
         </View>
         <EditCheck
           onPress={() => submitHandler()}
-          style={{
-            display: checkEdit && edit.isEdit ? "flex" : "none",
-          }}
+          style={{ display: checkEdit && edit.isEdit ? "flex" : "none" }}
         >
           <AntDesign name="check" size={40} color="black" />
         </EditCheck>

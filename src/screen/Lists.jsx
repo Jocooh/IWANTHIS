@@ -152,6 +152,7 @@ const Lists = ({
                   id={list.id}
                   color={color}
                   navigation={navigate}
+                  img= {listImagePath[category]}
                   key={list.id}
                 ></CpList>
               ))}

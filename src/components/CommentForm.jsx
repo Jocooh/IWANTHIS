@@ -1,18 +1,17 @@
 import { useState } from "react";
 import styled from "@emotion/native";
-import { auth } from "../common/firebase";
-import { useMutation, useQueryClient } from "react-query";
-import { changeDetail } from "../common/api";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { useMutation, useQueryClient } from "react-query";
+import { auth } from "../common/firebase";
+import { changeDetail } from "../common/api";
+import { defaultImage } from '../common/util';
 
 const CommentForm = ({ category, listId, comments }) => {
   const [comment, setComment] = useState("");
   const lists = comments;
   const queryClient = useQueryClient();
   const user = auth.currentUser;
-  const defaultImage =
-    "https://firebasestorage.googleapis.com/v0/b/iwanthis-ab4f5.appspot.com/o/defaultimage.png?alt=media&token=61bf18ff-c593-4aa2-9580-21e4e04e0e4d";
 
   const commentMutation = useMutation(changeDetail, {
     onSuccess: () => {
@@ -23,8 +22,8 @@ const CommentForm = ({ category, listId, comments }) => {
   const newComment = {
     id: Number(`${lists.length !== 0 ? lists[lists.length - 1].id + 1 : 1}`),
     uid: `${user ? user.uid : ""}`,
-    profileImg: `${user ? user.photoURL : defaultImage}`,
-    nickName: `${user ? user.displayName : "익명"}`,
+    profileImg: `${user.photoURL && user ? user.photoURL : defaultImage}`,
+    nickName: `${user.displayName && user ? user.displayName : "익명"}`,
     comment,
   };
 
