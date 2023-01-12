@@ -209,7 +209,7 @@ const MyProfilePicSt = styled.Image`
 const MyProfileInfoSt = styled.View`
   width: 190px;
   height: 160px;
-  /* border: 20px solid white; */
+  border: 20px solid white;
   border-radius: 30px;
   background-color: white;
 
