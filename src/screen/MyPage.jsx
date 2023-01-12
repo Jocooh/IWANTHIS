@@ -32,6 +32,7 @@ const MyPage = () => {
   // 데이터 가져오기
   const user = auth.currentUser;
   const uid = user.uid;
+  console.log(user);
 
   // 닉네임 변경
   const [text, setText] = useState("");
@@ -120,36 +121,74 @@ const MyPage = () => {
   const lists = !!data.length ? data[0].lists : false;
 
   return (
+    //html시작 배경
     <MyPageWrapper>
       <StatusBar style="auto" />
-      <MyPageTitleTxt>안녕하세요, {user.email}님!</MyPageTitleTxt>
+      {/* 유저네임 인사 부분 */}
+      <MyPageTitleTxt>Hello,{nickName}</MyPageTitleTxt>
+
       <MyProfileArea>
-        <View style={{ flexDirection: "row" }}>
+        <View>
+          {/* 프로필이미지 */}
           <TouchableOpacity onPress={() => pickImage()}>
             <MyProfilePicSt
               source={{ uri: pickedImg ? pickedImg : defaultImage }}
             />
           </TouchableOpacity>
-
-          <MyProfileInfoSt>
-            <MyPageTxt>{nickName}</MyPageTxt>
-            <TextInput
-              placeholder="변경할 닉네임을 입력해주세요."
-              onChangeText={setText}
-              value={text}
-            ></TextInput>
-          </MyProfileInfoSt>
+          {/* 유저 이메일 */}
+          <MyPageTitleTxt>💌 E-mail: {user.email}</MyPageTitleTxt>
         </View>
+        {/* 닉네임 입력창 */}
+        <View style={{ flexDirection: "row" }}>
+          <View>
+            <MyProfileInfoSt>
+              <TextInput
+                placeholder="변경할 닉네임을 입력해주세요."
+                onChangeText={setText}
+                value={text}
+                style={{
+                  marginTop: 5,
+                  borderBottomColor: "lightGray",
+                  borderBottomWidth: 1,
+                  marginRight: 10,
+                  padding: 2,
+                }}
+              ></TextInput>
+            </MyProfileInfoSt>
+          </View>
 
-        <View>
-          <Button title="변경하기" onPress={() => changenicknameBtn()}></Button>
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderRadius: 5,
+              borderStyle: "solid",
+              padding: 7,
+            }}
+          >
+            <View>
+              <Text onPress={() => changenicknameBtn()}>변경</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </MyProfileArea>
 
+      {/* 상단은 여기까지 */}
+
+      {/* 내 글 목록 불러오는 구간 */}
       <MyWishListArea>
-        <View style={{ alignItems: "center" }}>
-          <MyPageTitleTxt>My Wishlist</MyPageTitleTxt>
-          {/* <FlatList data={} renderItem={} keyExtractor={} /> */}
+        <View>
+          <MyPageTitleTxt style={{ marginRight: 200, fontSize: 23 }}>
+            🦋Wish List
+          </MyPageTitleTxt>
+          <View
+            style={{
+              marginBottom: 10,
+              borderBottomColor: "white",
+              borderBottomWidth: 2,
+              marginHorizontal: 10,
+            }}
+          ></View>
+          {/* 내가쓴 글 */}
           <ScrollView horizontal={true}>
             {lists? lists.map((list) => {
               return (
@@ -164,7 +203,14 @@ const MyPage = () => {
                     });
                   }}
                 >
-                  <MyItemSt>
+                  {/* 여기가 리스트들 */}
+                  <View
+                    style={{
+                      backgroundColor: `${list.color}`,
+                      marginLeft: 10,
+                      marginVertical: 20,
+                    }}
+                  >
                     <MyItemPicSt
                       source={
                         !!list.image
@@ -173,14 +219,14 @@ const MyPage = () => {
                       }
                     />
                     <MyItemInfoSt>
-                      <MyPageTxt> 상품명 : {list.title} </MyPageTxt>
-                      <MyPageTxt2> 가격 : {list.price} KRW </MyPageTxt2>
-                      <MyPageTxt2 numberOfLines={3} ellipsizeMode="tail">
-                        {" "}
-                        설명 : {list.content}{" "}
+                      <MyPageTxt> {list.title} </MyPageTxt>
+                      <MyPageTxt2> 💲 {list.price}원 </MyPageTxt2>
+                      <MyPageTxt2>
+                        📝 {list.content.slice(0, 7)}
+                        {list.content.length > 7 && "..."}
                       </MyPageTxt2>
                     </MyItemInfoSt>
-                  </MyItemSt>
+                  </View>
                 </TouchableOpacity>
               );
             }): null}
@@ -196,88 +242,62 @@ export default MyPage;
 // my page
 const MyPageWrapper = styled.ScrollView`
   flex: 1;
-  background-color: #92b1e8;
+  background-color: white;
 `;
 const MyProfileArea = styled.View`
-  flex: 0.4;
-  background-color: #92b1e8;
-
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 30px;
+  height: 200px;
+  background: white;
   align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 1px 1px 7px #b1b2ff;
 `;
 const MyWishListArea = styled.View`
-  flex: 1.1;
-  background-color: white;
-  border-radius: 30px 0 0 0;
-  // #f6efd6
-
-  /* align-items: center; */
+  background-color: #9badff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  height: 450px;
 `;
 const MyPageTitleTxt = styled.Text`
-  font-size: 25px;
-  /* font-weight: bold; */
-
-  /* text-decoration: underline; */
+  font-size: 18px;
+  font-weight: bold;
   margin: 5%;
 `;
 const MyPageTxt = styled.Text`
-  font-size: 20px;
-  /* font-weight: bold; */
-
-  margin: auto;
+  font-size: 17px;
+  font-weight: bold;
 `;
 const MyPageTxt2 = styled.Text`
   font-size: 15px;
-  /* font-weight: bold; */
-
-  margin: auto;
 `;
 
 // profile area
 const MyProfilePicSt = styled.Image`
-  width: 160px;
-  height: 165px;
-  margin: auto 7% auto -5%;
+  width: 70px;
+  height: 70px;
+  /* margin: auto 7% auto -5%; */
+  margin: auto;
+  border-radius: 50px;
 `;
 const MyProfileInfoSt = styled.View`
   width: 190px;
-  height: 160px;
-  border: 20px solid white;
-  border-radius: 30px;
   background-color: white;
-
-  align-items: center;
-  padding: 10px;
 `;
 
 // wishlist area
-const MyItemSt = styled.View`
-  background-color: white;
-  width: 370px;
-  height: 425px;
-  border: 10px solid #92b1e8;
-  border-radius: 30px;
-`;
 const MyItemPicSt = styled.Image`
-  width: 340px;
-  height: 250px;
-  border-radius: 30px;
-  /* border: 1px solid black; */
-
-  margin: auto;
-  /* align-items: center; */
+  width: 180px;
+  height: 220px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 const MyItemInfoSt = styled.View`
-  width: 340px;
-  height: 120px;
-  border-radius: 30px;
-  /* border: 1px solid black; */
-
-  margin: auto;
-  /* align-items: center; */
+  padding: 6px;
+  background-color: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  align-items: center;
 `;
-{
-  /* <View style={{ flexDirection: "row" }}>
-              <MyPageTxt2>자기 소개</MyPageTxt2>
-              <Button title="변경" onPress={() => alert("hi")}></Button>
-            </View> */
-}
