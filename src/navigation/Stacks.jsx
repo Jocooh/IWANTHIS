@@ -10,7 +10,7 @@ import { Text, Image, TouchableOpacity, View } from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../common/firebase";
-import EditList from '../screen/EditList';
+import EditList from "../screen/EditList";
 
 const NativeStack = createNativeStackNavigator();
 
