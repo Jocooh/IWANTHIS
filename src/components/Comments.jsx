@@ -68,8 +68,6 @@ const Comments = ({ category, listId, comment, comments }) => {
     ]);
   };
 
-  console.log(comment.profileImg);
-
   return (
     <CommentsBox style={{ borderBottomColor: fontColor }}>
       <View style={{ flex: 8, flexDirection: "row" }}>

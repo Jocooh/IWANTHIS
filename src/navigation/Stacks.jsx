@@ -13,12 +13,13 @@ import { auth } from "../common/firebase";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth/react-native";
 import EditList from "../screen/EditList";
+import { useSelector } from 'react-redux';
 
 const NativeStack = createNativeStackNavigator();
 
 const Stacks = () => {
   const { navigate } = useNavigation();
-  const check = !!auth.currentUser;
+  const check = useSelector(state => state.login.isLogin)
   const imagePosition = "a";
 
   //로그아웃 누르면 로그아웃되는 코드

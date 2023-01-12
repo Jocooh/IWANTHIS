@@ -23,7 +23,7 @@ import { Loader } from "../styles/styled";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../components/Category";
 import { listImagePath } from "../assets/imgPath";
-import { defaultImage } from '../common/util';
+import { defaultImage } from "../common/util";
 
 // 이미지 css, 버튼 ,
 
@@ -45,7 +45,9 @@ const MyPage = () => {
     });
   };
   // 이미지 선택 & 미리보기
-  const [pickedImg, setPickedImg] = useState(user.photoURL ? user.photoURL : defaultImage);
+  const [pickedImg, setPickedImg] = useState(
+    user.photoURL ? user.photoURL : defaultImage
+  );
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const pickImage = async () => {
@@ -116,7 +118,7 @@ const MyPage = () => {
   }
   if (isError) return <Text>에러: {error.message}</Text>;
 
-  const lists = data[0].lists;
+  const lists = !!data.length ? data[0].lists : false;
 
   return (
     //html시작 배경
@@ -188,7 +190,7 @@ const MyPage = () => {
           ></View>
           {/* 내가쓴 글 */}
           <ScrollView horizontal={true}>
-            {lists.map((list) => {
+            {lists? lists.map((list) => {
               return (
                 <TouchableOpacity
                   key={list.id}
@@ -227,7 +229,7 @@ const MyPage = () => {
                   </View>
                 </TouchableOpacity>
               );
-            })}
+            }): null}
           </ScrollView>
         </View>
       </MyWishListArea>
