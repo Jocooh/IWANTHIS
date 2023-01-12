@@ -117,7 +117,7 @@ const MyPage = () => {
   }
   if (isError) return <Text>에러: {error.message}</Text>;
 
-  const lists = !!data ? data[0].lists : [];
+  const lists = !!data.length ? data[0].lists : false;
 
   return (
     <MyPageWrapper>
@@ -151,7 +151,7 @@ const MyPage = () => {
           <MyPageTitleTxt>My Wishlist</MyPageTitleTxt>
           {/* <FlatList data={} renderItem={} keyExtractor={} /> */}
           <ScrollView horizontal={true}>
-            {lists.map((list) => {
+            {lists? lists.map((list) => {
               return (
                 <TouchableOpacity
                   key={list.id}
@@ -183,7 +183,7 @@ const MyPage = () => {
                   </MyItemSt>
                 </TouchableOpacity>
               );
-            })}
+            }): null}
           </ScrollView>
         </View>
       </MyWishListArea>
