@@ -23,7 +23,7 @@ import { Loader } from "../styles/styled";
 import { defaultImage } from "../common/util";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../components/Category";
-import { listImagePath } from '../assets/imgPath';
+import { listImagePath } from "../assets/imgPath";
 
 // 이미지 css, 버튼 ,
 
@@ -158,13 +158,17 @@ const MyPage = () => {
                       category: list.category,
                       listId: list.categoryId,
                       color: colors[list.category],
-                      img: listImagePath[list.category]
+                      img: listImagePath[list.category],
                     });
                   }}
                 >
                   <MyItemSt>
                     <MyItemPicSt
-                      source={{ uri: !!list.image ? list.image : defaultImage }}
+                      source={
+                        !!list.image
+                          ? { uri: list.image }
+                          : listImagePath[list.category]
+                      }
                     />
                     <MyItemInfoSt>
                       <MyPageTxt> 상품명 : {list.title} </MyPageTxt>
