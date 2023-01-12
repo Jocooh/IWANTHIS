@@ -21,7 +21,6 @@ import {
 } from "../styles/styled";
 import { useQuery } from "react-query";
 import { listImagePath } from "../assets/imgPath";
-import styled from "@emotion/native";
 import CpList from "../components/CpList";
 import CpList2 from "../components/CpList2";
 
@@ -51,7 +50,8 @@ const Lists = ({
   //최신순 불러오는 함수
   const currentList = () => {
     const desc = data.sort(function (a, b) {
-      return b.id - a.id;
+      // return b.id - a.id;
+      console.log("최신순", b.id, a.id);
     });
     setLists(desc);
   };
@@ -59,15 +59,16 @@ const Lists = ({
   //좋아용 불러오는 함수
   const likeList = () => {
     const iLike = data.sort(function (a, b) {
-      return b.like - a.like;
+      let lengthB = b.like.length;
+      let lengthA = a.like.length;
+      // return lengthB - lengthA;
+      return console.log("인기순", lengthB, lengthA);
     });
     setLists(iLike);
   };
 
-  //로그인 시 글작성페이지, 비로그인 시 로그인창   ---> 로그아웃기능 후에 확인 가능할듯
   const handleAdding = () => {
     const isLogin = !!auth.currentUser;
-    console.log(isLogin);
     if (!isLogin) {
       navigate("Login");
       return;
@@ -140,8 +141,6 @@ const Lists = ({
               </View>
             </TouchableOpacity>
           </View>
-          {/* 여기는 리스트 들어가는 구간 props받고 바로 map */}
-
           {data.length <= 0 ? (
             <CpList2></CpList2>
           ) : (
@@ -152,7 +151,7 @@ const Lists = ({
                   id={list.id}
                   color={color}
                   navigation={navigate}
-                  img= {listImagePath[category]}
+                  img={listImagePath[category]}
                   key={list.id}
                 ></CpList>
               ))}

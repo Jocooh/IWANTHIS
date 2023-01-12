@@ -1,90 +1,145 @@
 import {
   View,
-  Text,
-  StyleSheet,
-  Image,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   Button,
   Alert,
   TextInput,
-  AntDesign,
-  FlatList,
 } from "react-native";
 import styled from "@emotion/native";
 import defaultimage from "../assets/defaultimage.png";
 import testimg from "../assets/testimg.png";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
+import { updateProfile } from "firebase/auth/react-native";
+import { auth, storage } from "../common/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
-// import dummy from "../db/db.json";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { v4 as uuidv4 } from "uuid";
+
+// 이미지 css, 버튼 ,
 
 const MyPage = () => {
-  // 프로필 변경
-  const [photo, SetPhoto] = useState(defaultimage);
-  const myProfilePicChangeBtn = () => {
-    Alert.alert("My Profile", "프로필 사진을 변경하시겠습니까?", [
+  // 데이터 가져오기
+  const user = auth.currentUser;
+
+  console.log(user.email);
+  console.log(user.displayName);
+  console.log(user.photoURL);
+
+  // 닉네임 변경
+  const [text, setText] = useState("");
+  const [nickName, setNickname] = useState(user.displayName);
+
+  const editNickname = () => {
+    setNickname(text);
+    updateProfile(user, {
+      displayName: text,
+    });
+  };
+  // 이미지 선택 & 미리보기
+  const [pickedImg, setPickedImg] = useState(user.photoURL);
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+
+  const pickImage = async () => {
+    if (!status?.granted) {
+      const permissions = await requestPermission();
+      if (!permissions.granted) {
+        return null;
+      }
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!!result) {
+      const [{ uri }] = result.assets;
+      setPickedImg(uri);
+    }
+  };
+  console.log(pickedImg);
+
+  //이미지 파이어베이스 스토리지 업로드
+  const uploadImage = async () => {
+    if (pickedImg) {
+      const response = await fetch(pickedImg);
+      const blobFile = await response.blob();
+      const imageRef = ref(storage, `profile/${uuidv4()}`);
+
+      let downloadUrl;
+
+      if (blobFile) {
+        const imageResponse = await uploadBytes(imageRef, blobFile);
+        downloadUrl = await getDownloadURL(imageResponse.ref);
+      }
+
+      updateProfile(user, {
+        photoURL: downloadUrl,
+      });
+    }
+  };
+
+  const changenicknameBtn = () => {
+    Alert.alert("My Proflie", "프로필을 변경하시겠습니까?", [
       {
         text: "확인",
         onPress: () => {
-          Alert.alert("아직은 안돼요");
+          editNickname();
+          uploadImage();
+          setText("");
+          Alert.alert("My Proflie", "프로필을 변경되었습니다.");
         },
       },
       { text: "취소" },
     ]);
   };
 
-  // 닉네임 변경
-  const [name, setName] = useState("닉네임");
-  const [text, setText] = useState("");
-  // const changeNameBtn = () => {
-  //   setName(text);
-  //   setText();
+  // 프로필 사진 변경
+  // const [photo, setPhoto] = useState(defaultimage);
+  // const changePhotoBtn = () => {
+  //   Alert.alert("My Profile", "프로필 사진을 변경하시겠습니까?", [
+  //     {
+  //       text: "확인",
+  //       onPress: () => {
+  //         Alert.alert("아직은 안돼요~");
+  //       },
+  //     },
+  //     { text: "취소" },
+  //   ]);
   // };
-  const changeName = () => {
-    setName(text);
-    setText();
-  };
-  const changeNameBtn = () => {
-    Alert.alert("My Proflie", "닉네임을 변경하시겠습니까?", [
-      {
-        text: "확인",
-        onPress: () => {
-          Alert.alert("My Proflie", "닉네임이 변경되었습니다.", changeName());
-        },
-      },
-      { text: "취소" },
-    ]);
-  };
 
   return (
     <MyPageWrapper>
       <StatusBar style="auto" />
-      <MyPageTitleTxt>My Profile</MyPageTitleTxt>
+      <MyPageTitleTxt>안녕하세요, {user.email}님!</MyPageTitleTxt>
       <MyProfileArea>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={myProfilePicChangeBtn}>
-            <MyProfilePicSt source={photo} />
+          <TouchableOpacity onPress={() => pickImage()}>
+            <MyProfilePicSt
+              source={pickedImg ? { uri: pickedImg } : defaultimage}
+            />
           </TouchableOpacity>
 
           <MyProfileInfoSt>
-            <MyPageTxt>{name}</MyPageTxt>
+            <MyPageTxt>{nickName}</MyPageTxt>
             <TextInput
               placeholder="변경할 닉네임을 입력해주세요."
               onChangeText={setText}
               value={text}
             ></TextInput>
-            <Button title="변경하기" onPress={changeNameBtn}></Button>
           </MyProfileInfoSt>
+        </View>
+
+        <View>
+          <Button title="변경하기" onPress={() => changenicknameBtn()}></Button>
         </View>
       </MyProfileArea>
 
       <MyWishListArea>
-        <MyPageTitleTxt>My Wishlist</MyPageTitleTxt>
         <View style={{ alignItems: "center" }}>
+          <MyPageTitleTxt>My Wishlist</MyPageTitleTxt>
           {/* <FlatList data={} renderItem={} keyExtractor={} /> */}
           <ScrollView horizontal={true}>
             <TouchableOpacity>
@@ -112,13 +167,13 @@ const MyPageWrapper = styled.View`
   background-color: #92b1e8;
 `;
 const MyProfileArea = styled.View`
-  flex: 0.6;
+  flex: 0.4;
   background-color: #92b1e8;
 
   align-items: center;
 `;
 const MyWishListArea = styled.View`
-  flex: 1.6;
+  flex: 1.1;
   background-color: white;
   border-radius: 30px 0 0 0;
   // #f6efd6
@@ -126,21 +181,21 @@ const MyWishListArea = styled.View`
   /* align-items: center; */
 `;
 const MyPageTitleTxt = styled.Text`
-  font-size: 40px;
-  font-weight: 700;
+  font-size: 25px;
+  /* font-weight: bold; */
 
   /* text-decoration: underline; */
   margin: 5%;
 `;
 const MyPageTxt = styled.Text`
-  font-size: 30px;
-  font-weight: 500;
+  font-size: 20px;
+  /* font-weight: bold; */
 
   margin: auto;
 `;
 const MyPageTxt2 = styled.Text`
-  font-size: 22px;
-  font-weight: 500;
+  font-size: 15px;
+  /* font-weight: bold; */
 
   margin: auto;
 `;

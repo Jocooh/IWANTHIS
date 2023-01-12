@@ -3,10 +3,11 @@ import { ListImage, ListStyle } from "../styles/styled";
 
 //navigate물어보자.
 
-const CpList = ({ list, category, navigation, color, id, img }) => {
+const CpList = ({ list, navigation, color, id, img }) => {
   const isDark = useColorScheme() === "dark";
   const backColor = isDark ? "#605e58" : "#e4e7ef";
   const fontColor = isDark ? "#dad8d1" : "black";
+  let results = list.image;
 
   return (
     <TouchableHighlight
@@ -36,11 +37,7 @@ const CpList = ({ list, category, navigation, color, id, img }) => {
         </View>
         {/* 유저프로필대신 상품 이미지 */}
         <View style={{ marginVertical: -5 }}>
-          <ListImage
-            source={{
-              uri: `${list.image}`,
-            }}
-          />
+          <ListImage source={results ? { uri: `${list.image}` } : null} />
         </View>
       </ListStyle>
     </TouchableHighlight>
