@@ -20,10 +20,10 @@ import { v4 as uuidv4 } from "uuid";
 import { useQuery } from "react-query";
 import { getMyPost } from "../common/api";
 import { Loader } from "../styles/styled";
-import { defaultImage } from "../common/util";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../components/Category";
 import { listImagePath } from "../assets/imgPath";
+import { defaultImage } from '../common/util';
 
 // 이미지 css, 버튼 ,
 
@@ -44,7 +44,7 @@ const MyPage = () => {
     });
   };
   // 이미지 선택 & 미리보기
-  const [pickedImg, setPickedImg] = useState(user.photoURL);
+  const [pickedImg, setPickedImg] = useState(user.photoURL ? user.photoURL : defaultImage);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const pickImage = async () => {
@@ -125,7 +125,7 @@ const MyPage = () => {
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={() => pickImage()}>
             <MyProfilePicSt
-              source={pickedImg ? { uri: pickedImg } : defaultimage}
+              source={{ uri: pickedImg ? pickedImg : defaultImage }}
             />
           </TouchableOpacity>
 

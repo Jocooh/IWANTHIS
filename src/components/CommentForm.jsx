@@ -23,9 +23,9 @@ const CommentForm = ({ category, listId, comments }) => {
 
   const newComment = {
     id: Number(`${lists.length !== 0 ? lists[lists.length - 1].id + 1 : 1}`),
-    uid: `${user ? user.uid : ""}`,
-    profileImg: `${user.photoURL && user ? user.photoURL : defaultImage}`,
-    nickName: `${user.displayName && user ? user.displayName : "익명"}`,
+    uid: `${!!user ? user.uid : ""}`,
+    profileImg: `${!!user ? user.photoURL : defaultImage}`,
+    nickName: `${!!user ? user.displayName : "익명"}`,
     comment,
   };
 

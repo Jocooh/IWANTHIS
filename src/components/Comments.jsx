@@ -14,6 +14,7 @@ import { offEdit, onEdit } from "../redux/modules/commentSlice";
 import { auth } from "../common/firebase";
 import { changeDetail } from "../common/api";
 import { DetailText } from "../styles/styled";
+import { defaultImage } from '../common/util';
 
 const Comments = ({ category, listId, comment, comments }) => {
   const isDark = useColorScheme() === "dark";
@@ -67,12 +68,14 @@ const Comments = ({ category, listId, comment, comments }) => {
     ]);
   };
 
+  console.log(comment.profileImg);
+
   return (
     <CommentsBox style={{ borderBottomColor: fontColor }}>
       <View style={{ flex: 8, flexDirection: "row" }}>
         <ProfileImage
           resizeMode="contain"
-          source={{ uri: comment.profileImg }}
+          source={{ uri: comment.profileImg ? comment.profileImg : defaultImage }}
         />
         <View style={{ width: "75%" }}>
           <View style={{ marginBottom: 6 }}>
