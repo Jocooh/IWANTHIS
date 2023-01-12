@@ -1,13 +1,12 @@
 import { ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Category from "../components/Category";
 import { auth } from '../common/firebase';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { isLogin, notLogin } from '../redux/modules/loginSlice';
 
 const Home = ({ navigation: { navigate } }) => {
   const dispatch = useDispatch();
-  const checkLogin = useSelector(state => state.login.isLogin)
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
