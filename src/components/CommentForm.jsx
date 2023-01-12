@@ -5,7 +5,6 @@ import { TouchableOpacity, useColorScheme } from "react-native";
 import { useMutation, useQueryClient } from "react-query";
 import { auth } from "../common/firebase";
 import { changeDetail } from "../common/api";
-import { defaultImage } from "../common/util";
 
 const CommentForm = ({ category, listId, comments }) => {
   const isDark = useColorScheme() === "dark";
@@ -24,8 +23,8 @@ const CommentForm = ({ category, listId, comments }) => {
   const newComment = {
     id: Number(`${lists.length !== 0 ? lists[lists.length - 1].id + 1 : 1}`),
     uid: `${!!user ? user.uid : ""}`,
-    profileImg: `${!!user ? user.photoURL : defaultImage}`,
-    nickName: `${!!user ? user.displayName : "익명"}`,
+    profileImg: `${!!user ? user.photoURL : ""}`,
+    nickName: `${!!user ? user.displayName : ""}`,
     comment,
   };
 

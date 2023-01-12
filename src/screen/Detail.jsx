@@ -31,7 +31,7 @@ import {
   Loader,
   styles,
 } from "../styles/styled";
-import { defaultImage, height, width } from "../common/util";
+import { height, width } from "../common/util";
 import Comments from "../components/Comments";
 import CommentForm from "../components/CommentForm";
 
