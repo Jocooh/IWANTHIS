@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { auth } from "../common/firebase";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth/react-native";
-import EditList from '../screen/EditList';
+import EditList from "../screen/EditList";
 
 const NativeStack = createNativeStackNavigator();
 
