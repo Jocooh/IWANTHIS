@@ -154,7 +154,7 @@ const Detail = () => {
             >
               <Animated.Image
                 style={[styles.bg(), { marginLeft: "5%" }]}
-                source={{ uri: list.image !== "" ? list.image : defaultImage }}
+                source={!!list.image ? { uri: list.image } : img}
               />
             </ImageLink>
             <ImageBtnBox
