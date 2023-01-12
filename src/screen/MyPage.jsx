@@ -5,10 +5,11 @@ import {
   Button,
   Alert,
   TextInput,
+  ActivityIndicator,
+  Text,
 } from "react-native";
 import styled from "@emotion/native";
 import defaultimage from "../assets/defaultimage.png";
-import testimg from "../assets/testimg.png";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { updateProfile } from "firebase/auth/react-native";
@@ -16,16 +17,21 @@ import { auth, storage } from "../common/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
 import { v4 as uuidv4 } from "uuid";
+import { useQuery } from "react-query";
+import { getMyPost } from "../common/api";
+import { Loader } from "../styles/styled";
+import { defaultImage } from "../common/util";
+import { useNavigation } from "@react-navigation/native";
+import { colors } from "../components/Category";
+import { listImagePath } from '../assets/imgPath';
 
 // 이미지 css, 버튼 ,
 
 const MyPage = () => {
+  const { navigate } = useNavigation();
   // 데이터 가져오기
   const user = auth.currentUser;
-
-  console.log(user.email);
-  console.log(user.displayName);
-  console.log(user.photoURL);
+  const uid = user.uid;
 
   // 닉네임 변경
   const [text, setText] = useState("");
@@ -59,7 +65,6 @@ const MyPage = () => {
       setPickedImg(uri);
     }
   };
-  console.log(pickedImg);
 
   //이미지 파이어베이스 스토리지 업로드
   const uploadImage = async () => {
@@ -96,19 +101,21 @@ const MyPage = () => {
     ]);
   };
 
-  // 프로필 사진 변경
-  // const [photo, setPhoto] = useState(defaultimage);
-  // const changePhotoBtn = () => {
-  //   Alert.alert("My Profile", "프로필 사진을 변경하시겠습니까?", [
-  //     {
-  //       text: "확인",
-  //       onPress: () => {
-  //         Alert.alert("아직은 안돼요~");
-  //       },
-  //     },
-  //     { text: "취소" },
-  //   ]);
-  // };
+  const { isLoading, isError, data, error } = useQuery(
+    [uid ? `?uid=${uid}` : ""],
+    getMyPost
+  );
+
+  if (isLoading) {
+    return (
+      <Loader>
+        <ActivityIndicator size={"large"} />
+      </Loader>
+    );
+  }
+  if (isError) return <Text>에러: {error.message}</Text>;
+
+  const lists = data[0].lists;
 
   return (
     <MyPageWrapper>
@@ -142,16 +149,35 @@ const MyPage = () => {
           <MyPageTitleTxt>My Wishlist</MyPageTitleTxt>
           {/* <FlatList data={} renderItem={} keyExtractor={} /> */}
           <ScrollView horizontal={true}>
-            <TouchableOpacity>
-              <MyItemSt>
-                <MyItemPicSt source={testimg} />
-                <MyItemInfoSt>
-                  <MyPageTxt> 상품명 : 자동차 </MyPageTxt>
-                  <MyPageTxt2> 가격 : 50,000,000 KRW </MyPageTxt2>
-                  <MyPageTxt2> 설명 : 사주세요 </MyPageTxt2>
-                </MyItemInfoSt>
-              </MyItemSt>
-            </TouchableOpacity>
+            {lists.map((list) => {
+              return (
+                <TouchableOpacity
+                  key={list.id}
+                  onPress={() => {
+                    navigate("Detail", {
+                      category: list.category,
+                      listId: list.categoryId,
+                      color: colors[list.category],
+                      img: listImagePath[list.category]
+                    });
+                  }}
+                >
+                  <MyItemSt>
+                    <MyItemPicSt
+                      source={{ uri: !!list.image ? list.image : defaultImage }}
+                    />
+                    <MyItemInfoSt>
+                      <MyPageTxt> 상품명 : {list.title} </MyPageTxt>
+                      <MyPageTxt2> 가격 : {list.price} KRW </MyPageTxt2>
+                      <MyPageTxt2 numberOfLines={3} ellipsizeMode="tail">
+                        {" "}
+                        설명 : {list.content}{" "}
+                      </MyPageTxt2>
+                    </MyItemInfoSt>
+                  </MyItemSt>
+                </TouchableOpacity>
+              );
+            })}
           </ScrollView>
         </View>
       </MyWishListArea>
@@ -162,7 +188,7 @@ const MyPage = () => {
 export default MyPage;
 
 // my page
-const MyPageWrapper = styled.View`
+const MyPageWrapper = styled.ScrollView`
   flex: 1;
   background-color: #92b1e8;
 `;
