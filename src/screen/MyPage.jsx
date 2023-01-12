@@ -43,7 +43,7 @@ const MyPage = () => {
   };
   // 이미지 선택 & 미리보기
   const [pickedImg, setPickedImg] = useState(
-    user.photoURL ? user.photoURL : null
+    user.photoURL ? user.photoURL : ""
   );
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 

@@ -165,6 +165,9 @@ const WriteList = () => {
       alert("가격을 제대로 입력해주세요.\n가격은 0으로 시작할수 없어요");
       return;
     }
+    if (Number(price) >= 1000000000000) {
+      alert("가격을 제대로 입력해주세요\n가격은 억단위까지 제공됩니다.")
+    }
     uploadImage()
       .then((image) => {
         if (!checkFirstPost) {

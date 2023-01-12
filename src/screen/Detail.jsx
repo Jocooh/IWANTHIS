@@ -145,6 +145,7 @@ const Detail = () => {
   return (
     <DetailFlat
       style={{ backgroundColor: backColor }}
+      removeClippedSubviews={false}
       ListHeaderComponent={
         <View style={{ width: width }}>
           <ImageBox style={{ backgroundColor: color["backColor"] ?? "white" }}>
