@@ -6,13 +6,19 @@ import WriteList from "../screen/WriteList";
 import Login from "../screen/Login";
 import Header from "../components/Header";
 import { listImagePath } from "../assets/imgPath";
-import { Text, Image, TouchableOpacity, View, Alert } from "react-native";
+import {
+  Text,
+  Image,
+  TouchableOpacity,
+  View,
+  Alert,
+} from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../common/firebase";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth/react-native";
-import EditList from '../screen/EditList';
+import EditList from "../screen/EditList";
 
 const NativeStack = createNativeStackNavigator();
 

@@ -6,14 +6,12 @@ import {
   ActivityIndicator,
   Animated,
   FlatList,
+  useColorScheme,
 } from "react-native";
 import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-
-import WriteList from "./WriteList";
-import Detail from "./Detail";
 import {
   ListBackground,
   ListImage,
@@ -36,6 +34,8 @@ const Lists = ({
   const [lists, setLists] = useState([]);
   const scrollA = useRef(new Animated.Value(0)).current;
   const [order, setOrder] = useState(0);
+  const isDark = useColorScheme() === "dark"
+  const backColor = isDark ? "black" : "white"
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
 
@@ -120,7 +120,7 @@ const Lists = ({
           />
         </View>
         {/* 흰색 배경 */}
-        <ListBackground>
+        <ListBackground style={{backgroundColor: backColor }}>
           <View
             style={{
               justifyContent: "flex-end",

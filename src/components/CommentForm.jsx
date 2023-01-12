@@ -1,13 +1,15 @@
 import { useState } from "react";
 import styled from "@emotion/native";
 import { AntDesign } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import { useMutation, useQueryClient } from "react-query";
 import { auth } from "../common/firebase";
 import { changeDetail } from "../common/api";
-import { defaultImage } from '../common/util';
+import { defaultImage } from "../common/util";
 
 const CommentForm = ({ category, listId, comments }) => {
+  const isDark = useColorScheme() === "dark";
+  const fontColor = isDark ? "#dad8d1" : "black";
   const [comment, setComment] = useState("");
   const lists = comments;
   const queryClient = useQueryClient();
@@ -41,16 +43,20 @@ const CommentForm = ({ category, listId, comments }) => {
   };
 
   return (
-    <CommentInputBox style={{ display: `${user ? "flex" : "none"}` }}>
+    <CommentInputBox
+      style={{ display: `${user ? "flex" : "none"}`, borderColor: fontColor }}
+    >
       <CommentInput
         multiline={true}
+        style={{ color: fontColor }}
+        placeholderTextColor={isDark ? "#9b988a" : "gray"}
         placeholder="댓글을 입력해주세요"
         name="comments"
         onChangeText={setComment}
         value={comment}
       />
       <TouchableOpacity onPress={addComment}>
-        <AntDesign name="plussquare" size={30} color="black" />
+        <AntDesign name="plussquare" size={30} color={fontColor} />
       </TouchableOpacity>
     </CommentInputBox>
   );

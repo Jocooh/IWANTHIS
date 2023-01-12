@@ -14,11 +14,11 @@ import { darkTheme, lightTheme } from "./src/styles/theme";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import "react-native-get-random-values";
 
+const Nav = createNativeStackNavigator();
 const queryClient = new QueryClient();
 
 const App = () => {
   const isDark = useColorScheme() === "dark";
-  const Nav = createNativeStackNavigator();
 
   return (
     <QueryClientProvider client={queryClient}>
