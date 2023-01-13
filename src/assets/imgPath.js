@@ -104,6 +104,7 @@ export const listImagePath = {
   cart: require("./2.png"),
   //loading: [require("./loading1.png"), require("./loading1.png")],
   logo: require("./iwanthis.png"),
+  darkLogo: require("./isDarkLogo.png"),
 };
 export const no = {
   no: require("./listImage/no.png"),

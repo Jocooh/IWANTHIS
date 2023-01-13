@@ -1,7 +1,9 @@
 import { listImagePath } from "../assets/imgPath";
-import { Text, Image } from "react-native";
+import { Text, Image, useColorScheme } from "react-native";
 
 const Header = (props) => {
+  const isDark = useColorScheme() === "dark";
+  const trueIsDark = !!isDark;
   return (
     <>
       {/* <Text>IWANTHIS</Text>
@@ -10,11 +12,19 @@ const Header = (props) => {
         source={listImagePath["cart"]}
         resizeMode="contain"
       /> */}
-      <Image
-        source={listImagePath["logo"]}
-        style={{ width: 140, height: 50 }}
-        resizeMode="contain"
-      />
+      {trueIsDark ? (
+        <Image
+          source={listImagePath["darkLogo"]}
+          style={{ width: 140, height: 50 }}
+          resizeMode="contain"
+        />
+      ) : (
+        <Image
+          source={listImagePath["logo"]}
+          style={{ width: 140, height: 50 }}
+          resizeMode="contain"
+        />
+      )}
     </>
   );
 };

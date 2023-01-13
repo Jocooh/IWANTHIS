@@ -27,7 +27,7 @@ const App = () => {
           <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
             <SafeAreaProvider>
               <Nav.Navigator screenOptions={{ headerShown: false }}>
-                <Nav.Screen name="Stacks" component={Stacks} />
+                <Nav.Screen name="Stacks" component={Stacks} isDark={isDark} />
               </Nav.Navigator>
             </SafeAreaProvider>
           </NavigationContainer>
