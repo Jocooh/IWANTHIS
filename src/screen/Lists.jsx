@@ -33,8 +33,8 @@ const Lists = ({
   const [lists, setLists] = useState([]);
   const scrollA = useRef(new Animated.Value(0)).current;
   const [order, setOrder] = useState(0);
-  const isDark = useColorScheme() === "dark"
-  const backColor = isDark ? "black" : "white"
+  const isDark = useColorScheme() === "dark";
+  const backColor = isDark ? "black" : "white";
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
 
@@ -50,10 +50,9 @@ const Lists = ({
   //최신순 불러오는 함수
   const currentList = () => {
     const desc = data.sort(function (a, b) {
-      // return b.id - a.id;
-      console.log("최신순", b.id, a.id);
+      return b.id - a.id;
     });
-    setLists(desc);
+    setLists((prev) => [...prev], desc);
   };
 
   //좋아용 불러오는 함수
@@ -61,10 +60,9 @@ const Lists = ({
     const iLike = data.sort(function (a, b) {
       let lengthB = b.like.length;
       let lengthA = a.like.length;
-      // return lengthB - lengthA;
-      return console.log("인기순", lengthB, lengthA);
+      return lengthB - lengthA;
     });
-    setLists(iLike);
+    setLists((prev) => [...prev], iLike);
   };
 
   const handleAdding = () => {
@@ -121,7 +119,7 @@ const Lists = ({
           />
         </View>
         {/* 흰색 배경 */}
-        <ListBackground style={{backgroundColor: backColor }}>
+        <ListBackground style={{ backgroundColor: backColor }}>
           <View
             style={{
               justifyContent: "flex-end",
