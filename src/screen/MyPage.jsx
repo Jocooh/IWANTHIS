@@ -2,7 +2,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Button,
   Alert,
   TextInput,
   ActivityIndicator,
@@ -129,7 +128,9 @@ const MyPage = () => {
           {/* 프로필이미지 */}
           <TouchableOpacity onPress={() => pickImage()}>
             <MyProfilePicSt
-              source={!!pickedImg ?{ uri: pickedImg }: listImagePath["defaultimage"]}
+              source={
+                !!pickedImg ? { uri: pickedImg } : listImagePath["defaultimage"]
+              }
             />
           </TouchableOpacity>
           {/* 유저 이메일 */}
@@ -187,46 +188,48 @@ const MyPage = () => {
           ></View>
           {/* 내가쓴 글 */}
           <ScrollView horizontal={true}>
-            {lists? lists.map((list) => {
-              return (
-                <TouchableOpacity
-                  key={list.id}
-                  onPress={() => {
-                    navigate("Detail", {
-                      category: list.category,
-                      listId: list.categoryId,
-                      color: colors[list.category],
-                      img: listImagePath[list.category],
-                    });
-                  }}
-                >
-                  {/* 여기가 리스트들 */}
-                  <View
-                    style={{
-                      backgroundColor: `${list.color}`,
-                      marginLeft: 10,
-                      marginVertical: 20,
-                    }}
-                  >
-                    <MyItemPicSt
-                      source={
-                        !!list.image
-                          ? { uri: list.image }
-                          : listImagePath[list.category]
-                      }
-                    />
-                    <MyItemInfoSt>
-                      <MyPageTxt> {list.title} </MyPageTxt>
-                      <MyPageTxt2> {list.price}원 </MyPageTxt2>
-                      <MyPageTxt2>
-                        📝 {list.content.slice(0, 7)}
-                        {list.content.length > 7 && "..."}
-                      </MyPageTxt2>
-                    </MyItemInfoSt>
-                  </View>
-                </TouchableOpacity>
-              );
-            }): null}
+            {lists
+              ? lists.map((list) => {
+                  return (
+                    <TouchableOpacity
+                      key={list.id}
+                      onPress={() => {
+                        navigate("Detail", {
+                          category: list.category,
+                          listId: list.categoryId,
+                          color: colors[list.category],
+                          img: listImagePath[list.category],
+                        });
+                      }}
+                    >
+                      {/* 여기가 리스트들 */}
+                      <View
+                        style={{
+                          backgroundColor: `${list.color}`,
+                          marginLeft: 10,
+                          marginVertical: 20,
+                        }}
+                      >
+                        <MyItemPicSt
+                          source={
+                            !!list.image
+                              ? { uri: list.image }
+                              : listImagePath[list.category]
+                          }
+                        />
+                        <MyItemInfoSt>
+                          <MyPageTxt> {list.title} </MyPageTxt>
+                          <MyPageTxt2> {list.price}원 </MyPageTxt2>
+                          <MyPageTxt2>
+                            📝 {list.content.slice(0, 7)}
+                            {list.content.length > 7 && "..."}
+                          </MyPageTxt2>
+                        </MyItemInfoSt>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
           </ScrollView>
         </View>
       </MyWishListArea>
@@ -275,7 +278,6 @@ const MyPageTxt2 = styled.Text`
 const MyProfilePicSt = styled.Image`
   width: 70px;
   height: 70px;
-  /* margin: auto 7% auto -5%; */
   margin: auto;
   border-radius: 50px;
 `;

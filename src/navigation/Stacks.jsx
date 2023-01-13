@@ -5,22 +5,31 @@ import Detail from "../screen/Detail";
 import WriteList from "../screen/WriteList";
 import Login from "../screen/Login";
 import Header from "../components/Header";
-import { imagePath, listImagePath } from "../assets/imgPath";
-import { Text, Image, TouchableOpacity, View, Alert } from "react-native";
+import { listImagePath } from "../assets/imgPath";
+import {
+  Text,
+  Image,
+  TouchableOpacity,
+  View,
+  Alert,
+  useColorScheme,
+} from "react-native";
 import MyPage from "../screen/MyPage";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../common/firebase";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { signOut } from "firebase/auth/react-native";
 import EditList from "../screen/EditList";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const NativeStack = createNativeStackNavigator();
 
-const Stacks = () => {
+const Stacks = (props) => {
   const { navigate } = useNavigation();
-  const check = useSelector(state => state.login.isLogin)
+  const check = useSelector((state) => state.login.isLogin);
   const imagePosition = "a";
+  const isDark = useColorScheme() === "dark";
+  const trueIsDark = !!isDark;
 
   //로그아웃 누르면 로그아웃되는 코드
   const logOut = () => {
@@ -64,7 +73,7 @@ const Stacks = () => {
                     <SimpleLineIcons
                       name="logout"
                       size={24}
-                      color="black"
+                      color={trueIsDark ? "white" : "black"}
                       onPress={logOut}
                       style={{ marginTop: 7 }}
                     />
@@ -90,7 +99,7 @@ const Stacks = () => {
                   <SimpleLineIcons
                     name="login"
                     size={24}
-                    color="black"
+                    color={trueIsDark ? "white" : "black"}
                     onPress={() => {
                       navigate("Login");
                     }}

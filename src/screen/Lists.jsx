@@ -5,20 +5,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Animated,
-  FlatList,
   useColorScheme,
 } from "react-native";
 import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import {
-  ListBackground,
-  ListImage,
-  ListStyle,
-  Loader,
-  ListTitle,
-} from "../styles/styled";
+import { ListBackground, Loader, ListTitle } from "../styles/styled";
 import { useQuery } from "react-query";
 import { listImagePath } from "../assets/imgPath";
 import CpList from "../components/CpList";
