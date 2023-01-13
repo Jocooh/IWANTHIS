@@ -1,14 +1,14 @@
-import { View, Pressable, Image, Animated, Alert } from "react-native";
+import { Animated, Alert, Text, View } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/native";
 import { auth, storage } from "../common/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  signOut,
 } from "firebase/auth/react-native";
 import * as ImagePicker from "expo-image-picker";
 
@@ -16,8 +16,6 @@ import { v4 as uuidv4 } from "uuid";
 import { emailRegex, height, pwRegex, width } from "../common/util";
 import { FontAwesome5, AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
-import { async } from "@firebase/util";
-import { listImagePath } from "../assets/imgPath";
 
 /* 리팩토링 예정 ㅠㅠㅠㅠㅠ*/
 export default function Login({ navigation: { goBack, setOptions } }) {
@@ -159,8 +157,8 @@ export default function Login({ navigation: { goBack, setOptions } }) {
 
     // 회원가입 요청
     createUserWithEmailAndPassword(auth, joinEmail, joinPw)
-      .then(async (response) => {
-        const photo = await uploadImage(response.user.uid);
+      .then(async () => {
+        const photo = await uploadImage();
         await updateProfile(auth.currentUser, {
           photoURL: photo,
           displayName: joinNickName,
@@ -179,12 +177,6 @@ export default function Login({ navigation: { goBack, setOptions } }) {
         }
         setOpacity(1);
       });
-  };
-
-  const handleLogout = () => {
-    signOut(auth).then(() => {
-      goBack();
-    });
   };
 
   useEffect(() => {
@@ -234,31 +226,31 @@ export default function Login({ navigation: { goBack, setOptions } }) {
         showsPagination={false}
         slidesPerView={2}
         width={width}
-        height={500}
+        height={height}
         loop={nextPage}
       >
         {component.map((item, index) => {
           return (
-            <Page
-              color={item["backColor"]}
+            <KeyboardAwareScrollView
               key={index}
-              opacity={opacity}
-              image={listImagePath["iwanthis"]}
+              resetScrollToCoords={{ x: 0, y: 0 }}
+              scrollEnabled={true}
             >
-              <BackCircle style={{ backgroundColor: item["innerColor"] }} />
+              <Page color={item["backColor"]} opacity={opacity}>
+                <BackCircle style={{ backgroundColor: item["innerColor"] }} />
 
-              {index === 0 ? ( // 로그인 페이지
-                <Around>
-                  <FontAwesome5
-                    style={{
-                      marginBottom: height * 0.1,
-                      marginLeft: height / 28,
-                    }}
-                    name="user-tag"
-                    size={height / 12}
-                    color={item["innerColor"]}
-                  />
-                  {/* <Image
+                {index === 0 ? ( // 로그인 페이지
+                  <Around>
+                    <FontAwesome5
+                      style={{
+                        marginBottom: height * 0.1,
+                        marginLeft: height / 28,
+                      }}
+                      name="user-tag"
+                      size={height / 12}
+                      color={item["innerColor"]}
+                    />
+                    {/* <Image
                     source={listImagePath["shopping"]}
                     style={{
                       width: 100,
@@ -268,190 +260,199 @@ export default function Login({ navigation: { goBack, setOptions } }) {
                     }}
                   /> */}
 
-                  <IdInput>
-                    <AntDesign
-                      name="tag"
-                      size={24}
-                      style={{ marginTop: "4%", marginRight: "3%" }}
-                      color={logEmail.length > 0 ? item["innerColor"] : "grey"}
-                    />
-                    <LoginBox
-                      ref={logEmailRef}
-                      value={logEmail}
-                      onChangeText={(text) => setLogEmail(text)}
-                      placeholderTextColor={"grey"}
-                      textContentType="emailAddress"
-                      placeholder="Enter your email id"
-                      color={item["backColor"]}
-                    />
-                  </IdInput>
-                  <PasswordInput style={{ marginBottom: "20%" }}>
-                    <Entypo
-                      name="fingerprint"
-                      style={{ marginTop: "4%", marginRight: "3%" }}
-                      size={24}
-                      color={logPw.length > 0 ? item["innerColor"] : "grey"}
-                      onLongPress={() => setShowPw(false)}
-                      onPressOut={() => setShowPw(true)}
-                    />
-                    <LoginBox
-                      ref={logPwRef}
-                      value={logPw}
-                      onChangeText={(text) => setLogPw(text)}
-                      placeholderTextColor={"grey"}
-                      textContentType="password"
-                      returnKeyType="send"
-                      secureTextEntry={showPw}
-                      placeholder="Enter your password"
-                      color={item["backColor"]}
-                    />
-                  </PasswordInput>
-                  <FontAwesome5
-                    name="door-open"
-                    size={height / 25}
-                    color={
-                      (logPw && logEmail).length > 0
-                        ? item["innerColor"]
-                        : "grey"
-                    }
-                    onPress={() => handleLogin("log")}
-                  />
-                </Around>
-              ) : (
-                <Around
-                  style={{ height: height / 1.4, marginTop: height / 11 }}
-                >
-                  <Animated.Image
-                    style={{
-                      width: width / 3,
-                      height: height / 7,
-                      marginTop: height * 0.001,
-                      backgroundColor: item["innerColor"],
-                      borderRadius: 100,
-                      display: !!pickedImg ? "flex" : "none",
-                    }}
-                    source={!!pickedImg ? { uri: pickedImg } : null}
-                  />
-                  <FontAwesome5
-                    style={{
-                      //marginTop: height * 0.01,
-                      marginBottom: height * 0.01,
-                      marginLeft: height / 28,
-                      display: !!pickedImg ? "none" : "flex",
-                    }}
-                    name="user-tag"
-                    size={height / 10}
-                    color={item["innerColor"]}
-                  />
+                    <IdInput>
+                      <AntDesign
+                        name="tag"
+                        size={24}
+                        style={{ marginTop: "4%", marginRight: "3%" }}
+                        color={
+                          logEmail.length > 0 ? item["innerColor"] : "grey"
+                        }
+                      />
+                      <LoginBox
+                        ref={logEmailRef}
+                        onChangeText={(text) => setLogEmail(text)}
+                        placeholderTextColor={"grey"}
+                        textContentType="emailAddress"
+                        placeholder="Enter your email id"
+                        color={item["backColor"]}
+                      />
+                    </IdInput>
 
-                  <Feather
-                    name="camera"
-                    size={24}
-                    onPress={() => pickImage()}
-                    style={{
-                      color: item["innerColor"],
-                      marginBottom: 33,
-                    }}
-                  />
-                  <IdInput>
+                    <PasswordInput style={{ marginBottom: "20%" }}>
+                      <Entypo
+                        name="fingerprint"
+                        style={{ marginTop: "4%", marginRight: "3%" }}
+                        size={24}
+                        color={logPw.length > 0 ? item["innerColor"] : "grey"}
+                        onLongPress={() => setShowPw(false)}
+                        onPressOut={() => setShowPw(true)}
+                      />
+                      <LoginBox
+                        ref={logPwRef}
+                        onChangeText={(text) => setLogPw(text)}
+                        placeholderTextColor={"grey"}
+                        textContentType="password"
+                        returnKeyType="send"
+                        secureTextEntry={showPw}
+                        placeholder="Enter your password"
+                        color={item["backColor"]}
+                      />
+                    </PasswordInput>
                     <FontAwesome5
-                      name="user-alt"
-                      size={24}
-                      style={{ marginTop: "4%", marginRight: "3%" }}
+                      name="door-open"
+                      size={height / 25}
                       color={
-                        joinNickName.length > 0 ? item["innerColor"] : "grey"
+                        (logPw && logEmail).length > 0
+                          ? item["innerColor"]
+                          : "grey"
                       }
+                      onPress={() => handleLogin("log")}
                     />
-                    <LoginBox
-                      ref={joinNickNameRef}
-                      value={joinNickName}
-                      onChangeText={(text) => setJoinNickName(text)}
-                      placeholderTextColor={"grey"}
-                      textContentType="Nick-name"
-                      placeholder="Enter your nick name"
-                      secureTextEntry={false}
-                      color={item["backColor"]}
+                    <Text
+                      style={{ color: "grey", marginTop: height / 25 }}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      회원가입은 오른쪽으로 슬라이드 하세요
+                    </Text>
+                  </Around>
+                ) : (
+                  <Around
+                    style={{ height: height / 1.4, marginTop: height / 11 }}
+                  >
+                    <Animated.Image
+                      style={{
+                        width: width / 3,
+                        height: height / 7,
+                        marginTop: height * 0.001,
+                        backgroundColor: item["innerColor"],
+                        borderRadius: 100,
+                        display: !!pickedImg ? "flex" : "none",
+                      }}
+                      source={!!pickedImg ? { uri: pickedImg } : null}
                     />
-                  </IdInput>
-
-                  <IdInput>
-                    <AntDesign
-                      name="tag"
-                      size={24}
-                      style={{ marginTop: "4%", marginRight: "3%" }}
-                      color={joinEmail.length > 0 ? item["innerColor"] : "grey"}
-                    />
-                    <LoginBox
-                      ref={joinEmailRef}
-                      value={joinEmail}
-                      onChangeText={(text) => setJoinEmail(text)}
-                      placeholderTextColor={"grey"}
-                      textContentType="emailAddress"
-                      placeholder="Enter your email id"
-                      secureTextEntry={false}
-                      color={item["backColor"]}
-                    />
-                  </IdInput>
-                  <PasswordInput>
-                    <Entypo
-                      name="fingerprint"
-                      style={{ marginTop: "4%", marginRight: "3%" }}
-                      size={24}
-                      color={joinPw.length > 0 ? item["innerColor"] : "grey"}
-                      onLongPress={() => setShowPw(false)}
-                      onPressOut={() => setShowPw(true)}
-                    />
-                    <LoginBox
-                      ref={joinPwRef}
-                      value={joinPw}
-                      onChangeText={(text) => setJoinPw(text)}
-                      placeholderTextColor={"grey"}
-                      textContentType="password"
-                      returnKeyType="send"
-                      secureTextEntry={showPw}
-                      placeholder="Enter your password"
-                      color={item["backColor"]}
-                    />
-                  </PasswordInput>
-                  <PasswordInput style={{ marginBottom: "6%" }}>
-                    <Entypo
-                      name="fingerprint"
-                      style={{ marginTop: "4%", marginRight: "3%" }}
-                      size={24}
-                      color={
-                        joinPwCheck.length > 0 ? item["innerColor"] : "grey"
-                      }
-                      onLongPress={() => setShowPwCh(false)}
-                      onPressOut={() => setShowPwCh(true)}
+                    <FontAwesome5
+                      style={{
+                        //marginTop: height * 0.01,
+                        marginBottom: height * 0.01,
+                        marginLeft: height / 28,
+                        display: !!pickedImg ? "none" : "flex",
+                      }}
+                      name="user-tag"
+                      size={height / 10}
+                      color={item["innerColor"]}
                     />
 
-                    <LoginBox
-                      ref={joinPwCheckRef}
-                      value={joinPwCheck}
-                      onChangeText={(text) => setJoinPwCheck(text)}
-                      placeholderTextColor={"grey"}
-                      textContentType="password"
-                      returnKeyType="send"
-                      secureTextEntry={showPwCh}
-                      placeholder="password again"
-                      color={item["backColor"]}
+                    <Feather
+                      name="camera"
+                      size={24}
+                      onPress={() => pickImage()}
+                      style={{
+                        color: item["innerColor"],
+                        marginBottom: 33,
+                      }}
                     />
-                  </PasswordInput>
-                  <FontAwesome5
-                    name="door-open"
-                    style={{ marginBottom: "5%" }}
-                    size={height / 25}
-                    color={
-                      (joinNickName && joinPw && joinEmail && joinPwCheck)
-                        .length > 0
-                        ? item["innerColor"]
-                        : "grey"
-                    }
-                    onPress={() => handleRegister("join")}
-                  />
-                </Around>
-              )}
-            </Page>
+                    <IdInput>
+                      <FontAwesome5
+                        name="user-alt"
+                        size={24}
+                        style={{ marginTop: "4%", marginRight: "3%" }}
+                        color={
+                          joinNickName.length > 0 ? item["innerColor"] : "grey"
+                        }
+                      />
+                      <LoginBox
+                        ref={joinNickNameRef}
+                        onChangeText={(text) => setJoinNickName(text)}
+                        placeholderTextColor={"grey"}
+                        textContentType="Nick-name"
+                        placeholder="Enter your nick name"
+                        secureTextEntry={false}
+                        color={item["backColor"]}
+                      />
+                    </IdInput>
+
+                    <IdInput>
+                      <AntDesign
+                        name="tag"
+                        size={24}
+                        style={{ marginTop: "4%", marginRight: "3%" }}
+                        color={
+                          joinEmail.length > 0 ? item["innerColor"] : "grey"
+                        }
+                      />
+                      <LoginBox
+                        ref={joinEmailRef}
+                        onChangeText={(text) => setJoinEmail(text)}
+                        placeholderTextColor={"grey"}
+                        textContentType="emailAddress"
+                        placeholder="Enter your email id"
+                        secureTextEntry={false}
+                        color={item["backColor"]}
+                      />
+                    </IdInput>
+                    <PasswordInput>
+                      <Entypo
+                        name="fingerprint"
+                        style={{ marginTop: "4%", marginRight: "3%" }}
+                        size={24}
+                        color={joinPw.length > 0 ? item["innerColor"] : "grey"}
+                        onLongPress={() => setShowPw(false)}
+                        onPressOut={() => setShowPw(true)}
+                      />
+                      <LoginBox
+                        ref={joinPwRef}
+                        onChangeText={(text) => setJoinPw(text)}
+                        placeholderTextColor={"grey"}
+                        textContentType="password"
+                        returnKeyType="send"
+                        secureTextEntry={showPw}
+                        placeholder="Enter your password"
+                        color={item["backColor"]}
+                      />
+                    </PasswordInput>
+
+                    <PasswordInput style={{ marginBottom: "6%" }}>
+                      <Entypo
+                        name="fingerprint"
+                        style={{ marginTop: "4%", marginRight: "3%" }}
+                        size={24}
+                        color={
+                          joinPwCheck.length > 0 ? item["innerColor"] : "grey"
+                        }
+                        onLongPress={() => setShowPwCh(false)}
+                        onPressOut={() => setShowPwCh(true)}
+                      />
+
+                      <LoginBox
+                        ref={joinPwCheckRef}
+                        onChangeText={(text) => setJoinPwCheck(text)}
+                        placeholderTextColor={"grey"}
+                        textContentType="password"
+                        returnKeyType="send"
+                        secureTextEntry={showPwCh}
+                        placeholder="password again"
+                        color={item["backColor"]}
+                      />
+                    </PasswordInput>
+
+                    <FontAwesome5
+                      name="door-open"
+                      style={{ marginBottom: "5%" }}
+                      size={height / 25}
+                      color={
+                        (joinNickName && joinPw && joinEmail && joinPwCheck)
+                          .length > 0
+                          ? item["innerColor"]
+                          : "grey"
+                      }
+                      onPress={() => handleRegister("join")}
+                    />
+                  </Around>
+                )}
+              </Page>
+            </KeyboardAwareScrollView>
           );
         })}
       </Swiper>
