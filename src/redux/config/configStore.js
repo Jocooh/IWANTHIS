@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import example from "../modules/exampleSlice";
+import comment from "../modules/commentSlice";
+import login from "../modules/loginSlice";
 
 const rootReducer = combineReducers({
-  example,
+  comment,
+  login,
 });
 
 const store = configureStore({ reducer: rootReducer });
