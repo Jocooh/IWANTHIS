@@ -1,7 +1,7 @@
 # IWANTHIS
 
 IOS
-![image](https://user-images.githubusercontent.com/116235243/212226395-ca38d489-a140-45b8-92ac-db434747c221.png)
+![image](https://user-images.githubusercontent.com/116235243/212492422-fa127e92-e417-405e-9582-00ac7376d2ad.png)
 
 ANDROID
-![image](https://user-images.githubusercontent.com/116235243/212226450-27e39050-98ac-42e3-8ec1-54df856fb91e.png)
+![image](https://user-images.githubusercontent.com/116235243/212492427-7b1e1f62-de9b-4bf3-93d3-bc36870b64fd.png)
