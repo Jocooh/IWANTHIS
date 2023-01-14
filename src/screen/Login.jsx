@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import { emailRegex, height, pwRegex, width } from "../common/util";
 import { FontAwesome5, AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
-import usePickImage from '../hooks/usePickImage';
+import usePickImage from "../hooks/usePickImage";
 
 /* 리팩토링 예정 ㅠㅠㅠㅠㅠ*/
 export default function Login({ navigation: { goBack, setOptions } }) {
@@ -206,7 +206,6 @@ export default function Login({ navigation: { goBack, setOptions } }) {
         showsPagination={false}
         slidesPerView={2}
         width={width}
-        height={height}
         loop={nextPage}
       >
         {component.map((item, index) => {
@@ -230,15 +229,6 @@ export default function Login({ navigation: { goBack, setOptions } }) {
                       size={height / 12}
                       color={item["innerColor"]}
                     />
-                    {/* <Image
-                    source={listImagePath["shopping"]}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      marginBottom: height * 0.09,
-                      marginLeft: width * 0.0001,
-                    }}
-                  /> */}
 
                     <IdInput>
                       <AntDesign
@@ -441,7 +431,7 @@ export default function Login({ navigation: { goBack, setOptions } }) {
 }
 
 const Page = styled.View`
-  height: ${height + "px"};
+  height: ${height - 80 + "px"};
   width: ${width + "px"};
   position: relative;
   background-color: ${({ color }) => color};
