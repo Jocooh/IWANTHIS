@@ -12,8 +12,7 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/2b2713ac-dafa-4b27-b775-105b88437e9b"
+      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
@@ -25,10 +24,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -40,14 +36,6 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "2b2713ac-dafa-4b27-b775-105b88437e9b"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    }
+    ]
   }
 }
