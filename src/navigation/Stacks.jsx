@@ -24,10 +24,10 @@ import { useSelector } from "react-redux";
 
 const NativeStack = createNativeStackNavigator();
 
-const Stacks = (props) => {
+const Stacks = () => {
   const { navigate } = useNavigation();
   const check = useSelector((state) => state.login.isLogin);
-  const imagePosition = "a";
+  // 다크모드
   const isDark = useColorScheme() === "dark";
   const trueIsDark = !!isDark;
 

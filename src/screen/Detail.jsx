@@ -1,8 +1,6 @@
 import {
   ActivityIndicator,
   Alert,
-  Animated,
-  Linking,
   Text,
   TouchableOpacity,
   useColorScheme,
@@ -13,30 +11,25 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import styled from "@emotion/native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useMutation, useQueries, useQueryClient } from "react-query";
 import {
-  changeDetail,
   changeMyPost,
   deleteDetail,
   getDetailList,
   getMyPost,
 } from "../common/api";
 import { auth } from "../common/firebase";
-import {
-  DetailText,
-  ImageBox,
-  ImageBtnBox,
-  Loader,
-  styles,
-} from "../styles/styled";
-import { height, width } from "../common/util";
-import Comments from "../components/Comments";
-import CommentForm from "../components/CommentForm";
+import { width } from "../common/util";
+import { Loader } from "../styles/styled";
+import * as St from "../styles/styled/Detail.styled";
+import ImageBox from "../components/Detail/ImageBox";
+import CommentForm from "../components/Detail/CommentForm";
+import Comments from "../components/Detail/Comments";
 
 const Detail = () => {
   const queryClient = useQueryClient();
+  // 다크모드
   const isDark = useColorScheme() === "dark";
   const backColor = isDark ? "#605e58" : "white";
   const fontColor = isDark ? "#dad8d1" : "black";
@@ -58,13 +51,6 @@ const Detail = () => {
 
   // 마이포스트에서 삭제
   const changeMyPostMutation = useMutation(changeMyPost);
-
-  // 좋아요
-  const likeMutation = useMutation(changeDetail, {
-    onSuccess: async () => {
-      queryClient.invalidateQueries([category, listId]);
-    },
-  });
 
   // GET list + mypost
   const results = useQueries([
@@ -90,29 +76,13 @@ const Detail = () => {
   const myId = data[1].map((x) => x.id)[0];
   const myPost = data[1].map((x) => x.lists).flat();
 
-  // 가격계산 코드 맨앞이 0일때 제거해야함 귀찮아서 나중에
+  // 가격계산 코드
   let price = list.price.toString();
   if (price >= 100000000) {
     price = `${price.slice(0, -8)}억${price.slice(-8, -4)}만${price.slice(-4)}`;
   } else if (price >= 10000) {
     price = `${price.slice(0, -4)}만${price.slice(-4)}`;
   }
-
-  // Linking
-  const url = list.url;
-  const openLink = (url) => {
-    Alert.alert("이동", `${url}\n이 링크로 이동하시겠습니까?`, [
-      {
-        text: "취소",
-      },
-      {
-        text: "이동하기",
-        onPress: async () => {
-          await Linking.openURL(url);
-        },
-      },
-    ]);
-  };
 
   // 삭제
   const deleteHandler = () => {
@@ -133,69 +103,34 @@ const Detail = () => {
     ]);
   };
 
-  // 좋아요
-  const checkLike = user ? list.like.includes(uid) : false;
-
-  const likeHandler = () => {
-    let newLike = list.like;
-    newLike.push(uid);
-    likeMutation.mutate([category, listId, { like: newLike }]);
-  };
-
   return (
-    <DetailFlat
+    <St.DetailFlat
       style={{ backgroundColor: backColor }}
       removeClippedSubviews={false}
       ListHeaderComponent={
         <View style={{ width: width }}>
-          <ImageBox style={{ backgroundColor: color["backColor"] ?? "white" }}>
-            <ImageLink
-              onPress={() => openLink(url)}
-              disabled={url === "" ? true : false}
-            >
-              <Animated.Image
-                style={[styles.bg(), { marginLeft: "5%" }]}
-                source={!!list.image ? { uri: list.image } : img}
-              />
-            </ImageLink>
-            <ImageBtnBox
-              style={{ backgroundColor: color["fontColor"] ?? "blue" }}
-            >
-              <LikeBtn
-                onPress={() => likeHandler()}
-                disabled={user && !checkLike ? false : true}
-              >
-                <LikeBox>
-                  <View style={{ position: "absolute" }}>
-                    <AntDesign
-                      name={"heart"}
-                      size={15}
-                      color={color["backColor"]}
-                    />
-                  </View>
-                  <LikeCount>
-                    <Text style={{ color: "white", fontSize: 25 }}>
-                      {list.like.length}
-                    </Text>
-                  </LikeCount>
-                </LikeBox>
-              </LikeBtn>
-            </ImageBtnBox>
-          </ImageBox>
-          <DetailContainer>
-            <DetailTitle>
-              <DetailHeader style={{ color: fontColor }}>
+          <ImageBox
+            color={color}
+            list={list}
+            category={category}
+            listId={listId}
+            from="Detail"
+            img={img}
+          />
+          <St.DetailContainer>
+            <St.DetailTitle>
+              <St.DetailHeader style={{ color: fontColor }}>
                 {list.title}
-              </DetailHeader>
+              </St.DetailHeader>
               <Text
                 style={{
                   color: isDark ? "#9b988a" : "gray",
-                  display: !!url ? "flex" : "none",
+                  display: !!list.url ? "flex" : "none",
                 }}
               >
                 ※ 이미지 클릭 시 판매사이트로 이동합니다.
               </Text>
-              <DetailBtnBox
+              <St.DetailBtnBox
                 style={{ display: uid === list.uid ? "flex" : "none" }}
               >
                 <TouchableOpacity
@@ -208,19 +143,21 @@ const Detail = () => {
                 <TouchableOpacity onPress={() => deleteHandler()}>
                   <AntDesign name="delete" size={30} color={fontColor} />
                 </TouchableOpacity>
-              </DetailBtnBox>
-            </DetailTitle>
-            <PriceBox>
+              </St.DetailBtnBox>
+            </St.DetailTitle>
+            <St.PriceBox>
               <MaterialIcons name="attach-money" size={24} color="yellow" />
-              <DetailText style={{ color: fontColor }}>{price}원</DetailText>
-            </PriceBox>
-            <PriceBox style={{ marginBottom: "15%" }}>
+              <St.DetailText style={{ color: fontColor }}>
+                {price}원
+              </St.DetailText>
+            </St.PriceBox>
+            <St.PriceBox style={{ marginBottom: "15%" }}>
               <MaterialCommunityIcons name="typewriter" size={24} color="red" />
-              <DetailText style={{ color: fontColor }}>
+              <St.DetailText style={{ color: fontColor }}>
                 {list.content}
-              </DetailText>
-            </PriceBox>
-          </DetailContainer>
+              </St.DetailText>
+            </St.PriceBox>
+          </St.DetailContainer>
           <CommentForm
             category={category}
             listId={listId}
@@ -244,70 +181,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
-const DetailFlat = styled.FlatList`
-  position: relative;
-  width: ${width + "px"};
-  height: ${height + "px"};
-`;
-
-const ImageLink = styled.TouchableOpacity`
-  align-content: center;
-  width: 100%;
-  height: 95%;
-`;
-
-const LikeBtn = styled.TouchableOpacity`
-  position: absolute;
-  width: 45px;
-  height: 40px;
-  margin-top: 30%;
-  margin-left: 10%;
-`;
-
-const LikeBox = styled.View`
-  flex-direction: row;
-  align-items: center;
-  position: relative;
-  margin-top: 25%;
-  margin-left: 10%;
-`;
-
-const LikeCount = styled.View`
-  position: absolute;
-  margin-left: 40%;
-  margin-top: 10%;
-`;
-
-const DetailContainer = styled.View`
-  flex-direction: column;
-  justify-content: space-between;
-  margin-top: 15%;
-  margin-left: 5%;
-  margin-right: 5%;
-`;
-
-const DetailTitle = styled.View`
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-`;
-
-const DetailHeader = styled.Text`
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 4%;
-`;
-
-const DetailBtnBox = styled.TouchableOpacity`
-  margin-top: 7%;
-  flex-direction: row;
-`;
-
-const PriceBox = styled.View`
-  flex-direction: row;
-  margin-top: 10%;
-  width: 95%;
-`;
