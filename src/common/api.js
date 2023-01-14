@@ -5,7 +5,7 @@ export const SERVER_ADDRESS = "https://regal-roomy-skunk.glitch.me"; // 나중�
 export const getLists = async ({ queryKey }) => {
   const [category] = queryKey;
   const { data } = await axios.get(`${SERVER_ADDRESS}/${category}`);
-  return data;
+  return data.reverse();
 };
 
 export const getDetailList = async ({ queryKey }) => {

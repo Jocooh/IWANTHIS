@@ -3,16 +3,17 @@ import styled from "@emotion/native";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { useMutation, useQueryClient } from "react-query";
-import { auth } from "../common/firebase";
-import { changeDetail } from "../common/api";
+import { auth } from "../../common/firebase";
+import { changeDetail } from "../../common/api";
 
 const CommentForm = ({ category, listId, comments }) => {
-  const isDark = useColorScheme() === "dark";
-  const fontColor = isDark ? "#dad8d1" : "black";
-  const [comment, setComment] = useState("");
   const lists = comments;
   const queryClient = useQueryClient();
   const user = auth.currentUser;
+  // 다크모드
+  const isDark = useColorScheme() === "dark";
+  const fontColor = isDark ? "#dad8d1" : "black";
+  const [comment, setComment] = useState("");
 
   const commentMutation = useMutation(changeDetail, {
     onSuccess: () => {

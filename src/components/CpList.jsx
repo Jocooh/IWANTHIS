@@ -4,9 +4,11 @@ import { ListImage, ListStyle } from "../styles/styled";
 //navigate물어보자.
 
 const CpList = ({ list, navigation, color, id, img }) => {
+  // 다크모드
   const isDark = useColorScheme() === "dark";
   const backColor = isDark ? "#605e58" : "#e4e7ef";
   const fontColor = isDark ? "#dad8d1" : "black";
+  
   let results = list.image;
 
   return (

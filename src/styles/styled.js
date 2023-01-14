@@ -37,42 +37,7 @@ export const ListImage = styled.Image`
   border-radius: 50px;
 `;
 
-export const DetailText = styled.Text`
-  font-size: 20px;
-`;
-
-export const ImageBox = styled.View`
-  flex-direction: row;
-  position: relative;
-  height: 350px;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-`;
-
-export const ImageView = styled.View`
-  align-content: center;
-  width: 100%;
-  height: 95%;
-`;
-
-export const ImageBtnBox = styled.View`
-  position: absolute;
-  z-index: 1;
-  top: 93%;
-  right: 43%;
-  height: 50px;
-  width: 50px;
-  border-radius: 100px;
-`;
-
-export const styles = {
-  bg: () => ({
-    width: "90%",
-    height: "100%",
-    resizeMode: "contain",
-  }),
-};
-
+//Loader
 export const Loader = styled.View`
   width: ${width + "px"};
   height: ${height + "px"};

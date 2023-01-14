@@ -3,8 +3,10 @@ import { Text, Image, useColorScheme } from "react-native";
 import styled from "@emotion/native";
 
 function CpList2() {
+  // 다크모드
   const isDark = useColorScheme() === "dark";
   const fontColor = isDark ? "#dad8d1" : "black";
+  
   return (
     <NoList>
       <Image

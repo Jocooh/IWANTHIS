@@ -1,21 +1,19 @@
-import { Animated, Alert, Text, View } from "react-native";
+import { Animated, Alert, Text } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import styled from "@emotion/native";
 import { auth, storage } from "../common/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth/react-native";
-import * as ImagePicker from "expo-image-picker";
-
 import { v4 as uuidv4 } from "uuid";
 import { emailRegex, height, pwRegex, width } from "../common/util";
 import { FontAwesome5, AntDesign, Entypo, Feather } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
+import usePickImage from "../hooks/usePickImage";
 
 /* 리팩토링 예정 ㅠㅠㅠㅠㅠ*/
 export default function Login({ navigation: { goBack, setOptions } }) {
@@ -32,13 +30,10 @@ export default function Login({ navigation: { goBack, setOptions } }) {
   const [joinNickName, setJoinNickName] = useState("");
   const [joinPw, setJoinPw] = useState("");
   const [joinPwCheck, setJoinPwCheck] = useState("");
-
   const [showPw, setShowPw] = useState(true);
   const [showPwCh, setShowPwCh] = useState(true);
-  const [pickedImg, setPickedImg] = useState("");
   const [opacity, setOpacity] = useState(1);
   const [nextPage, setNextPage] = useState(false);
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
   const validateInputs = (kind) => {
     const info = {
@@ -183,22 +178,7 @@ export default function Login({ navigation: { goBack, setOptions } }) {
     setOptions({ headerRight: () => null });
   }, []);
 
-  const pickImage = async () => {
-    if (!status?.granted) {
-      const permissions = await requestPermission();
-      if (!permissions.granted) {
-        return null;
-      }
-    }
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    const [{ uri }] = result.assets;
-    setPickedImg(uri);
-  };
+  const [pickedImg, setPickedImg, pickImage] = usePickImage("");
 
   const uploadImage = async () => {
     if (pickedImg) {
@@ -226,7 +206,6 @@ export default function Login({ navigation: { goBack, setOptions } }) {
         showsPagination={false}
         slidesPerView={2}
         width={width}
-        height={height}
         loop={nextPage}
       >
         {component.map((item, index) => {
@@ -250,15 +229,6 @@ export default function Login({ navigation: { goBack, setOptions } }) {
                       size={height / 12}
                       color={item["innerColor"]}
                     />
-                    {/* <Image
-                    source={listImagePath["shopping"]}
-                    style={{
-                      width: 100,
-                      height: 100,
-                      marginBottom: height * 0.09,
-                      marginLeft: width * 0.0001,
-                    }}
-                  /> */}
 
                     <IdInput>
                       <AntDesign
@@ -461,7 +431,7 @@ export default function Login({ navigation: { goBack, setOptions } }) {
 }
 
 const Page = styled.View`
-  height: ${height + "px"};
+  height: ${height - 80 + "px"};
   width: ${width + "px"};
   position: relative;
   background-color: ${({ color }) => color};

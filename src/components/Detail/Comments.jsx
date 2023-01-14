@@ -6,25 +6,27 @@ import {
   useColorScheme,
 } from "react-native";
 import { useState } from "react";
-import styled from "@emotion/native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
-import { offEdit, onEdit } from "../redux/modules/commentSlice";
-import { auth } from "../common/firebase";
-import { changeDetail } from "../common/api";
-import { DetailText } from "../styles/styled";
-import { listImagePath } from '../assets/imgPath';
+import { offEdit, onEdit } from "../../redux/modules/commentSlice";
+import { auth } from "../../common/firebase";
+import { changeDetail } from "../../common/api";
+import { listImagePath } from "../../assets/imgPath";
+import * as St from "../../styles/styled/Detail.styled"
 
 const Comments = ({ category, listId, comment, comments }) => {
-  const isDark = useColorScheme() === "dark";
-  const fontColor = isDark ? "#dad8d1" : "black";
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const edit = useSelector((state) => state.comment);
   const user = auth.currentUser;
   const checkUser = user ? user.uid === comment.uid : false;
   const checkEdit = edit.id === comment.id;
+  // 다크모드
+  const isDark = useColorScheme() === "dark";
+  const fontColor = isDark ? "#dad8d1" : "black";
+  
+  // 수정
   const [editComment, setEditComment] = useState();
 
   const commentMutation = useMutation(changeDetail, {
@@ -69,18 +71,22 @@ const Comments = ({ category, listId, comment, comments }) => {
   };
 
   return (
-    <CommentsBox style={{ borderBottomColor: fontColor }}>
+    <St.CommentsBox style={{ borderBottomColor: fontColor }}>
       <View style={{ flex: 8, flexDirection: "row" }}>
-        <ProfileImage
+        <St.ProfileImage
           resizeMode="contain"
-          source={!!comment.profileImg ?{ uri: comment.profileImg }: listImagePath["defaultimage"]}
+          source={
+            !!comment.profileImg
+              ? { uri: comment.profileImg }
+              : listImagePath["defaultimage"]
+          }
         />
         <View style={{ width: "75%" }}>
           <View style={{ marginBottom: 6 }}>
             <Text style={{ color: fontColor }}>{comment.nickName}</Text>
           </View>
           <View style={{ justifyContent: "center" }}>
-            <DetailText
+            <St.DetailText
               style={{
                 color: fontColor,
                 lineHeight: 27,
@@ -88,8 +94,8 @@ const Comments = ({ category, listId, comment, comments }) => {
               }}
             >
               {comment.comment}
-            </DetailText>
-            <EditInput
+            </St.DetailText>
+            <St.EditInput
               style={{
                 color: fontColor,
                 display: checkEdit && edit.isEdit ? "flex" : "none",
@@ -104,7 +110,7 @@ const Comments = ({ category, listId, comment, comments }) => {
           </View>
         </View>
       </View>
-      <EditBtnBox style={{ display: checkUser ? "flex" : "none" }}>
+      <St.EditBtnBox style={{ display: checkUser ? "flex" : "none" }}>
         <View
           style={{
             flexDirection: "row",
@@ -121,50 +127,15 @@ const Comments = ({ category, listId, comment, comments }) => {
             <AntDesign name="delete" size={32} color={fontColor} />
           </TouchableOpacity>
         </View>
-        <EditCheck
+        <St.EditCheck
           onPress={() => submitHandler()}
           style={{ display: checkEdit && edit.isEdit ? "flex" : "none" }}
         >
           <AntDesign name="check" size={40} color={fontColor} />
-        </EditCheck>
-      </EditBtnBox>
-    </CommentsBox>
+        </St.EditCheck>
+      </St.EditBtnBox>
+    </St.CommentsBox>
   );
 };
 
 export default Comments;
-
-const CommentsBox = styled.View`
-  position: relative;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 95%;
-  margin: auto;
-  padding: 0 0 10px 0;
-  border-bottom-width: 1px;
-`;
-
-const ProfileImage = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 50px;
-  margin-right: 10px;
-`;
-
-const EditInput = styled.TextInput`
-  width: 100%;
-  font-size: 16px;
-  border-style: solid;
-  border-width: 1px;
-`;
-
-const EditBtnBox = styled.View`
-  flex: 2;
-`;
-
-const EditCheck = styled.TouchableOpacity`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;

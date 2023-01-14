@@ -9,7 +9,6 @@ const Profile = ({ navigate }) => {
           source={imagePath["defaultimage"]}
           style={{ height: 40, width: 40 }}
         />
-        {/* <View style={{ height: 10 }}></View> */}
       </View>
     </TouchableOpacity>
   );
