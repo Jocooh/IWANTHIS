@@ -25,7 +25,7 @@ const Lists = ({
 }) => {
   const [lists, setLists] = useState([]);
   const scrollA = useRef(new Animated.Value(0)).current;
-  const [order, setOrder] = useState(0);
+  // 다크모드
   const isDark = useColorScheme() === "dark";
   const backColor = isDark ? "black" : "white";
 

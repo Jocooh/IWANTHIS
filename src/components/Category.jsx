@@ -6,11 +6,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useState, useEffect } from "react";
-import React from "react";
 import { listImagePath } from "../assets/imgPath";
 import { width } from "../common/util";
-import Swiper from "react-native-swiper";
-import { Loader } from "../styles/styled";
 
 export const colors = {
   beauty: {

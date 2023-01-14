@@ -1,7 +1,5 @@
-import { View, ScrollView, Animated, useColorScheme } from "react-native";
+import { View, ScrollView, useColorScheme } from "react-native";
 import { useState } from "react";
-import styled from "@emotion/native";
-import * as ImagePicker from "expo-image-picker";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient } from "react-query";
@@ -10,13 +8,16 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { changeDetail, changeMyPost } from "../common/api";
 import { v4 as uuidv4 } from "uuid";
 import { width } from "../common/util";
-import { ImageBox, ImageBtnBox, ImageView, styles } from "../styles/styled";
+import usePickImage from "../hooks/usePickImage";
+import ImageBox from "../components/Detail/ImageBox";
+import * as St from "../styles/styled/WriteList.styled";
+import InputZone from '../components/Form/InputZone';
 
 const EditList = () => {
   const queryClient = useQueryClient();
+  //다크모드
   const isDark = useColorScheme() === "dark";
   const backColor = isDark ? "#605e58" : "white";
-  const fontColor = isDark ? "#dad8d1" : "black";
 
   // 네비게이션
   const { goBack } = useNavigation();
@@ -40,27 +41,7 @@ const EditList = () => {
   };
 
   // 이미지 선택 & 미리보기
-  const [pickedImg, setPickedImg] = useState(list.image);
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-
-  const pickImage = async () => {
-    if (!status?.granted) {
-      const permissions = await requestPermission();
-      if (!permissions.granted) {
-        return null;
-      }
-    }
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    if (!!result) {
-      const [{ uri }] = result.assets;
-      setPickedImg(uri);
-    }
-  };
+  const [pickedImg, setPickedImg, pickImage] = usePickImage(list.image);
 
   // 카테고리 게시판 수정
   const editMutation = useMutation(changeDetail, {
@@ -75,9 +56,9 @@ const EditList = () => {
   const changeMyPostMutation = useMutation(changeMyPost);
 
   //이미지 파이어베이스 스토리지 업로드
-  const uploadImage = async () => {
-    if (pickedImg) {
-      const response = await fetch(pickedImg);
+  const uploadImage = async (img) => {
+    if (img) {
+      const response = await fetch(img);
       const blobFile = await response.blob();
       const imageRef = ref(storage, `image/${uuidv4()}`);
       if (blobFile) {
@@ -130,7 +111,7 @@ const EditList = () => {
       return;
     }
     if (pickedImg !== list.image) {
-      uploadImage().then((image) => {
+      uploadImage(pickedImg).then((image) => {
         const newMyPost = myPost.map((x) => {
           if (x.category === category && x.categoryId === id) {
             return { ...x, title, content, price: Number(price), image };
@@ -152,105 +133,43 @@ const EditList = () => {
   return (
     <ScrollView style={{ backgroundColor: backColor }}>
       <View style={{ width: width }}>
-        <ImageBox style={{ backgroundColor: color["backColor"] }}>
-          <ImageView>
-            <Animated.Image
-              style={[styles.bg(), { marginLeft: "5%" }]}
-              source={!!pickedImg ? { uri: pickedImg } : img}
-            />
-          </ImageView>
-          <ImageBtnBox style={{ backgroundColor: color["fontColor"] }}>
-            <CameraBtn onPress={() => pickImage()}>
-              <Feather name="camera" size={24} color={color["backColor"]} />
-            </CameraBtn>
-          </ImageBtnBox>
-        </ImageBox>
-        <InfoView>
+        <ImageBox
+          color={color}
+          list={list}
+          from="EditList"
+          img={img}
+          pickedImg={pickedImg}
+          pickImage={pickImage}
+        />
+        <St.InfoView>
           <InputZone
-            placeholder="상품명"
-            placeholderTextColor={isDark ? "#9b988a" : "gray"}
-            style={{ fontSize: 25, marginTop: "2%", color: fontColor }}
-            onChangeText={setTitle}
-            value={title}
+            title={title}
+            setTitle={setTitle}
+            content={content}
+            setContent={setContent}
+            price={price}
+            setPrice={setPrice}
+            url={url}
+            setUrl={setUrl}
           />
-          <InputZone
-            style={{ color: fontColor }}
-            keyboardType="number-pad"
-            placeholder="가격"
-            placeholderTextColor={isDark ? "#9b988a" : "gray"}
-            onChangeText={setPrice}
-            value={price}
-          />
-          <InputZone
-            style={{ color: fontColor }}
-            keyboardType="url"
-            placeholder="판매링크"
-            placeholderTextColor={isDark ? "#9b988a" : "gray"}
-            onChangeText={setUrl}
-            value={url}
-          />
-          <InputContent
-            multiline={true}
-            style={{ textAlignVertical: "top", color: fontColor }}
-            placeholder="설명"
-            placeholderTextColor={isDark ? "#9b988a" : "gray"}
-            onChangeText={setContent}
-            value={content}
-          />
-          <WriteBtnBox>
-            <PostBtn
+          <St.WriteBtnBox>
+            <St.PostBtn
               onPress={() => editHandler()}
               style={{ backgroundColor: color["backColor"] }}
             >
               <Feather name="check" size={24} color={color["fontColor"]} />
-            </PostBtn>
-            <PostBtn
+            </St.PostBtn>
+            <St.PostBtn
               onPress={reset}
               style={{ backgroundColor: color["backColor"] }}
             >
               <AntDesign name="close" size={24} color={color["fontColor"]} />
-            </PostBtn>
-          </WriteBtnBox>
-        </InfoView>
+            </St.PostBtn>
+          </St.WriteBtnBox>
+        </St.InfoView>
       </View>
     </ScrollView>
   );
 };
-
-const CameraBtn = styled.TouchableOpacity`
-  width: 40px;
-  height: 40px;
-  margin-top: 23%;
-  margin-left: 26%;
-`;
-
-const InputZone = styled.TextInput`
-  margin-bottom: 15px;
-  height: 40px;
-  font-size: 17px;
-`;
-
-const InputContent = styled.TextInput`
-  min-height: 100px;
-  margin-bottom: 15px;
-  font-size: 17px;
-`;
-
-const InfoView = styled.View`
-  margin: 4% 5% 5% 5%;
-`;
-
-const WriteBtnBox = styled.View`
-  flex-direction: row;
-  width: 100%;
-  height: 50px;
-`;
-
-const PostBtn = styled.TouchableOpacity`
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  border-radius: 40px;
-`;
 
 export default EditList;
