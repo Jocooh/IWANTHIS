@@ -50,7 +50,6 @@ const WriteList = () => {
     onSuccess: async () => {
       queryClient.invalidateQueries(category);
       reset();
-      goBack();
     },
   });
 
