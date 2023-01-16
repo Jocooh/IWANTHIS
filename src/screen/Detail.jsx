@@ -45,7 +45,6 @@ const Detail = () => {
   const deleteMutation = useMutation(deleteDetail, {
     onSuccess: async () => {
       queryClient.invalidateQueries(category);
-      goBack();
     },
   });
 
@@ -98,6 +97,7 @@ const Detail = () => {
           );
           changeMyPostMutation.mutate([myId, { lists: newMyPost }]);
           deleteMutation.mutate([category, listId]);
+          goBack();
         },
       },
     ]);
