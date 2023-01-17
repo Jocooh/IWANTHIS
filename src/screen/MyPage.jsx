@@ -13,12 +13,12 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { useQuery } from "react-query";
 import { getMyPost } from "../common/api";
-import { Loader } from "../styles/styled";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../components/Category";
 import { listImagePath } from "../assets/imgPath";
 import usePickImage from "../hooks/usePickImage";
 import * as St from "../styles/styled/MyPage.styled";
+import { Loader } from "../styles/styled/Common.styled";
 
 const MyPage = () => {
   const { navigate } = useNavigation();
