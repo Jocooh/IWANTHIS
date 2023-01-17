@@ -7,12 +7,12 @@ import {
 } from "react-native";
 import { auth } from "../../common/firebase";
 import { useQuery } from "react-query";
-import { Loader } from "../../styles/styled";
 import { getMyPost } from "../../common/api";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../Category";
 import { listImagePath } from "../../assets/imgPath";
 import * as St from "../../styles/styled/MyPage.styled";
+import { Loader } from '../../styles/styled/Common.styled';
 
 const WishListArea = () => {
   const { navigate } = useNavigation();

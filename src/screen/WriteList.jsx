@@ -1,5 +1,4 @@
-import { Text, View, ScrollView, useColorScheme } from "react-native";
-import { useState } from "react";
+import { Text, View, ScrollView } from "react-native";
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useMutation, useQueryClient, useQuery } from "react-query";
@@ -12,13 +11,14 @@ import usePickImage from "../hooks/usePickImage";
 import ImageBox from "../components/Detail/ImageBox";
 import * as St from "../styles/styled/WriteList.styled";
 import InputZone from "../components/Form/InputZone";
+import useInput from "../hooks/useInput";
+import { useBackColor } from "../hooks/useDarkMode";
 
 const WriteList = () => {
   const queryClient = useQueryClient();
   const uid = auth.currentUser ? auth.currentUser.uid : "";
   // 다크모드
-  const isDark = useColorScheme() === "dark";
-  const backColor = isDark ? "#605e58" : "white";
+  const [backColor] = useBackColor("#605e58", "white");
 
   // 네비게이션
   const { goBack } = useNavigation();
@@ -29,18 +29,19 @@ const WriteList = () => {
   const img = params.img;
 
   // input
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [price, setPrice] = useState("");
-  const [url, setUrl] = useState("");
-
-  const reset = () => {
-    setTitle("");
-    setContent("");
-    setPrice("");
-    setUrl("");
-    goBack();
+  const list = {
+    uid,
+    url: "",
+    category,
+    title: "",
+    content: "",
+    date: date(),
+    like: [],
+    price: "",
+    comments: [],
   };
+
+  const [state, onChange, reset] = useInput({ ...list });
 
   // 이미지 선택 & 미리보기
   const [pickedImg, setPickedImg, pickImage] = usePickImage("");
@@ -50,6 +51,7 @@ const WriteList = () => {
     onSuccess: async () => {
       queryClient.invalidateQueries(category);
       reset();
+      goBack();
     },
   });
 
@@ -72,25 +74,14 @@ const WriteList = () => {
   const checkFirstPost = my.length === 0;
 
   // 게시글 업로드 할때 쓸 것들
-  const list = {
-    uid,
-    url,
-    category,
-    title,
-    content,
-    date: date,
-    like: [],
-    price: Number(price),
-    comments: [],
-  };
 
   const myList = {
     id: listId,
     category,
     categoryId: id,
-    title,
-    content,
-    price: Number(price),
+    title: state.title,
+    content: state.content,
+    price: Number(state.price),
   };
 
   //이미지 파이어베이스 스토리지 업로드
@@ -111,43 +102,42 @@ const WriteList = () => {
   };
 
   // POST
-  const addList = async (event) => {
-    event.preventDefault();
-    if (title.trim() === "") {
-      alert("상품명을 입력해주세요");
-      return;
-    }
-    if (price.trim() === "") {
-      alert("가격을 입력해주세요");
-      return;
-    }
-    if (content.trim() === "") {
-      alert("간단한 상품 설명을 입력해주세요");
-      return;
-    }
-    if (!!price.match(/\W/g)) {
-      alert("가격을 제대로 입력해주세요.\n가격에는 숫자만 넣어주세요");
-      return;
-    }
-    if (price.slice(0, 1) === "0") {
-      alert("가격을 제대로 입력해주세요.\n가격은 0으로 시작할수 없어요");
-      return;
-    }
-    if (Number(price) >= 1000000000000) {
-      alert("가격을 제대로 입력해주세요\n가격은 억단위까지 제공됩니다.");
+  const addList = async () => {
+    switch (true) {
+      case state.title.trim() === "":
+        alert("상품명을 입력해주세요");
+        return;
+      case state.price.trim() === "":
+        alert("가격을 입력해주세요");
+        return;
+      case state.content.trim() === "":
+        alert("간단한 상품 설명을 입력해주세요");
+        return;
+      case !!state.price.match(/\W/g):
+        alert("가격을 제대로 입력해주세요.\n가격에는 숫자만 넣어주세요");
+        return;
+      case state.price.slice(0, 1) === "0":
+        alert("가격을 제대로 입력해주세요.\n가격은 0으로 시작할수 없어요");
+        return;
+      case Number(state.price) >= 1000000000000:
+        alert("가격을 제대로 입력해주세요\n가격은 억단위까지 제공됩니다.");
+        return;
     }
     uploadImage(pickedImg)
       .then((image) => {
         if (checkFirstPost) {
           const lists = [{ ...myList, image }];
-          myPostMutation.mutate({ uid, lists });
+          myPostMutation.mutate({ uid, lists: lists });
         } else {
           changeMyPostMutation.mutate([
             myId,
             { lists: [...myLists, { ...myList, image }] },
           ]);
         }
-        postMutation.mutate([category, { ...list, image }]);
+        postMutation.mutate([
+          category,
+          { ...state, image, price: Number(state.price) },
+        ]);
       })
       .catch((error) => {
         alert(error.message);
@@ -166,16 +156,7 @@ const WriteList = () => {
           pickImage={pickImage}
         />
         <St.InfoView>
-          <InputZone
-            title={title}
-            setTitle={setTitle}
-            content={content}
-            setContent={setContent}
-            price={price}
-            setPrice={setPrice}
-            url={url}
-            setUrl={setUrl}
-          />
+          <InputZone state={state} onChange={onChange} />
           <St.WriteBtnBox>
             <St.PostBtn
               onPress={addList}
@@ -184,7 +165,10 @@ const WriteList = () => {
               <Feather name="check" size={24} color={color["fontColor"]} />
             </St.PostBtn>
             <St.PostBtn
-              onPress={reset}
+              onPress={() => {
+                reset();
+                goBack();
+              }}
               style={{ backgroundColor: color["backColor"] }}
             >
               <AntDesign name="close" size={24} color={color["fontColor"]} />

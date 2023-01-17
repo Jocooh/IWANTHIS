@@ -3,7 +3,6 @@ import {
   Alert,
   Text,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from "react-native";
 import {
@@ -21,18 +20,18 @@ import {
 } from "../common/api";
 import { auth } from "../common/firebase";
 import { width } from "../common/util";
-import { Loader } from "../styles/styled";
 import * as St from "../styles/styled/Detail.styled";
 import ImageBox from "../components/Detail/ImageBox";
 import CommentForm from "../components/Detail/CommentForm";
 import Comments from "../components/Detail/Comments";
+import { useBackColor, useFontColor } from "../hooks/useDarkMode";
+import { Loader } from "../styles/styled/Common.styled";
 
 const Detail = () => {
   const queryClient = useQueryClient();
   // 다크모드
-  const isDark = useColorScheme() === "dark";
-  const backColor = isDark ? "#605e58" : "white";
-  const fontColor = isDark ? "#dad8d1" : "black";
+  const [backColor, isDark] = useBackColor("#605e58", "white");
+  const [fontColor] = useFontColor("#dad8d1", "black");
 
   // 네비게이션
   const { navigate, goBack } = useNavigation();

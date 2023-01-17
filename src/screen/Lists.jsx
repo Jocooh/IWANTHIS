@@ -5,17 +5,18 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Animated,
-  useColorScheme,
 } from "react-native";
 import { auth } from "../common/firebase";
 import { getLists } from "../common/api";
 import React, { useState, useRef } from "react";
 import { Feather } from "@expo/vector-icons";
-import { ListBackground, Loader, ListTitle } from "../styles/styled";
 import { useQuery } from "react-query";
 import { listImagePath } from "../assets/imgPath";
-import CpList from "../components/CpList";
-import CpList2 from "../components/CpList2";
+import * as St from "../styles/styled/Lists.styled";
+import CpList from "../components/Lists/CpList";
+import NoList from "../components/Lists/NoList";
+import { useBackColor } from "../hooks/useDarkMode";
+import { Loader } from "../styles/styled/Common.styled";
 
 const Lists = ({
   navigation: { navigate },
@@ -27,8 +28,9 @@ const Lists = ({
   const scrollA = useRef(new Animated.Value(0)).current;
   const [order, setOrder] = useState(0);
   // 다크모드
-  const isDark = useColorScheme() === "dark";
-  const backColor = isDark ? "black" : "white";
+  const [backColor] = useBackColor("black", "white");
+
+  console.log(backColor);
 
   const { isLoading, isError, data, error } = useQuery([category], getLists);
 
@@ -102,9 +104,9 @@ const Lists = ({
         )}
         scrollEventThrottle={16}
       >
-        <ListTitle style={{ color: color["fontColor"] }}>
+        <St.ListTitle style={{ color: color["fontColor"] }}>
           {category.toUpperCase()}
-        </ListTitle>
+        </St.ListTitle>
 
         <View style={{ paddingHorizontal: "10%" }}>
           <Animated.Image
@@ -113,7 +115,7 @@ const Lists = ({
           />
         </View>
         {/* 흰색 배경 */}
-        <ListBackground style={{ backgroundColor: backColor }}>
+        <St.ListBackground style={{ backgroundColor: backColor }}>
           <View
             style={{
               justifyContent: "flex-end",
@@ -134,7 +136,7 @@ const Lists = ({
             </TouchableOpacity>
           </View>
           {data.length <= 0 ? (
-            <CpList2></CpList2>
+            <NoList></NoList>
           ) : (
             <ScrollView>
               {data.map((list) => (
@@ -149,7 +151,7 @@ const Lists = ({
               ))}
             </ScrollView>
           )}
-        </ListBackground>
+        </St.ListBackground>
       </Animated.ScrollView>
     </View>
   );

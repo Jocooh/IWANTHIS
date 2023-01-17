@@ -1,14 +1,14 @@
-import { View, Text, TouchableHighlight, useColorScheme } from "react-native";
-import { ListImage, ListStyle } from "../styles/styled";
+import { View, Text, TouchableHighlight } from "react-native";
+import { useBackColor, useFontColor } from "../../hooks/useDarkMode";
+import * as St from "../../styles/styled/Lists.styled";
 
 //navigate물어보자.
 
 const CpList = ({ list, navigation, color, id, img }) => {
   // 다크모드
-  const isDark = useColorScheme() === "dark";
-  const backColor = isDark ? "#605e58" : "#e4e7ef";
-  const fontColor = isDark ? "#dad8d1" : "black";
-  
+  const [backColor] = useBackColor("#605e58", "#e4e7ef");
+  const [fontColor] = useFontColor("#dad8d1", "black");
+
   let results = list.image;
 
   return (
@@ -22,7 +22,7 @@ const CpList = ({ list, navigation, color, id, img }) => {
         });
       }}
     >
-      <ListStyle style={{ backgroundColor: backColor }}>
+      <St.ListStyle style={{ backgroundColor: backColor }}>
         <View>
           <Text
             style={{
@@ -39,9 +39,9 @@ const CpList = ({ list, navigation, color, id, img }) => {
         </View>
         {/* 유저프로필대신 상품 이미지 */}
         <View style={{ marginVertical: -5 }}>
-          <ListImage source={results ? { uri: `${list.image}` } : null} />
+          <St.ListImage source={results ? { uri: `${list.image}` } : null} />
         </View>
-      </ListStyle>
+      </St.ListStyle>
     </TouchableHighlight>
   );
 };
