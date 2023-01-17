@@ -29,7 +29,6 @@ const Stacks = () => {
   const check = useSelector((state) => state.login.isLogin);
   // 다크모드
   const isDark = useColorScheme() === "dark";
-  const trueIsDark = !!isDark;
 
   //로그아웃 누르면 로그아웃되는 코드
   const logOut = () => {
@@ -73,7 +72,7 @@ const Stacks = () => {
                     <SimpleLineIcons
                       name="logout"
                       size={24}
-                      color={trueIsDark ? "white" : "black"}
+                      color={isDark ? "white" : "black"}
                       onPress={logOut}
                       style={{ marginTop: 7 }}
                     />
@@ -99,7 +98,7 @@ const Stacks = () => {
                   <SimpleLineIcons
                     name="login"
                     size={24}
-                    color={trueIsDark ? "white" : "black"}
+                    color={isDark ? "white" : "black"}
                     onPress={() => {
                       navigate("Login");
                     }}

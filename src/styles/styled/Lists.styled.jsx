@@ -1,6 +1,4 @@
-// 한 군데 이상 쓰는 스타일드 컴포넌트는 여기에 넣어주세요
-import styled from "@emotion/native";
-import { height, width } from "../common/util";
+import styled from '@emotion/native';
 
 //리스트 페이지 기본 디자인
 export const ListTitle = styled.Text`
@@ -37,10 +35,7 @@ export const ListImage = styled.Image`
   border-radius: 50px;
 `;
 
-//Loader
-export const Loader = styled.View`
-  width: ${width + "px"};
-  height: ${height + "px"};
-  justify-content: center;
+export const NoList = styled.View`
   align-items: center;
+  margin-top: 50px;
 `;

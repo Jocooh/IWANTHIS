@@ -4,11 +4,10 @@ import { Image, useColorScheme } from "react-native";
 const Header = () => {
   // 다크모드
   const isDark = useColorScheme() === "dark";
-  const trueIsDark = !!isDark;
   
   return (
     <>
-      {trueIsDark ? (
+      {isDark ? (
         <Image
           source={listImagePath["darkLogo"]}
           style={{ width: 140, height: 50 }}

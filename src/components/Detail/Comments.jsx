@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  useColorScheme,
-} from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +7,8 @@ import { offEdit, onEdit } from "../../redux/modules/commentSlice";
 import { auth } from "../../common/firebase";
 import { changeDetail } from "../../common/api";
 import { listImagePath } from "../../assets/imgPath";
-import * as St from "../../styles/styled/Detail.styled"
+import * as St from "../../styles/styled/Detail.styled";
+import { useFontColor } from "../../hooks/useDarkMode";
 
 const Comments = ({ category, listId, comment, comments }) => {
   const dispatch = useDispatch();
@@ -23,9 +18,8 @@ const Comments = ({ category, listId, comment, comments }) => {
   const checkUser = user ? user.uid === comment.uid : false;
   const checkEdit = edit.id === comment.id;
   // 다크모드
-  const isDark = useColorScheme() === "dark";
-  const fontColor = isDark ? "#dad8d1" : "black";
-  
+  const [fontColor, isDark] = useFontColor("#dad8d1", "black");
+
   // 수정
   const [editComment, setEditComment] = useState();
 
